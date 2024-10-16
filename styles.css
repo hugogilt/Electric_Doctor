@@ -82,3 +82,79 @@ nav a {
   background-color: #fff;
 }
 
+#servicios {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#servicios img {
+  width: 20%;
+}
+
+#servicios p {
+  max-width: 50ch;
+}
+
+#titulo-servicios {
+  text-align: center;
+}
+
+#contenido-servicios {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 2em;
+}
+
+#cards-containers {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+  font-size: 1.2em;
+}
+
+#cards-containers img {
+  width: 40%;
+}
+
+.card button {
+  background-color: #E5E5E5;
+  border: 2px solid #C0C0C0;
+  border-radius: 24px;
+  font-size: 1em;
+  color: #4D4D4D;
+  margin-bottom: 2em;
+  margin-top: auto;
+  padding: 0.5em;
+
+}
+
+#container-servicios-1 {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+#container-servicios-2 {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.card {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  width: 20%;
+  background-color: #E5E5E5;
+  text-align: center;
+  color: black;
+  border-radius: 8px;
+  padding: 2em 2em 0em;
+  min-height: 250px;
+}
+
