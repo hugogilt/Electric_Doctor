@@ -94,7 +94,7 @@
         </div>
       </div>
     </section>
-    <section id="citas"></section>
+    <section id="citas">
       <div id="titulo-citas">
         <h2>Pide ya tu cita!</h2>
         <p>Trataremos a tu moto como si fuese nuestra.</p>
@@ -129,6 +129,21 @@
         <div id="contenedor-problema" class="grupo-formulario">
           <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
             required></textarea>
+        </div>
+        <!-- Calendario -->
+        <button id="abrir-calendario-button" type="button">Elegir fecha</button>
+
+        <!-- CALENDARIO V0.1 -->
+        <div id="calendarModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Selecciona una fecha</h2>
+            <div id="calendar"></div>
+            <div id="timeSelection" class="hidden">
+              <h3>Selecciona una hora</h3>
+              <div id="availableTimes"></div>
+            </div>
+          </div>
         </div>
         <div id="contenedor-pedir-cita-button" class="grupo-formulario">
           <button type="submit" id="pedir-cita-button">Pedir cita</button>
