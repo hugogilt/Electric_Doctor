@@ -1,99 +1,137 @@
-//ESTO FUNCIONA PERO NO ES CALENDARIO REAL, LE FALTAN COSAS
-// Variables globales
-const diasLaborales = [1, 2, 3, 4, 5]; // Lunes a Viernes
-const horarioApertura = [
-    { dia: 1, horas: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30'] }, // Lunes
-    { dia: 2, horas: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30'] }, // Martes
-    { dia: 3, horas: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30'] }, // Miércoles
-    { dia: 4, horas: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30'] }, // Jueves
-    { dia: 5, horas: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30'] }  // Viernes
+const monthYearElement = document.getElementById('monthYear');
+const datesElement = document.getElementById('dates');
+const timeSlotsElement = document.getElementById('timeSlots');
+const prevMonthButton = document.getElementById('prevMonth');
+const nextMonthButton = document.getElementById('nextMonth');
+const openCalendarButton = document.getElementById('abrir-calendario-button');
+const calendarModal = document.getElementById('calendarModal');
+const closeModal = document.getElementById('closeModal');
+
+let currentDate = new Date();
+
+// Aquí puedes agregar más días disponibles en formato 'YYYY-MM-DD'
+const availableDays = [
+    '2024-11-01', '2024-11-02' // Asegúrate de que las fechas coincidan con el mes y año actual
 ];
 
-document.getElementById('abrir-calendario-button').addEventListener('click', function () {
-    abrirModalCalendario();
-});
+const updateCalendar = () => {
+    const month = currentDate.getMonth();
+    const year = currentDate.getFullYear();
 
-document.querySelector('.close').addEventListener('click', function () {
-    cerrarModalCalendario();
-});
+    monthYearElement.textContent = currentDate.toLocaleString('es-ES', { month: 'long', year: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase());
 
-function abrirModalCalendario() {
-    document.getElementById('calendarModal').style.display = 'block';
-    generarCalendario(); // Generar el calendario al abrir
-}
+    // Clear previous dates
+    datesElement.innerHTML = '';
+    timeSlotsElement.innerHTML = '';
 
-function cerrarModalCalendario() {
-    document.getElementById('calendarModal').style.display = 'none';
-}
+    // Get the first day of the month
+    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Ajuste para alinear correctamente los días
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-function generarCalendario() {
-    const calendar = document.getElementById('calendar');
-    calendar.innerHTML = ''; // Limpiar el calendario previo
+    // Create empty slots for days before the first day of the month
+    for (let i = 0; i < firstDay; i++) {
+        datesElement.innerHTML += '<div class="date"></div>';
+    }
 
-    const fechaActual = new Date();
-    const primerDiaDelMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
-    const ultimoDiaDelMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
+    // Create date elements
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateDiv = document.createElement('div');
+        dateDiv.className = 'date ' + (isAvailable(day) ? 'available' : 'not-available');
+        dateDiv.textContent = day;
+        dateDiv.addEventListener('click', () => selectDate(day));
+        datesElement.appendChild(dateDiv);
+    }
+};
 
-    for (let dia = primerDiaDelMes.getDate(); dia <= ultimoDiaDelMes.getDate(); dia++) {
-        const diaFecha = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), dia);
-        const diaNumero = diaFecha.getDay();
+const isAvailable = (day) => {
+    // Crear una fecha en formato 'YYYY-MM-DD'
+    const dateToCheck = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return availableDays.includes(dateToCheck);
+};
 
-        const diaBoton = document.createElement('button');
-        diaBoton.textContent = dia;
-        diaBoton.className = 'day'; // Clase para el día
-        diaBoton.type = 'button'; // Establecer el tipo del botón
+const selectDate = (day) => {
+    const selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    timeSlotsElement.innerHTML = ''; // Limpiar slots anteriores
+    updateTimeSlots(selectedDate); // Actualizar los slots de tiempo
+};
 
-        // Solo mostrar botones de lunes a viernes
-        if (diasLaborales.includes(diaNumero)) {
-            // Aquí puedes agregar lógica para verificar si hay citas disponibles
-            const hayCitasDisponibles = true; // Cambia esto según la lógica que necesites
-            if (hayCitasDisponibles) {
-                diaBoton.classList.add('available'); // Clase si hay citas disponibles
-            } else {
-                diaBoton.classList.add('not-available'); // Clase si no hay citas disponibles
-            }
+const isTimeAvailable = (date, hour, minute) => {
+    const availableSlots = [
+        '2024-11-01-9:00', '2024-11-01-9:30', '2024-11-01-10:00',
+        '2024-11-01-10:30', '2024-11-01-11:00', '2024-11-01-11:30',
+        '2024-11-01-16:00', '2024-11-01-16:30', '2024-11-01-17:00',
+        '2024-11-01-17:30', '2024-11-01-18:00', '2024-11-01-18:30',
+        '2024-11-02-9:00', '2024-11-02-10:00'
+    ];
+    return availableSlots.includes(`${date}-${hour}:${minute === 0 ? '00' : '30'}`);
+};
 
-            diaBoton.addEventListener('click', function () {
-                seleccionarFecha(diaFecha);
-            });
-            calendar.appendChild(diaBoton);
+const updateTimeSlots = (selectedDate) => {
+    const morningStart = 9; // 9:00
+    const morningEnd = 14; // 14:00
+    const afternoonStart = 16; // 16:00
+    const afternoonEnd = 19; // 19:00
+
+    // Crear slots de la mañana (cada media hora)
+    for (let hour = morningStart; hour < morningEnd; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+            const slot = document.createElement('button');
+            slot.type = 'button';
+            const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
+            debugger;
+            slot.className = isTimeAvailable(selectedDate, hour, minute) ? 'available' : 'not-available';
+            slot.textContent = formattedHour;
+            slot.addEventListener('click', () => selectTime(slot));
+            timeSlotsElement.appendChild(slot);
         }
     }
-}
 
-function seleccionarFecha(fecha) {
-    document.getElementById('timeSelection').classList.remove('hidden');
-    mostrarHorasDisponibles(fecha);
-}
-
-function mostrarHorasDisponibles(fecha) {
-    const availableTimes = document.getElementById('availableTimes');
-    availableTimes.innerHTML = ''; // Limpiar horas previas
-
-    const diaSemana = fecha.getDay();
-    const horasDisponibles = horarioApertura.find(hora => hora.dia === diaSemana).horas;
-
-    horasDisponibles.forEach(hora => {
-        const horaBoton = document.createElement('button');
-        horaBoton.textContent = hora;
-        horaBoton.className = 'hora-boton';
-        horaBoton.type = 'button'; // Establecer el tipo del botón
-
-        // Aquí puedes añadir lógica para marcar horas ocupadas
-        const horaDisponible = true; // Cambia esto según la lógica que necesites
-        if (horaDisponible) {
-            horaBoton.classList.add('available'); // Clase si la hora está disponible
-        } else {
-            horaBoton.classList.add('not-available'); // Clase si la hora no está disponible
+    // Crear slots de la tarde (cada media hora)
+    for (let hour = afternoonStart; hour < afternoonEnd; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+            const slot = document.createElement('button');
+            slot.type = 'button';
+            const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
+            slot.className = isTimeAvailable(selectedDate, hour, minute) ? 'available' : 'not-available';
+            slot.textContent = formattedHour;
+            slot.addEventListener('click', () => selectTime(slot));
+            timeSlotsElement.appendChild(slot);
         }
+    }
+};
 
-        horaBoton.addEventListener('click', function () {
-            // Cambiar el color del botón al seleccionar la hora
-            horaBoton.style.backgroundColor = '#3362a4';
+const selectTime = (slot) => {
+    const slots = document.querySelectorAll('.time-slots button');
+    slots.forEach(s => s.classList.remove('selected'));
+    slot.classList.add('selected');
+};
 
-            // Lógica al seleccionar la hora
-            alert(`Has seleccionado el ${fecha.toLocaleDateString()} a las ${hora}`);
-        });
-        availableTimes.appendChild(horaBoton);
-    });
-}
+// Funciones para abrir y cerrar el modal
+openCalendarButton.addEventListener('click', () => {
+    calendarModal.style.display = 'block';
+    updateCalendar();
+});
+
+closeModal.addEventListener('click', () => {
+    calendarModal.style.display = 'none';
+});
+
+// Cerrar el modal si se hace clic fuera de él
+window.addEventListener('click', (event) => {
+    if (event.target === calendarModal) {
+        calendarModal.style.display = 'none';
+    }
+});
+
+prevMonthButton.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    updateCalendar();
+});
+
+nextMonthButton.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    updateCalendar();
+});
+
+// Inicializar el calendario
+updateCalendar();

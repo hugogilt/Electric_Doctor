@@ -165,6 +165,7 @@ nav a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 2em;
 }
 
 #titulo-citas {
@@ -262,12 +263,8 @@ textarea {
   width: 70%;
 }
 
-#abrir-calendario-button:hover {
-  background-color: #3339b0;
-}
-
-.modal {
-  display: none;
+#calendarModal {
+  display: none; /* Ocultar el modal por defecto */
   position: fixed;
   z-index: 1;
   left: 0;
@@ -285,8 +282,7 @@ textarea {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
-  max-width: 600px;
-  border-radius: 10px;
+  max-width: 600px; /* Limitar el ancho del modal */
 }
 
 .close {
@@ -303,30 +299,81 @@ textarea {
   cursor: pointer;
 }
 
-.hidden {
-  display: none;
+/* Estilos del calendario */
+.calendar {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: white;
 }
 
-#calendar {
+.header {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 10px;
 }
 
 .day {
-  width: calc(14.28% - 10px);
-  margin: 5px;
-  padding: 20px;
+  font-weight: bold;
   text-align: center;
-  border-radius: 5px;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 10px;
+}
+
+.date {
+  padding: 10px;
+  text-align: center;
   cursor: pointer;
 }
 
 .available {
-  background-color: #4CAF50;
-  color: white;
+  background-color: lightgreen; /* Color para días disponibles */
 }
 
 .not-available {
-  background-color: #f44336;
-  color: white;
+  background-color: lightgray; /* Color para días no disponibles */
+}
+
+.selected {
+  background-color: #3362a4; /* Color para horas seleccionadas */
+  color: white; /* Color de texto para horas seleccionadas */
+}
+
+.time-slots {
+  margin-top: 20px;
+  display: grid; /* Utiliza un grid para organizar los botones */
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+  gap: 10px; /* Espacio entre los botones */
+}
+
+.time-slots button {
+  padding: 10px; /* Espaciado interno para botones */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Esquinas redondeadas */
+  color: black; /* Color de texto por defecto */
+  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+
+.time-slots button.selected {
+  background-color: #3362a4; /* Color para horas seleccionadas */
+  color: white; /* Color de texto para horas seleccionadas */
+}
+
+.available button {
+  background-color: lightgreen; /* Color para slots disponibles */
+}
+
+.not-available button {
+  background-color: lightgray; /* Color para slots no disponibles */
 }
