@@ -71,6 +71,11 @@ const updateTimeSlots = (selectedDate) => {
     const morningEnd = 14; // 14:00
     const afternoonStart = 16; // 16:00
     const afternoonEnd = 19; // 19:00
+    let displayHours = false;
+    let dayNotAvailableWarning;
+    if (document.querySelector('#diaNoDisponibleAlerta')) {
+        dayNotAvailableWarning = document.querySelector('#diaNoDisponibleAlerta');
+    } 
 
     // Crear slots de la mañana (cada media hora)
     for (let hour = morningStart; hour < morningEnd; hour++) {
@@ -78,8 +83,12 @@ const updateTimeSlots = (selectedDate) => {
             const slot = document.createElement('button');
             slot.type = 'button';
             const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
-            debugger;
-            slot.className = isTimeAvailable(selectedDate, hour, minute) ? 'available' : 'not-available';
+            if (isTimeAvailable(selectedDate, hour, minute)) {
+                slot.className = 'available';
+                displayHours = true;
+            } else {
+                slot.className = 'not-available';
+            }
             slot.textContent = formattedHour;
             slot.addEventListener('click', () => selectTime(slot));
             timeSlotsElement.appendChild(slot);
@@ -92,13 +101,43 @@ const updateTimeSlots = (selectedDate) => {
             const slot = document.createElement('button');
             slot.type = 'button';
             const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
-            slot.className = isTimeAvailable(selectedDate, hour, minute) ? 'available' : 'not-available';
+            if (isTimeAvailable(selectedDate, hour, minute)) {
+                slot.className = 'available';
+                displayHours = true;
+            } else {
+                slot.className = 'not-available';
+            }
             slot.textContent = formattedHour;
             slot.addEventListener('click', () => selectTime(slot));
             timeSlotsElement.appendChild(slot);
         }
     }
+    const hoursNotDisplay = document.querySelectorAll('button.not-available');
+    if (!displayHours) {
+        for (let hourNotDisplay of hoursNotDisplay) {
+            hourNotDisplay.style.display = 'none'
+        }
+        if (!document.querySelector('#diaNoDisponibleAlerta')) {
+            dayNotAvailableWarning = document.createElement('p');
+            dayNotAvailableWarning.textContent = ('No hay horas disponibles para este día');
+            dayNotAvailableWarning.id = 'diaNoDisponibleAlerta';
+            timeSlotsElement.after(dayNotAvailableWarning);
+        }
+        debugger;
+        dayNotAvailableWarning.classList.remove('transition');
+        dayNotAvailableWarning.style.color = 'white';
+        setTimeout(() => {dayNotAvailableWarning.className = 'transition'}, 1);
+        setTimeout(() => {dayNotAvailableWarning.style.color = 'red';}, 2);
+
+    } else {
+        for (let hourNotDisplay of hoursNotDisplay) {
+            hourNotDisplay.style.removeProperty('display');
+        }
+        document.querySelector('#diaNoDisponibleAlerta').remove();
+    }
 };
+
+
 
 const selectTime = (slot) => {
     const slots = document.querySelectorAll('.time-slots button');

@@ -4,7 +4,6 @@ body {
   background-image: url(images/background-body.jpg);
   background-size: cover;
   background-attachment: fixed;
-  /* Fija el fondo */
   color: white;
 }
 
@@ -328,6 +327,7 @@ textarea {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-top: 10px;
+  gap: 2px;
 }
 
 .date {
@@ -376,4 +376,15 @@ textarea {
 
 .not-available button {
   background-color: lightgray; /* Color para slots no disponibles */
+}
+
+#diaNoDisponibleAlerta {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.3em;
+}
+
+.transition {
+  transition: color 0.2s ease;
 }
