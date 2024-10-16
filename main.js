@@ -123,7 +123,6 @@ const updateTimeSlots = (selectedDate) => {
             dayNotAvailableWarning.id = 'diaNoDisponibleAlerta';
             timeSlotsElement.after(dayNotAvailableWarning);
         }
-        debugger;
         dayNotAvailableWarning.classList.remove('transition');
         dayNotAvailableWarning.style.color = 'white';
         setTimeout(() => {dayNotAvailableWarning.className = 'transition'}, 1);
