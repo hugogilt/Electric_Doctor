@@ -139,9 +139,15 @@ const updateTimeSlots = (selectedDate) => {
 
 
 const selectTime = (slot) => {
-    const slots = document.querySelectorAll('.time-slots button');
-    slots.forEach(s => s.classList.remove('selected'));
-    slot.classList.add('selected');
+    if (slot.classList.contains('available')) {
+        const slots = document.querySelectorAll('.time-slots button');
+        slots.forEach(s => s.classList.remove('selected'));
+        slot.classList.add('selected'); 
+    }
+
+    else {
+        alert ('esta hora no está disponible')
+    }
 };
 
 // Funciones para abrir y cerrar el modal
