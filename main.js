@@ -8,6 +8,17 @@ const calendarModal = document.getElementById('calendarModal');
 const closeModal = document.getElementById('closeModal');
 
 let currentDate = new Date();
+const selectedDayElement = document.createElement('p');
+selectedDayElement.id = 'selectedDay';
+selectedDayElement.style.fontWeight = 'bold';
+selectedDayElement.style.marginTop = '10px';
+selectedDayElement.style.textAlign = 'center'
+datesElement.after(selectedDayElement);
+
+let dayNotAvailableWarning;
+if (document.querySelector('#diaNoDisponibleAlerta')) {
+    dayNotAvailableWarning = document.querySelector('#diaNoDisponibleAlerta');
+} 
 
 // Aquí puedes agregar más días disponibles en formato 'YYYY-MM-DD'
 const availableDays = [
@@ -23,6 +34,10 @@ const updateCalendar = () => {
     // Clear previous dates
     datesElement.innerHTML = '';
     timeSlotsElement.innerHTML = '';
+    selectedDayElement.textContent = '';
+    if (document.querySelector('#diaNoDisponibleAlerta')) {
+        dayNotAvailableWarning.remove();
+    } 
 
     // Get the first day of the month
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Ajuste para alinear correctamente los días
@@ -43,6 +58,7 @@ const updateCalendar = () => {
     }
 };
 
+//POR QUÉ TODO ESTÁ HECHO CON ARROW FUNCTIONS?
 const isAvailable = (day) => {
     // Crear una fecha en formato 'YYYY-MM-DD'
     const dateToCheck = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -50,9 +66,27 @@ const isAvailable = (day) => {
 };
 
 const selectDate = (day) => {
+    debugger;
     const selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     timeSlotsElement.innerHTML = ''; // Limpiar slots anteriores
     updateTimeSlots(selectedDate); // Actualizar los slots de tiempo
+    const dayOfWeek = new Date(selectedDate).toLocaleDateString('es-ES', { weekday: 'long' });
+    selectedDayElement.textContent = `${dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)}, ${day}`;
+
+        //Poner dias de color azul cuando los selecciones
+    // Añadir la clase "selected" al día clicado y eliminarla del resto
+    const allDays = document.querySelectorAll('.date');
+    allDays.forEach(dayElement => {
+        dayElement.classList.remove('selected');
+    });
+
+    if (isAvailable(day)) {
+        // Añadir la clase "selected" al día clicado, (seguramente haya una forma mejor de hacerlo)
+        const selectedAllDaysElement = [...allDays].find(dayElement => dayElement.textContent === String(day));
+        if (selectedAllDaysElement) {
+            selectedAllDaysElement.classList.add('selected');
+        }
+        }
 };
 
 const isTimeAvailable = (date, hour, minute) => {
@@ -72,10 +106,6 @@ const updateTimeSlots = (selectedDate) => {
     const afternoonStart = 16; // 16:00
     const afternoonEnd = 19; // 19:00
     let displayHours = false;
-    let dayNotAvailableWarning;
-    if (document.querySelector('#diaNoDisponibleAlerta')) {
-        dayNotAvailableWarning = document.querySelector('#diaNoDisponibleAlerta');
-    } 
 
     // Crear slots de la mañana (cada media hora)
     for (let hour = morningStart; hour < morningEnd; hour++) {
@@ -132,7 +162,9 @@ const updateTimeSlots = (selectedDate) => {
         for (let hourNotDisplay of hoursNotDisplay) {
             hourNotDisplay.style.removeProperty('display');
         }
-        document.querySelector('#diaNoDisponibleAlerta').remove();
+        if (document.querySelector('#diaNoDisponibleAlerta')) {
+            dayNotAvailableWarning.remove();
+        } 
     }
 };
 
