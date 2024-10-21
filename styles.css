@@ -89,7 +89,7 @@ nav a {
 }
 
 #servicios img {
-  width: 20%;
+  width: 100%;
 }
 
 #servicios p {
@@ -101,10 +101,8 @@ nav a {
 }
 
 #contenido-servicios {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
   margin: 2em;
 }
 
@@ -131,13 +129,9 @@ nav a {
 
 }
 
-#container-servicios-1 {
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
-}
 
-#container-servicios-2 {
+
+#container-servicios-2, #container-servicios-1 {
   display: flex;
   flex-direction: row;
   gap: 1em;
@@ -148,7 +142,8 @@ nav a {
   justify-content: start;
   align-items: center;
   flex-direction: column;
-  width: 20%;
+  flex: 1 1 10%;
+  /* width: 20%; */
   background-color: #E5E5E5;
   text-align: center;
   color: black;
@@ -263,7 +258,8 @@ textarea {
 }
 
 #calendarModal {
-  display: none; /* Ocultar el modal por defecto */
+  display: none;
+  /* Ocultar el modal por defecto */
   position: fixed;
   z-index: 1;
   left: 0;
@@ -281,7 +277,8 @@ textarea {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
-  max-width: 600px; /* Limitar el ancho del modal */
+  max-width: 600px;
+  /* Limitar el ancho del modal */
 }
 
 .close {
@@ -302,7 +299,7 @@ textarea {
 .calendar {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 20px;
+  padding: 1em;
   background-color: white;
 }
 
@@ -337,54 +334,115 @@ textarea {
 }
 
 .available {
-  background-color: lightgreen; /* Color para días disponibles */
+  background-color: lightgreen;
+  /* Color para días disponibles */
 }
 
 .not-available {
-  background-color: lightgray; /* Color para días no disponibles */
+  background-color: lightgray;
+  /* Color para días no disponibles */
 }
 
 .selected {
-  background-color: #3362a4; /* Color para horas seleccionadas */
-  color: white; /* Color de texto para horas seleccionadas */
+  background-color: #3362a4;
+  /* Color para horas seleccionadas */
+  color: white;
+  /* Color de texto para horas seleccionadas */
 }
 
 .time-slots {
-  margin-top: 20px;
-  display: grid; /* Utiliza un grid para organizar los botones */
-  grid-template-columns: repeat(4, 1fr); /* 4 columnas */
-  gap: 10px; /* Espacio entre los botones */
+  margin-top: 1em;
+  display: grid;
+  /* Utiliza un grid para organizar los botones */
+  grid-template-columns: repeat(4, 1fr);
+  /* 4 columnas */
+  gap: 10px;
+  /* Espacio entre los botones */
 }
 
 .time-slots button {
-  padding: 10px; /* Espaciado interno para botones */
-  border: none; /* Sin borde */
-  border-radius: 5px; /* Esquinas redondeadas */
-  color: black; /* Color de texto por defecto */
-  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+  padding: 10px;
+  /* Espaciado interno para botones */
+  border: none;
+  /* Sin borde */
+  border-radius: 5px;
+  /* Esquinas redondeadas */
+  color: black;
+  /* Color de texto por defecto */
+  cursor: pointer;
+  /* Cambia el cursor al pasar el ratón */
 }
 
 
 .time-slots button.selected {
-  background-color: #3362a4; /* Color para horas seleccionadas */
-  color: white; /* Color de texto para horas seleccionadas */
+  background-color: #3362a4;
+  /* Color para horas seleccionadas */
+  color: white;
+  /* Color de texto para horas seleccionadas */
 }
 
 .available button {
-  background-color: lightgreen; /* Color para slots disponibles */
+  background-color: lightgreen;
+  /* Color para slots disponibles */
 }
 
 .not-available button {
-  background-color: lightgray; /* Color para slots no disponibles */
+  background-color: lightgray;
+  /* Color para slots no disponibles */
 }
 
-#diaNoDisponibleAlerta {
+#diaNoDisponibleAlerta,
+#horaNoDisponibleAlerta {
   color: white;
   font-weight: bold;
   text-align: center;
   font-size: 1.3em;
+  margin: 0;
+}
+
+#horaNoDisponibleAlerta {
+  margin: 1em auto 0;
+
 }
 
 .transition {
   transition: color 0.2s ease;
 }
+
+.calendar .selected-not-available {
+  background-color: #f28b82;
+  /* Color para horas seleccionadas */
+  color: white;
+  /* Color de texto para horas seleccionadas */
+}
+
+#aceptar {
+  margin: 1em auto 0;
+  background-color: #3362a4;;
+  display: block;
+  padding: 0.5em;
+  width: 7em;
+  height: 3em;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#selectedDay {
+  font-weight: bold;
+  margin: 1em 0 0;
+  text-align: center;
+}
+
+a[href="https://elfsight.com/google-reviews-widget/?utm_source=websites&utm_medium=clients&utm_content=google-reviews&utm_term=%25website_domain%25&utm_campaign=free-widget"] {
+  display: none;
+}
+ iframe {
+  margin: 1em auto;
+  display: block;
+ }
+
+ div > .eapps-widget-toolbar {
+  display: none;
+ }

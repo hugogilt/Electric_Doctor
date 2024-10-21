@@ -134,27 +134,27 @@
         <button id="abrir-calendario-button" type="button">Elegir fecha</button>
         <div id="calendarModal" class="modal">
           <div class="modal-content">
-              <span id="closeModal" class="close">&times;</span>
-              <div class="calendar">
-                  <div class="header">
-                      <button id="prevMonth" type="button">←</button>
-                      <h2 id="monthYear"></h2>
-                      <button id="nextMonth" type="button">→</button>
-                  </div>
-                  <div class="days">
-                      <div class="day">Lun</div>
-                      <div class="day">Mar</div>
-                      <div class="day">Mié</div>
-                      <div class="day">Jue</div>
-                      <div class="day">Vie</div>
-                      <div class="day">Sáb</div>
-                      <div class="day">Dom</div>
-                  </div>
-                  <div id="dates" class="dates"></div>
-                  <div id="timeSlots" class="time-slots"></div>
+            <span id="closeModal" class="close">&times;</span>
+            <div class="calendar">
+              <div class="header">
+                <button id="prevMonth" type="button">←</button>
+                <h2 id="monthYear"></h2>
+                <button id="nextMonth" type="button">→</button>
               </div>
+              <div class="days">
+                <div class="day">Lun</div>
+                <div class="day">Mar</div>
+                <div class="day">Mié</div>
+                <div class="day">Jue</div>
+                <div class="day">Vie</div>
+                <div class="day">Sáb</div>
+                <div class="day">Dom</div>
+              </div>
+              <div id="dates" class="dates"></div>
+              <div id="timeSlots" class="time-slots"></div>
+            </div>
           </div>
-      </div>
+        </div>
         <div id="contenedor-pedir-cita-button" class="grupo-formulario">
           <button type="submit" id="pedir-cita-button">Pedir cita</button>
         </div>
@@ -214,11 +214,22 @@
         tortor nec sem malesuada, sed dapibus nisi facilisis. Ut sodales felis eu nulla vestibulum, sit amet
         vulputate sem sagittis. Proin nec semper arcu, eu laoreet massa. Nulla nec finibus dui.</p>
 
-      <p id="caca">Maecenas posuere purus ac odio sollicitudin, at porttitor dui accumsan. Curabitur quis sapien nec urna
+      <p id="caca">Maecenas posuere purus ac odio sollicitudin, at porttitor dui accumsan. Curabitur quis sapien nec
+        urna
         luctus bibendum. Integer tincidunt semper arcu, ac aliquam libero egestas vel. Sed nec turpis nec quam
         faucibus fermentum. Nunc consectetur justo vel velit dictum, a cursus libero malesuada. Donec venenatis,
         ligula nec vehicula tincidunt, sapien est facilisis leo, et blandit leo ipsum ut elit.</p>
     </section>
+    <section id="dondeEstamos">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3079.7445496330215!2d-0.3510742228535035!3d39.4750993124095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60494e08b65b75%3A0x97d8f201a565787a!2sElectric%20Doctor!5e0!3m2!1ses!2ses!4v1729507260868!5m2!1ses!2ses"
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <script src="https://static.elfsight.com/platform/platform.js"></script>
+     <!-- <script type="module" src="test.js"></script> -->
+    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
   </main>
   <script src="main.js"></script>
 </body>
