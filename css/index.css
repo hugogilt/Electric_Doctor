@@ -1,7 +1,7 @@
 body {
   margin: 0;
   height: 100vh;
-  background-image: url(images/background-body.jpg);
+  background-image: url(../images/background-body.jpg);
   background-size: cover;
   background-attachment: fixed;
   color: white;

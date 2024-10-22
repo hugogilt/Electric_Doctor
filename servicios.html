@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Doctor</title>
+  <link rel="stylesheet" href="css/servicios.css">
+</head>
+
+<body>
+  <header>
+    <div id="title">
+      <img src="images/logo.png" alt="Logo">
+      <h1>Electric Doctor</h1>
+    </div>
+    <nav>
+      <a href="#">Servicios</a>
+      <a href="#">Contáctanos</a>
+      <a href="#">Nosotros</a>
+      <a href="#">Dónde estamos</a>
+      <a href="#">Nuestras instalaciones</a>
+    </nav>
+  </header>
+  <main>
+    <section id="nuestraEmpresa">
+      <h2>Nuestra empresa</h2>
+      <div id="nuestraEmpresaContent">
+        <img src="images/logo.png" alt="Electric Doctor">
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+          Suscipit voluptates corporis incidunt neque iusto? Impedit natus,
+          sed perferendis sit repudiandae magnam, amet doloribus perspiciatis
+          eaque voluptas nihil saepe libero sequi.
+        </p>
+      </div>
+    </section>
+    <section id="servicios">
+      <div id="titulo-servicios">
+        <h2>Nuestros servicios</h2>
+        <p>Nuestro doctor tiene un máster en todo tipo de vehículos eléctricos y está capacitado para velar por
+          la
+          salud de su moto.
+          Su filosofia es que ningún motero puede estar sin su compañera durante un periodo prolongado de
+          tiempo.
+        </p>
+      </div>
+      <div id="contenido-servicios">
+        <div id="listado-servicios">
+            <button id="reparacion-motos" class="botones-servicios">Reparación de Motos</button>
+            <button id="reparacion-baterias" class="botones-servicios">Reparación de Baterías</button>
+            <button id="reparacion-patinetes" class="botones-servicios">Reparación de patinetes</button>
+            <button id="envios" class="botones-servicios">Envío de Motos a toda la península</button>
+            <button id="pre-itvs" class="botones-servicios">Pre-ITVS</button>
+            <button id="neumaticos" class="botones-servicios">Neumáticos</button>
+            <button id="puestas-a-punto" class="botones-servicios">Puestas a Punto</button>
+            <button id="revisiones" class="botones-servicios">Revisiones</button>
+        </div>
+        <div id="informacion-servicio">Selecciona un servicio para obtener más información.</div>
+      </div>
+    </section>
+    <section id="citas">
+      <div id="titulo-citas">
+        <h2>Pide ya tu cita!</h2>
+        <p>Trataremos a tu moto como si fuese nuestra.</p>
+      </div>
+      <form id="pedir-cita-form">
+
+        <div class="elementos-pedir-cita">
+          <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+        </div>
+
+        <div class="elementos-pedir-cita">
+          <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+        </div>
+
+        <div class="elementos-pedir-cita">
+          <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Teléfono (9 dígitos)"
+            title="El número debe tener 9 dígitos" required>
+        </div>
+
+        <div class="elementos-pedir-cita">
+          <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
+        </div>
+
+        <div class="elementos-pedir-cita">
+          <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
+        </div>
+
+        <div class="elementos-pedir-cita">
+          <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024" required>
+        </div>
+
+        <div id="contenedor-problema" class="grupo-formulario">
+          <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
+            required></textarea>
+        </div>
+        <!-- Calendario -->
+        <button id="abrir-calendario-button" type="button">Elegir fecha</button>
+        <div id="calendarModal" class="modal">
+          <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <div class="calendar">
+              <div class="header">
+                <button id="prevMonth" type="button">←</button>
+                <h2 id="monthYear"></h2>
+                <button id="nextMonth" type="button">→</button>
+              </div>
+              <div class="days">
+                <div class="day">Lun</div>
+                <div class="day">Mar</div>
+                <div class="day">Mié</div>
+                <div class="day">Jue</div>
+                <div class="day">Vie</div>
+                <div class="day">Sáb</div>
+                <div class="day">Dom</div>
+              </div>
+              <div id="dates" class="dates"></div>
+              <div id="timeSlots" class="time-slots"></div>
+            </div>
+          </div>
+        </div>
+        <div id="contenedor-pedir-cita-button" class="grupo-formulario">
+          <button type="submit" id="pedir-cita-button">Pedir cita</button>
+        </div>
+      </form>
+    </section>
+    <section id="dondeEstamos">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3079.7445496330215!2d-0.3510742228535035!3d39.4750993124095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60494e08b65b75%3A0x97d8f201a565787a!2sElectric%20Doctor!5e0!3m2!1ses!2ses!4v1729507260868!5m2!1ses!2ses"
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <script src="https://static.elfsight.com/platform/platform.js"></script>
+    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
+  </main>
+  <script src="./js/main.js"></script>
+  <script src="./js/servicios.js"></script>
+</body>
+
+</html>
