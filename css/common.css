@@ -89,6 +89,10 @@ nav.active {
   align-items: center;
 }
 
+#nuestraEmpresaContent a {
+  color: white;
+}
+
 #nuestraEmpresa h2 {
   text-align: center;
   margin: 0;
