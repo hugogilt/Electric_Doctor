@@ -28,7 +28,7 @@ if (botonReparacionMotos) {
         }
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Reparación de motos';
+        h3.textContent = 'REPARACIÓN DE MOTOS';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');
@@ -57,7 +57,7 @@ if (botonReparacionBaterias) {
         }
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Reparación de baterías';
+        h3.textContent = 'REPARACIÓN DE BATERÍAS';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');
@@ -87,7 +87,7 @@ if (botonReparacionPatinetes) {
 
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Reparación de Patinetes';
+        h3.textContent = 'REPARACIÓN DE PATINETES';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');
@@ -117,7 +117,7 @@ if (botonEnvios) {
 
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Envíos';
+        h3.textContent = 'ENVÍOS';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');
@@ -147,7 +147,7 @@ if (botonPreITVs) {
 
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Pre-ITVs';
+        h3.textContent = 'PRE-ITVs';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');
@@ -177,7 +177,7 @@ if (botonNeumaticos) {
 
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Neumáticos';
+        h3.textContent = 'NEUMÁTICOS';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');
@@ -207,7 +207,7 @@ if (botonPuestasAPunto) {
 
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Puestas a Punto';
+        h3.textContent = 'PUESTAS A PUNTO';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');
@@ -237,7 +237,7 @@ if (botonRevisiones) {
 
         // Crea el elemento h3
         const h3 = document.createElement('h3');
-        h3.textContent = 'Revisiones';
+        h3.textContent = 'REVISIONES';
 
         // Crea el elemento p
         const pCorto = document.createElement('p');

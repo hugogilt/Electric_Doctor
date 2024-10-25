@@ -1,433 +1,77 @@
-body {
-    margin: 0;
-    height: 100vh;
-    background-image: url(../images/background-body.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-    color: white;
-    font-size: 1.5em;
-  }
-  
-  #servicios h3 {
-    font-size: 1.5em;
-    text-align: center;
-  }
-  
-  #title {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #title img {
-    width: 4%;
-    margin-right: 1em;
-  }
-  
-  header {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    background-color: rgb(0, 0, 0, 0.5);
-    height: 10%;
-    padding: 2em;
-  }
-  
-  header h1 {
-    margin: 0;
-  }
-  
-  nav {
-    display: flex;
-    gap: 1em;
-  }
-  
-  nav a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  #nuestraEmpresa {
-    padding: 2em;
-    color: white;
-  }
-  
-  #nuestraEmpresaContent {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  #nuestraEmpresa h2 {
-    text-align: center;
-    margin: 0;
-  }
-  
-  #nuestraEmpresa img {
-    width: 10%;
-    height: auto;
-    margin-right: 1.5em;
-  }
-  
-  #nuestraEmpresa p {
-    width: 40%;
-    height: auto;
-    margin: 0;
-  }
-  
-  #motos {
-    height: 300px;
-    background-color: #fff;
-  }
-  
-  #servicios {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+#servicios {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#titulo-servicios p {
+  max-width: 50ch;
+}
+
+#titulo-servicios {
+  text-align: center;
+}
+ 
+
   
   #servicios img {
     width: 25%;
     align-self: center;
   }
-  
-  #servicios p {
-    max-width: 50ch;
-  }
-  
-  #titulo-servicios {
-    text-align: center;
-  }
+
   
   #contenido-servicios {
     display: grid;
     grid-template-columns: 30% 70%;
     margin: 2em;
-    width: 30%;
+    width: 40%;
     gap: 2em;
   }
+
 
   #listado-servicios {
     padding: 2em 0;
   }
   
   .botones-servicios {
-    background-color: lightgray;
     padding: 1em;
     border-radius: 10px;
     display: block;
     margin: 4em 0;
     width: 100%;
     font-weight: bold;
+    border: 2px solid white;
+    background-color: rgba(200, 200, 200, 0.6);
   }
 
   #informacion-servicio {
-    width: 100%;
+    width: auto;
     height: auto;
-    background-color: lightgray;
     color: black;
     display: flex;
     flex-direction: column;
     text-align: center;
     justify-content: center;
     padding: 2em;
+    border-radius: 10px;
+    border: 2px solid white;
+    background-color: rgba(200, 200, 200, 0.6);
+  }
+
+
+  #informacion-servicio h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.8em;
+    letter-spacing: 1px;
   }
   
-  /* FORMULARIO */
+
   
-  #citas {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2em;
-  }
-  
-  #titulo-citas {
-    text-align: center;
-  }
-  
-  form {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 600px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
-    justify-content: center;
-    font-size: 0.7em;
-  }
-  
-  input[type="text"],
-  input[type="tel"],
-  input[type="email"],
-  input[type="number"],
-  textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 1em;
-  }
-  
-  input[type="text"]::placeholder,
-  input[type="tel"]::placeholder,
-  input[type="email"]::placeholder,
-  input[type="number"]::placeholder,
-  textarea::placeholder {
-    color: #999;
-  }
-  
-  #pedir-cita-button {
-    grid-column: span 2;
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  #pedir-cita-button:hover {
-    background-color: #45a049;
-  }
-  
-  input[type="text"]:focus,
-  input[type="tel"]:focus,
-  input[type="email"]:focus,
-  input[type="number"]:focus,
-  textarea:focus {
-    outline: none;
-    border-color: #4CAF50;
-  }
-  
-  textarea {
-    resize: none;
-  }
-  
-  .elementos-pedir-cita-form {
-    margin-bottom: 15px;
-  }
-  
-  .elementos-pedir-cita-form:last-child {
-    margin-bottom: 0;
-  }
-  
-  #contenedor-problema,
-  #contenedor-pedir-cita-button,
-  #abrir-calendario-button {
-    grid-column: span 2;
-  }
-  
-  /* CALENDARIO */
-  #abrir-calendario-button {
-    padding: 10px 20px;
-    background-color: #3362a4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin: auto;
-    width: 70%;
-  }
-  
-  #calendarModal {
-    display: none;
-    /* Ocultar el modal por defecto */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: black;
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    /* Limitar el ancho del modal */
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  /* Estilos del calendario */
-  .calendar {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1em;
-    background-color: white;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    margin-top: 10px;
-  }
-  
-  .day {
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .dates {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    margin-top: 10px;
-    gap: 2px;
-  }
-  
-  .date {
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .available {
-    background-color: lightgreen;
-    /* Color para días disponibles */
-  }
-  
-  .not-available {
-    background-color: lightgray;
-    /* Color para días no disponibles */
-  }
-  
-  .selected {
-    background-color: #3362a4;
-    /* Color para horas seleccionadas */
-    color: white;
-    /* Color de texto para horas seleccionadas */
-  }
-  
-  .time-slots {
-    margin-top: 1em;
-    display: grid;
-    /* Utiliza un grid para organizar los botones */
-    grid-template-columns: repeat(4, 1fr);
-    /* 4 columnas */
-    gap: 10px;
-    /* Espacio entre los botones */
-  }
-  
-  .time-slots button {
-    padding: 10px;
-    /* Espaciado interno para botones */
-    border: none;
-    /* Sin borde */
-    border-radius: 5px;
-    /* Esquinas redondeadas */
-    color: black;
-    /* Color de texto por defecto */
-    cursor: pointer;
-    /* Cambia el cursor al pasar el ratón */
-  }
-  
-  
-  .time-slots button.selected {
-    background-color: #3362a4;
-    /* Color para horas seleccionadas */
-    color: white;
-    /* Color de texto para horas seleccionadas */
-  }
-  
-  .available button {
-    background-color: lightgreen;
-    /* Color para slots disponibles */
-  }
-  
-  .not-available button {
-    background-color: lightgray;
-    /* Color para slots no disponibles */
-  }
-  
-  #diaNoDisponibleAlerta,
-  #horaNoDisponibleAlerta {
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    font-size: 1.3em;
-    margin: 0;
-  }
-  
-  #horaNoDisponibleAlerta {
-    margin: 1em auto 0;
-  
-  }
-  
-  .transition {
-    transition: color 0.2s ease;
-  }
-  
-  .calendar .selected-not-available {
-    background-color: #f28b82;
-    /* Color para horas seleccionadas */
-    color: white;
-    /* Color de texto para horas seleccionadas */
-  }
-  
-  #aceptar {
-    margin: 1em auto 0;
-    background-color: #3362a4;;
-    display: block;
-    padding: 0.5em;
-    width: 7em;
-    height: 3em;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  #selectedDay {
-    font-weight: bold;
-    margin: 1em 0 0;
-    text-align: center;
-  }
   
   a[href="https://elfsight.com/google-reviews-widget/?utm_source=websites&utm_medium=clients&utm_content=google-reviews&utm_term=%25website_domain%25&utm_campaign=free-widget"] {
     display: none;
   }
-   iframe {
-    margin: 1em auto;
-    display: block;
-   }
   
    div > .eapps-widget-toolbar {
     display: none;

@@ -5,7 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Electric Doctor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/common.css">
 </head>
 
 <body>
@@ -21,6 +26,7 @@
       <a href="#">Dónde estamos</a>
       <a href="#">Nuestras instalaciones</a>
     </nav>
+    <button id="hamburger" aria-label="Toggle navigation">&#9776;</button>
   </header>
   <main>
     <section id="nuestraEmpresa">
@@ -47,48 +53,48 @@
       <div id="contenido-servicios">
         <img src="images/doctor.png" alt="Doctor">
         <div id="cards-containers">
-          <div id="container-servicios-1">
+          <div id="container-servicios-1" class="rows">
             <div id="reparacion-motos" class="card">
               <img src="images/moto.png" alt="Moto">
               <h3>Reparación de Motos</h3>
-              <button id="detalles-reparacion-motos">Detalles >></button>
+              <button id="detalles-reparacion-motos">Detalles</button>
             </div>
             <div id="reparacion-baterias" class="card">
               <img src="images/bateria.png" alt="Bateria">
               <h3>Reparación de Baterías</h3>
-              <button id="detalles-reparacion-baterias">Detalles >></button>
+              <button id="detalles-reparacion-baterias">Detalles</button>
             </div>
             <div id="reparacion-patinetes" class="card">
               <img src="images/patinete.png" alt="Patinete">
               <h3>Reparación de patinetes</h3>
-              <button id="detalles-reparacion-patinetes">Detalles >></button>
+              <button id="detalles-reparacion-patinetes">Detalles</button>
             </div>
             <div id="envios" class="card">
               <img src="images/camion.png" alt="Camion">
               <h3>Envío de Motos a toda la península</h3>
-              <button id="detalles-envios">Detalles >></button>
+              <button id="detalles-envios">Detalles</button>
             </div>
           </div>
-          <div id="container-servicios-2">
+          <div id="container-servicios-2"  class="rows">
             <div id="pre-itvs" class="card">
               <img src="images/pre-itv.png" alt="pre-itv">
               <h3>Pre-ITVS</h3>
-              <button id="detalles-pre-itvs">Detalles >></button>
+              <button id="detalles-pre-itvs">Detalles</button>
             </div>
             <div id="neumaticos" class="card">
               <img src="images/neumatico.png" alt="neumatico">
               <h3>Neumáticos</h3>
-              <button id="detalles-neumaticos">Detalles >></button>
+              <button id="detalles-neumaticos">Detalles</button>
             </div>
             <div id="puestas-a-punto" class="card">
               <img src="images/puesta-a-punto.png" alt="Puesta a Punto">
               <h3>Puestas a Punto</h3>
-              <button id="detalles-puestas-a-punto">Detalles >></button>
+              <button id="detalles-puestas-a-punto">Detalles</button>
             </div>
             <div id="revisiones" class="card">
               <img src="images/revision.png" alt="Revision">
               <h3>Revisiones</h3>
-              <button id="detalles-revisiones">Detalles >></button>
+              <button id="detalles-revisiones">Detalles</button>
             </div>
           </div>
         </div>
@@ -160,77 +166,22 @@
         </div>
       </form>
     </section>
-    <section style="width: 30%; margin: 0 auto; padding: 20px; background-color: transparent; border: 1px solid #ccc;">
-      <h2>Texto Extenso en una Sección</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum,
-        nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec
-        congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis, ipsum id
-        cursus luctus, lectus tortor consectetur dui, nec porttitor risus sapien eget elit. Vivamus aliquam
-        euismod lacus, id sagittis velit volutpat ut. Etiam vel arcu metus. Sed nec dictum leo. Ut at ante arcu.
-        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-
-      <p>Donec a lorem dui. Aenean vitae massa in libero posuere egestas. In id ligula quis nunc posuere euismod.
-        Morbi dictum, arcu a tincidunt pellentesque, odio justo fringilla purus, vitae commodo dui felis sed
-        nulla. Mauris nec leo arcu. Vivamus maximus aliquam arcu, at iaculis ex euismod ut. Curabitur ultricies
-        mi sed arcu cursus, at malesuada justo fermentum. Cras et sem eu justo hendrerit mollis. Nam vehicula
-        elit eu urna sodales, nec tincidunt leo tristique.</p>
-
-      <p>In bibendum finibus nisl ac suscipit. Cras volutpat, orci a consequat tristique, sapien nisi congue
-        justo, ut cursus elit dolor vitae eros. Quisque auctor risus ac dictum cursus. Nulla consectetur urna
-        quis augue mollis, sed convallis ex molestie. Nulla facilisi. Aenean ut magna dolor. Donec non fringilla
-        neque. Sed aliquet lacus non bibendum vulputate. Duis et justo eu felis efficitur vestibulum.</p>
-
-      <p>Fusce sagittis, nisl sit amet suscipit vehicula, quam neque luctus ante, nec feugiat elit eros sed odio.
-        Aenean malesuada libero non nisl hendrerit, id accumsan nisl tincidunt. Curabitur euismod, sapien a
-        venenatis feugiat, dui libero consectetur nisi, non pellentesque elit nisi ut justo. Ut ut sodales
-        libero. Sed egestas odio ut nisi pharetra, vitae lacinia sem sagittis. Donec pretium sapien quis libero
-        consectetur, et tincidunt velit fermentum.</p>
-
-      <p>Vestibulum viverra, justo vel hendrerit dignissim, erat elit gravida sem, ac euismod nisi ligula id
-        turpis. In hac habitasse platea dictumst. Morbi sed nulla eu odio varius ultricies. Mauris eget tortor
-        vitae ligula condimentum scelerisque a sit amet leo. Sed bibendum quam quis egestas tincidunt. Curabitur
-        bibendum libero nec interdum finibus. Phasellus sagittis suscipit urna, a scelerisque mi consequat et.
-      </p>
-
-      <p>Nam fringilla, ipsum vitae dapibus sodales, odio purus hendrerit ante, at tristique eros eros non urna.
-        Fusce bibendum, mi at imperdiet malesuada, purus nisi cursus elit, sit amet tristique risus neque at
-        nisl. Proin eget sem suscipit, faucibus urna ut, sodales purus. Integer consectetur sed sapien nec
-        condimentum. Sed ultricies justo vel felis efficitur, ac gravida risus ultricies. Vestibulum eget semper
-        velit, ac cursus magna.</p>
-
-      <p>Aenean lacinia turpis et nisl dictum, ac euismod est malesuada. Morbi luctus eros vitae sem tincidunt,
-        non blandit nisi bibendum. Sed id semper lorem. In hac habitasse platea dictumst. Integer a tortor
-        auctor, tristique metus in, pretium nunc. Phasellus at purus vel purus tincidunt viverra. Quisque ut
-        aliquam lacus, ac luctus risus. Nulla posuere orci ut lectus malesuada, vel dapibus purus aliquam.</p>
-
-      <p>In feugiat, purus vitae pretium malesuada, ligula nulla facilisis orci, in condimentum odio arcu vitae
-        risus. Aenean interdum feugiat lacus, a ultricies odio fermentum vel. Integer euismod tellus id
-        fermentum euismod. Curabitur a feugiat elit, vitae hendrerit ex. Nulla volutpat nisi at varius
-        venenatis. Sed tempor tincidunt dolor, eu finibus augue ultrices at. Aliquam erat volutpat. Phasellus
-        sit amet lacus ac dolor malesuada varius.</p>
-
-      <p>Quisque vulputate neque nec augue auctor, sit amet sagittis nisl vehicula. Etiam a tincidunt ex. Vivamus
-        fringilla, sem ac suscipit dapibus, felis velit auctor arcu, a iaculis velit arcu eu eros. Sed vehicula
-        tortor nec sem malesuada, sed dapibus nisi facilisis. Ut sodales felis eu nulla vestibulum, sit amet
-        vulputate sem sagittis. Proin nec semper arcu, eu laoreet massa. Nulla nec finibus dui.</p>
-
-      <p id="caca">Maecenas posuere purus ac odio sollicitudin, at porttitor dui accumsan. Curabitur quis sapien nec
-        urna
-        luctus bibendum. Integer tincidunt semper arcu, ac aliquam libero egestas vel. Sed nec turpis nec quam
-        faucibus fermentum. Nunc consectetur justo vel velit dictum, a cursus libero malesuada. Donec venenatis,
-        ligula nec vehicula tincidunt, sapien est facilisis leo, et blandit leo ipsum ut elit.</p>
-    </section>
+    
     <section id="dondeEstamos">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3079.7445496330215!2d-0.3510742228535035!3d39.4750993124095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60494e08b65b75%3A0x97d8f201a565787a!2sElectric%20Doctor!5e0!3m2!1ses!2ses!4v1729507260868!5m2!1ses!2ses"
-        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="map-container">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3079.7445496330215!2d-0.3510742228535035!3d39.4750993124095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60494e08b65b75%3A0x97d8f201a565787a!2sElectric%20Doctor!5e0!3m2!1ses!2ses!4v1729507260868!5m2!1ses!2ses"
+            style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    
     </section>
 
-    <script src="https://static.elfsight.com/platform/platform.js"></script>
-    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
+    <!-- <script src="https://static.elfsight.com/platform/platform.js"></script>
+    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div> -->
   </main>
   <script src="./js/main.js"></script>
+  <script src="./js/shared.js"></script>
 </body>
 
 </html>

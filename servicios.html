@@ -5,7 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Electric Doctor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/servicios.css">
+  <link rel="stylesheet" href="css/common.css">
+  
 </head>
 
 <body>
@@ -15,12 +21,13 @@
       <h1>Electric Doctor</h1>
     </div>
     <nav>
-      <a href="#">Servicios</a>
+      <a href="./servicios.html">Servicios</a>
       <a href="#">Contáctanos</a>
       <a href="#">Nosotros</a>
       <a href="#">Dónde estamos</a>
       <a href="#">Nuestras instalaciones</a>
     </nav>
+    <button id="hamburger" aria-label="Toggle navigation">&#9776;</button>
   </header>
   <main>
     <section id="nuestraEmpresa">
@@ -125,16 +132,19 @@
       </form>
     </section>
     <section id="dondeEstamos">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3079.7445496330215!2d-0.3510742228535035!3d39.4750993124095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60494e08b65b75%3A0x97d8f201a565787a!2sElectric%20Doctor!5e0!3m2!1ses!2ses!4v1729507260868!5m2!1ses!2ses"
-        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="map-container">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3079.7445496330215!2d-0.3510742228535035!3d39.4750993124095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60494e08b65b75%3A0x97d8f201a565787a!2sElectric%20Doctor!5e0!3m2!1ses!2ses!4v1729507260868!5m2!1ses!2ses"
+            style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
     </section>
 
-    <script src="https://static.elfsight.com/platform/platform.js"></script>
-    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
+    <!-- <script src="https://static.elfsight.com/platform/platform.js"></script>
+    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div> -->
   </main>
   <script src="./js/main.js"></script>
+  <script src="./js/shared.js"></script>
   <script src="./js/servicios.js"></script>
 </body>
 

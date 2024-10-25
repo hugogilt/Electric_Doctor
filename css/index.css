@@ -1,87 +1,3 @@
-body {
-  margin: 0;
-  height: 100vh;
-  background-image: url(../images/background-body.jpg);
-  background-size: cover;
-  background-attachment: fixed;
-  color: white;
-  font-size: 1.5em;
-}
-
-h3 {
-  font-size: 1em;
-}
-
-#title {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-#title img {
-  width: 4%;
-  margin-right: 1em;
-}
-
-header {
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  background-color: rgb(0, 0, 0, 0.5);
-  height: 10%;
-  padding: 2em;
-}
-
-header h1 {
-  margin: 0;
-}
-
-nav {
-  display: flex;
-  gap: 1em;
-}
-
-nav a {
-  text-decoration: none;
-  color: inherit;
-}
-
-#nuestraEmpresa {
-  padding: 2em;
-  color: white;
-}
-
-#nuestraEmpresaContent {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#nuestraEmpresa h2 {
-  text-align: center;
-  margin: 0;
-}
-
-#nuestraEmpresa img {
-  width: 10%;
-  height: auto;
-  margin-right: 1.5em;
-}
-
-#nuestraEmpresa p {
-  width: 40%;
-  height: auto;
-  margin: 0;
-}
-
-#motos {
-  height: 300px;
-  background-color: #fff;
-}
-
 #servicios {
   color: white;
   display: flex;
@@ -91,51 +7,56 @@ nav a {
 
 #servicios img {
   width: 100%;
-}
-
-#servicios p {
-  max-width: 50ch;
+  align-self: center;
 }
 
 #titulo-servicios {
   text-align: center;
 }
 
+#servicios p {
+  max-width: 50ch;
+}
+
 #contenido-servicios {
   display: grid;
-  grid-template-columns: 20% 60% 20%;
-  margin: 2em;
+  grid-template-columns: 15vw 70vw 15vw;
 }
 
 #cards-containers {
   display: flex;
   flex-direction: column;
   row-gap: 1em;
-  font-size: 1.2em;
+  width: 100%;
 }
 
 #cards-containers img {
   width: 40%;
 }
 
+#cards-containers h3 {
+  font-size: 0.7em;
+}
+
 .card button {
   background-color: #E5E5E5;
   border: 2px solid #C0C0C0;
   border-radius: 24px;
-  font-size: 1em;
+  font-size: 0.7em;
   color: #4D4D4D;
   margin-bottom: 2em;
   margin-top: auto;
   padding: 0.5em;
-
+  cursor: pointer;
 }
 
 
 
-#container-servicios-2, #container-servicios-1 {
+.rows {
   display: flex;
   flex-direction: row;
   gap: 1em;
+  width: 100%;
 }
 
 .card {
@@ -144,307 +65,102 @@ nav a {
   align-items: center;
   flex-direction: column;
   flex: 1 1 10%;
-  width: 25%;
   background-color: #E5E5E5;
   text-align: center;
   color: black;
   border-radius: 8px;
   padding: 2em 2em 0em;
-  min-height: 250px;
-}
-
-/* FORMULARIO */
-
-#citas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2em;
-}
-
-#titulo-citas {
-  text-align: center;
-}
-
-form {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  max-width: 600px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 15px;
-  justify-content: center;
-  font-size: 0.7em;
-}
-
-input[type="text"],
-input[type="tel"],
-input[type="email"],
-input[type="number"],
-textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  min-height: 300px;
+  width: auto;
   box-sizing: border-box;
-  font-size: 1em;
-}
-
-input[type="text"]::placeholder,
-input[type="tel"]::placeholder,
-input[type="email"]::placeholder,
-input[type="number"]::placeholder,
-textarea::placeholder {
-  color: #999;
-}
-
-#pedir-cita-button {
-  grid-column: span 2;
-  width: 100%;
-  padding: 12px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#pedir-cita-button:hover {
-  background-color: #45a049;
-}
-
-input[type="text"]:focus,
-input[type="tel"]:focus,
-input[type="email"]:focus,
-input[type="number"]:focus,
-textarea:focus {
-  outline: none;
-  border-color: #4CAF50;
-}
-
-textarea {
-  resize: none;
-}
-
-.elementos-pedir-cita-form {
-  margin-bottom: 15px;
-}
-
-.elementos-pedir-cita-form:last-child {
-  margin-bottom: 0;
-}
-
-#contenedor-problema,
-#contenedor-pedir-cita-button,
-#abrir-calendario-button {
-  grid-column: span 2;
-}
-
-/* CALENDARIO */
-#abrir-calendario-button {
-  padding: 10px 20px;
-  background-color: #3362a4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  margin: auto;
-  width: 70%;
-}
-
-#calendarModal {
-  display: none;
-  /* Ocultar el modal por defecto */
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-  color: black;
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
-  /* Limitar el ancho del modal */
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Estilos del calendario */
-.calendar {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1em;
-  background-color: white;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-top: 10px;
-}
-
-.day {
-  font-weight: bold;
-  text-align: center;
-}
-
-.dates {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-top: 10px;
-  gap: 2px;
-}
-
-.date {
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.available {
-  background-color: lightgreen;
-  /* Color para días disponibles */
-}
-
-.not-available {
-  background-color: lightgray;
-  /* Color para días no disponibles */
-}
-
-.selected {
-  background-color: #3362a4;
-  /* Color para horas seleccionadas */
-  color: white;
-  /* Color de texto para horas seleccionadas */
-}
-
-.time-slots {
-  margin-top: 1em;
-  display: grid;
-  /* Utiliza un grid para organizar los botones */
-  grid-template-columns: repeat(4, 1fr);
-  /* 4 columnas */
-  gap: 10px;
-  /* Espacio entre los botones */
-}
-
-.time-slots button {
-  padding: 10px;
-  /* Espaciado interno para botones */
-  border: none;
-  /* Sin borde */
-  border-radius: 5px;
-  /* Esquinas redondeadas */
-  color: black;
-  /* Color de texto por defecto */
-  cursor: pointer;
-  /* Cambia el cursor al pasar el ratón */
 }
 
 
-.time-slots button.selected {
-  background-color: #3362a4;
-  /* Color para horas seleccionadas */
-  color: white;
-  /* Color de texto para horas seleccionadas */
-}
-
-.available button {
-  background-color: lightgreen;
-  /* Color para slots disponibles */
-}
-
-.not-available button {
-  background-color: lightgray;
-  /* Color para slots no disponibles */
-}
-
-#diaNoDisponibleAlerta,
-#horaNoDisponibleAlerta {
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  font-size: 1.3em;
-  margin: 0;
-}
-
-#horaNoDisponibleAlerta {
-  margin: 1em auto 0;
-
-}
-
-.transition {
-  transition: color 0.2s ease;
-}
-
-.calendar .selected-not-available {
-  background-color: #f28b82;
-  /* Color para horas seleccionadas */
-  color: white;
-  /* Color de texto para horas seleccionadas */
-}
-
-#aceptar {
-  margin: 1em auto 0;
-  background-color: #3362a4;;
-  display: block;
-  padding: 0.5em;
-  width: 7em;
-  height: 3em;
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#selectedDay {
-  font-weight: bold;
-  margin: 1em 0 0;
-  text-align: center;
-}
 
 a[href="https://elfsight.com/google-reviews-widget/?utm_source=websites&utm_medium=clients&utm_content=google-reviews&utm_term=%25website_domain%25&utm_campaign=free-widget"] {
   display: none;
 }
- iframe {
-  margin: 1em auto;
-  display: block;
- }
 
- div > .eapps-widget-toolbar {
+
+div>.eapps-widget-toolbar {
   display: none;
- }
+}
+
+
+@media (max-width: 1180px) {
+  #contenido-servicios {
+    display: flex;
+    width: 90vw;
+    font-size: 1.4em;
+  }
+
+  .rows {
+    display: grid;
+    grid: repeat(2, 1fr) / repeat(2, 1fr);
+  }
+
+  #contenido-servicios>img {
+    display: none;
+  }
+
+  #servicios img {
+    width: 70px;
+  }
+}
+
+@media (max-width: 600px) {
+  #contenido-servicios {
+    display: flex;
+  }
+
+  .rows {
+    display: grid;
+    grid: repeat(2, 1fr) / repeat(2, 1fr);
+  }
+
+  #contenido-servicios {
+    width: 90vw;
+  }
+
+  .card {
+    padding: 1em;
+  }
+
+  .card button {
+    margin-bottom: 0;
+  }
+}
+
+/* CHATGPT */
+
+
+/* Estilos para las cards en versión móvil */
+@media (max-width: 750px) {
+  .card {
+    width: 75%;
+    /* Ajustar el ancho mínimo de cada card */
+    margin: 0 10px;
+    /* Margen entre cards */
+  }
+  #cards-containers {
+    overflow-x: hidden;
+    /* Oculta el desbordamiento horizontal */
+    position: relative;
+    /* Para el posicionamiento de las cards */
+  }
+  
+  .sliding-card {
+    display: flex;
+    overflow-x: auto;
+    /* Permite el desplazamiento horizontal */
+    scroll-snap-type: x mandatory;
+    /* Para el efecto de 'snap' */
+  }
+  
+  .card {
+    scroll-snap-align: start;
+    /* Alineación de las cards al deslizar */
+    flex: 0 0 auto;
+    /* Mantener el tamaño de la card */
+  }
+}
