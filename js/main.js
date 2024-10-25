@@ -330,7 +330,6 @@ function removeInlineStyles(node) {
 function isTargetLink(node) {
   return (
     node.nodeName === 'A' &&
-    node.getAttribute('href') === 'https://elfsight.com/google-reviews-widget/?utm_source=websites&utm_medium=clients&utm_content=google-reviews&utm_term=%25website_domain%25&utm_campaign=free-widget' &&
     node.getAttribute('target') === '_blank' &&
     node.getAttribute('rel') === 'noreferrer'
   );

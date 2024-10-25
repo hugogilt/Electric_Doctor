@@ -75,9 +75,8 @@
   box-sizing: border-box;
 }
 
-
-
-a[href="https://elfsight.com/google-reviews-widget/?utm_source=websites&utm_medium=clients&utm_content=google-reviews&utm_term=%25website_domain%25&utm_campaign=free-widget"] {
+/* UN ELEMENTO A QUE SEA HERMANO MENOR DE ESTE SCRIPT */
+script[type="application/ld+json"]:has(+ a) + a {
   display: none;
 }
 
