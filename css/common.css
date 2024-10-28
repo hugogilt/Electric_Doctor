@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   height: 100vh;
@@ -19,10 +23,12 @@ button {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  text-align: center;
+  margin-right: 76px;
 }
 
 #title img {
-  width: 4%;
+  width: 60px;
   margin-right: 1em;
 }
 
@@ -43,10 +49,11 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   background-color: rgb(0, 0, 0, 0.5);
-  height: 10%;
-  padding: 2em;
+  height: auto;
+  padding: 2em 0;
+  margin-bottom: 2em;
 }
 
 header h1 {
@@ -55,12 +62,16 @@ header h1 {
 
 nav {
   display: flex;
-  gap: 1em;
+  margin-top: 1em;
+  align-items: center;
+  text-align: center;
 }
 
 nav a {
   text-decoration: none;
   color: inherit;
+  font-size: 0.7em;
+  margin: 0 1em;
 }
 
 /* NAV HAMBURGUESA */
@@ -73,20 +84,33 @@ nav a {
   cursor: pointer;
 }
 
-/* Estilo para mostrar el menú cuando está activo */
+/* Estilo para mostrar el menú cuando está activo */ /*FIXME: HAY QUE POSICIONARLO BIEN*/
 nav.active {
-  display: flex; /* Mostrar el menú al hacer clic en el botón */
+  display: inline-block;
+font-size: 1.5em;
+background-color: initial;
+text-align: center;
+margin-top: 0;
 }
 
-#nuestraEmpresa {
-  padding: 2em;
-  color: white;
+nav.active a {
+  width: 100%;
+  text-align: center;
+  margin: 0.5 0.7em;
 }
 
 #nuestraEmpresaContent {
   display: flex;
-  flex-direction: row;
+  margin-right: 124px;
+  justify-content: center;
   align-items: center;
+}
+
+#nuestraEmpresaContent p, #nuestraEmpresaContent a {
+  text-align: center;
+  max-width: 50ch;
+  height: auto;
+  display: inline-block;
 }
 
 #nuestraEmpresaContent a {
@@ -99,16 +123,12 @@ nav.active {
 }
 
 #nuestraEmpresa img {
-  width: 10%;
+  width: 100px;
   height: auto;
-  margin-right: 1.5em;
+  justify-self: end;
+  margin-right: 1em;
 }
 
-#nuestraEmpresa p {
-  width: 40%;
-  height: auto;
-  margin: 0;
-}
 
 /* IFRAME */
 .map-container {
@@ -128,7 +148,6 @@ nav.active {
   height: 100%;
   border: 0;
 }
-
 
 
   /* FORMULARIO */
@@ -281,6 +300,16 @@ nav.active {
     padding: 1em;
     background-color: white;
   }
+
+  .calendar h2, .calendar h3 {
+    text-align: center;
+    margin: 0.2em 0;
+  }
+
+  #monthYear {
+    display: flex;
+    flex-direction: column;
+  }
   
   .header {
     display: flex;
@@ -415,12 +444,21 @@ nav.active {
   }
 
 
+  @media (max-width: 1180px) {
+    #nuestraEmpresa img {
+      display: none;
+    }
+    #nuestraEmpresaContent {
+      margin: 0 1em;
+    }
+  }
+
+
   /* Estilos para pantallas pequeñas */
 @media (max-width: 800px) {
   nav {
       display: none; /* Ocultar el menú normal */
       flex-direction: column; /* Cambiar a columna si es necesario */
-      position: absolute;
       top: 60px; /* Ajusta según tu diseño */
       background-color: rgba(0, 0, 0, 0.8); /* Fondo del menú desplegable */
       width: 100%;
@@ -430,10 +468,26 @@ nav.active {
   #hamburger {
       display: block; /* Mostrar el botón de hamburguesa */
   }
+
+  body {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 650px) {
+  form {
+    width: 95%;
+  }
 }
 
 @media (max-width: 600px) {
   form {
     width: 90%;
+  }
+}
+
+@media (max-width: 438px) {
+  header h1 {
+    width: 160px;
   }
 }

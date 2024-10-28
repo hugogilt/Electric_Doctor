@@ -19,33 +19,33 @@
       <img src="images/logo.png" alt="Logo">
       <h1>Electric Doctor</h1>
     </div>
+    <button id="hamburger" aria-label="Toggle navigation">&#9776;</button>
     <nav>
       <a href="./servicios.html">Servicios</a>
       <a href="#">Contáctanos</a>
       <a href="#">Nosotros</a>
-      <a href="#">Dónde estamos</a>
-      <a href="#">Nuestras instalaciones</a>
+      <a href="https://maps.app.goo.gl/h5aN8X4GmK59tT3H9">Dónde&nbsp;estamos</a>
+      <a href="#">Nuestras&nbsp;instalaciones</a>
     </nav>
-    <button id="hamburger" aria-label="Toggle navigation">&#9776;</button>
   </header>
   <main>
     <section id="nuestraEmpresa">
       <h2>Nuestra empresa</h2>
       <div id="nuestraEmpresaContent">
-        <img src="images/logo.png" alt="Electric Doctor">
+      <img src="images/logo.png" alt="Electric Doctor">
         <p>Descubre el emocionante mundo de las motos eléctricas en nuestro taller especializado. Aprende sobre su
           mantenimiento, personalización y tecnología. Únete a nosotros y transforma tu experiencia de movilidad
-          sostenible. <a href="#citas">¡Pide ya tu cita!</a>
+          sostenible. <a href="#h2-citas">¡Pide ya tu cita!</a>
         </p>
       </div>
     </section>
     <section id="servicios">
       <div id="titulo-servicios">
-        <h2>Nuestros servicios</h2>
+        <h2><a href="./servicios.html">Nuestros servicios</a></h2>
         <p>Nuestro doctor tiene un máster en todo tipo de vehículos eléctricos y está capacitado para velar por
           la
           salud de su moto.
-          Su filosofia es que ningún motero puede estar sin su compañera durante un periodo prolongado de
+          Su filosofía es que ningún motero puede estar sin su compañera durante un periodo prolongado de
           tiempo.
         </p>
       </div>
@@ -101,7 +101,7 @@
     </section>
     <section id="citas">
       <div id="titulo-citas">
-        <h2>Pide ya tu cita!</h2>
+        <h2 id="h2-citas">Pide ya tu cita!</h2>
         <p>Trataremos a tu moto como si fuese nuestra.</p>
       </div>
       <form id="pedir-cita-form">
@@ -143,7 +143,10 @@
             <div class="calendar">
               <div class="header">
                 <button id="prevMonth" type="button">←</button>
-                <h2 id="monthYear"></h2>
+                <div id="monthYear">
+                  <h3 id="year"></h3>
+                  <h2 id="month"></h2>
+                </div>
                 <button id="nextMonth" type="button">→</button>
               </div>
               <div class="days">
@@ -178,7 +181,7 @@
     <script src="https://static.elfsight.com/platform/platform.js"></script>
     <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
   </main>
-  <script src="./js/main.js"></script>
+  <script src="./js/index.js"></script>
   <script src="./js/shared.js"></script>
 </body>
 

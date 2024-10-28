@@ -76,3 +76,46 @@
    div > .eapps-widget-toolbar {
     display: none;
    }
+
+
+   @media (max-width: 1700px) {
+    #contenido-servicios {
+      display: block;
+      width: 70%;
+    }
+
+    #listado-servicios {
+      display: grid;
+      grid: repeat(2, 1fr) / repeat(4, 1fr);
+      gap: 1em;
+    }
+
+    .botones-servicios {
+      margin: 1em 0;
+    }
+
+    #informacion-servicio {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      height: auto;
+    }
+  }
+
+
+  @media (max-width: 750px) {
+    #contenido-servicios {
+      width: 80%;
+    }
+
+    #listado-servicios {
+      display: grid;
+      grid: repeat(4, 1fr) / repeat(2, 1fr);
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .botones-servicios {
+      margin: 0.5em 0;
+    }
+  }
