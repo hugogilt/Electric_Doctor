@@ -9,6 +9,16 @@ const calendarModal = document.getElementById('calendarModal');
 const closeModal = document.getElementById('closeModal');
 const aceptarButton = document.createElement('button');
 aceptarButton.setAttribute('type', 'button');
+const pedirCitaButton = document.querySelector('#pedir-cita-button');
+pedirCitaButton.onclick = function() {
+  openCalendarButton.classList.add("saltando");
+
+  // Remover la clase después de la animación
+  setTimeout(() => {
+      openCalendarButton.classList.remove("saltando");
+  }, 100); // Debe coincidir con la duración de la transición
+};
+
 
 
 let currentDate = new Date();
@@ -280,7 +290,6 @@ nextMonthButton.addEventListener('click', () => {
 });
 
 aceptarButton.addEventListener('click', () => {
-  console.log(`Día seleccionado: ${chosenDay.textContent}, Mes: ${chosenMonth}, Año: ${chosenYear}, Hora seleccionada: ${chosenHour.textContent}`);
 
   if (chosenDay && chosenHour) {
     let amOrPm = chosenHour.textContent.split(":")[0] > 11 ? 'pm' : 'am';
@@ -309,6 +318,10 @@ aceptarButton.addEventListener('click', () => {
     if (openCalendarButton) {
       // Sustituir el textContent del botón con la fecha elegida
       openCalendarButton.textContent = selectedDate;
+      pedirCitaButton.style.backgroundColor = '#4CAF50';
+      pedirCitaButton.onclick = null;
+      pedirCitaButton.style.cursor = 'pointer';
+      pedirCitaButton.type = 'submit';
       openCalendarButton.style.width = 'auto';
     }
 

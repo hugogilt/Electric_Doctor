@@ -82,15 +82,6 @@
   box-sizing: border-box;
 }
 
-/* UN ELEMENTO A QUE SEA HERMANO MENOR DE ESTE SCRIPT */
-script[type="application/ld+json"]:has(+ a)+a {
-  display: none;
-}
-
-
-div>.eapps-widget-toolbar {
-  display: none;
-}
 
 
 @media (max-width: 1180px) {

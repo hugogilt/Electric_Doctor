@@ -54,7 +54,7 @@
         <div id="listado-servicios">
             <button id="reparacion-motos" class="botones-servicios">Reparación de Motos</button>
             <button id="reparacion-baterias" class="botones-servicios">Reparación de Baterías</button>
-            <button id="reparacion-patinetes" class="botones-servicios">Reparación de patinetes</button>
+            <button id="reparacion-patinetes" class="botones-servicios">Reparación de Patinetes</button>
             <button id="envios" class="botones-servicios">Envío de Motos a toda la península</button>
             <button id="pre-itvs" class="botones-servicios">Pre-ITVS</button>
             <button id="neumaticos" class="botones-servicios">Neumáticos</button>
@@ -108,8 +108,10 @@
             <div class="calendar">
               <div class="header">
                 <button id="prevMonth" type="button">←</button>
-                <h2 id="monthYear"></h2>
-                <button id="nextMonth" type="button">→</button>
+                <div id="monthYear">
+                  <h3 id="year"></h3>
+                  <h2 id="month"></h2>
+                </div>                <button id="nextMonth" type="button">→</button>
               </div>
               <div class="days">
                 <div class="day">Lun</div>
@@ -139,8 +141,8 @@
     </div>
     </section>
 
-    <!-- <script src="https://static.elfsight.com/platform/platform.js"></script>
-    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div> -->
+    <script src="https://static.elfsight.com/platform/platform.js"></script>
+    <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
   </main>
   <script src="./js/index.js"></script>
   <script src="./js/shared.js"></script>
