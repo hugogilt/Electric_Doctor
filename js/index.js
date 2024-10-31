@@ -22,6 +22,7 @@ pedirCitaButton.onclick = function() {
 
 
 let currentDate = new Date();
+currentDate.setDate(1);
 const selectedDayText = document.createElement('p');
 selectedDayText.id = 'selectedDay';
 
@@ -264,7 +265,7 @@ const selectTime = (slot) => {
 
 // Funciones para abrir y cerrar el modal
 openCalendarButton.addEventListener('click', () => {
-  calendarModal.style.display = 'block';
+  calendarModal.style.display = 'flex';
   updateCalendar();
 });
 

@@ -291,7 +291,7 @@ textarea {
   display: none;
   /* Ocultar el modal por defecto */
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   top: 0;
   width: 100%;
@@ -299,6 +299,8 @@ textarea {
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
   color: black;
+  box-sizing: border-box;
+  align-items: center;
 }
 
 .modal-content {
@@ -308,7 +310,8 @@ textarea {
   border: 1px solid #888;
   width: 80%;
   max-width: 600px;
-  /* Limitar el ancho del modal */
+  min-height: 370px;
+  height: auto;
 }
 
 .close {
@@ -316,6 +319,7 @@ textarea {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  margin-top: -0.4em;
 }
 
 .close:hover,
@@ -460,7 +464,6 @@ textarea {
 #aceptar {
   margin: 1em auto 0;
   background-color: #3362a4;
-  ;
   display: block;
   padding: 0.5em;
   width: 7em;
