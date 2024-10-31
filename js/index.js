@@ -293,7 +293,6 @@ nextMonthButton.addEventListener('click', () => {
 aceptarButton.addEventListener('click', () => {
 
   if (chosenDay && chosenHour) {
-    let amOrPm = chosenHour.textContent.split(":")[0] > 11 ? 'pm' : 'am';
     const monthNames = {
       1: 'enero',
       2: 'febrero',
@@ -313,7 +312,7 @@ aceptarButton.addEventListener('click', () => {
     chosenMonth = monthNames[chosenMonth] || 'mes inválido';
 
     // Crear la fecha elegida como un string
-    const selectedDate = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonth} de ${chosenYear} a las ${chosenHour.textContent} ${amOrPm}`;
+    const selectedDate = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonth} de ${chosenYear} a las ${chosenHour.textContent}`;
 
     // Seleccionar el botón de elegir fecha usando la constante existente
     if (openCalendarButton) {
