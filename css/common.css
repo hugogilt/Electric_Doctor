@@ -448,6 +448,10 @@ textarea {
   align-items: center;
 }
 
+#calendarModal * {
+  box-sizing: content-box;
+}
+
 #calendarModal .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
@@ -455,7 +459,7 @@ textarea {
   border: 1px solid #888;
   width: 80%;
   max-width: 600px;
-  min-height: 370px;
+  min-height: 420px;
   height: auto;
 }
 
@@ -617,6 +621,7 @@ textarea {
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 #selectedDay {
@@ -701,6 +706,10 @@ div>.eapps-widget-toolbar {
 
   #authModal a {
     display: block;
+  }
+
+  #calendarModal .modal-content {
+    min-height: 370px;
   }
 
   @media (max-width: 438px) {

@@ -20,6 +20,7 @@
       <img src="images/logo.png" alt="Logo">
       <h1>Electric Doctor</h1>
     </div>
+    <button id="hamburger" aria-label="Toggle navigation">&#9776;</button>
     <nav>
       <a href="./servicios.html">Servicios</a>
       <a href="#">Contáctanos</a>
@@ -27,7 +28,45 @@
       <a href="https://maps.app.goo.gl/h5aN8X4GmK59tT3H9">Dónde estamos</a>
       <a href="#">Nuestras instalaciones</a>
     </nav>
-    <button id="hamburger" aria-label="Toggle navigation">&#9776;</button>
+    <img id="user" src="images/user.png" alt="User">
+
+    <!-- Modal de Inicio de Autenticación -->
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <div id="login-section" class="modal-section">
+          <h2>Iniciar Sesión</h2>
+          <form id="loginForm">
+            <input class="input-auth" type="email" id="loginEmail" placeholder="Correo Electrónico" required>
+
+            <input class="input-auth" type="password" id="loginPassword" placeholder="Contraseña" required>
+
+            <button type="submit" class="modal-button">Acceder</button>
+          </form>
+          <p class="modal-text">¿No tienes cuenta? <a href="#" id="toRegister">¡Regístrate ya!</a></p>
+        </div>
+
+        <div id="register-section" class="modal-section" style="display: none;">
+          <h2>Registro</h2>
+          <form id="registerForm">
+            <input class="input-auth" type="text" id="registerName" placeholder="Nombre" required>
+
+            <input class="input-auth" type="text" id="registerSurname" placeholder="Apellidos" required>
+
+            <input class="input-auth" type="email" id="registerEmail" placeholder="Correo Electrónico" required>
+
+            <input class="input-auth" type="tel" id="registerPhone" placeholder="Teléfono" required>
+
+            <input class="input-auth" type="password" id="registerPassword" placeholder="Contraseña" required>
+
+            <input class="input-auth" type="password" id="confirmPassword" placeholder="Repite la contraseña" required>
+
+            <button type="submit" class="modal-button">Registrarse</button>
+          </form>
+          <p class="modal-text">¿Ya tienes cuenta? <a href="#" id="toLogin">Inicia sesión</a></p>
+        </div>
+      </div>
+    </div>
   </header>
   <main>
     <section id="nuestraEmpresa">
@@ -144,7 +183,6 @@
     <script src="https://static.elfsight.com/platform/platform.js"></script>
     <div class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
   </main>
-  <script src="./js/index.js"></script>
   <script src="./js/shared.js"></script>
   <script src="./js/servicios.js"></script>
 </body>

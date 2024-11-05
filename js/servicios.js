@@ -267,7 +267,7 @@ window.onload = function () {
 
     if (servicio) {
         // Esperar a que el contenido esté completamente cargado
-        const contenedorServicios = document.querySelector('#servicios p');
+        const contenedorServicios = document.querySelector('#puestas-a-punto');
         if (contenedorServicios) {
             contenedorServicios.scrollIntoView({ behavior: 'smooth' });
             // Mapea los ids de los botones a los propios botones
