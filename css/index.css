@@ -120,8 +120,8 @@
 
 /* Estilo general de los puntos */
 .swiper-pagination-bullet {
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   margin: 0 0.6rem !important;
   transition: transform 0.3s ease, background 0.3s ease;
@@ -185,7 +185,6 @@
 @media (max-width: 800px) {
   .card button {
     margin-top: 1em;
-    margin-bottom: 0;
   }
 
   .card {

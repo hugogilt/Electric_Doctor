@@ -2,31 +2,6 @@
 const originalContainers = document.querySelectorAll("#cards-containers .rows");
 const contenidoServicios = document.getElementById("contenido-servicios");
 
-// Objeto que mapea los IDs de los botones a sus respectivas URLs
-const buttonUrls = {
-  "detalles-reparacion-motos": './servicios.html?servicios=reparacion-motos',
-  "detalles-reparacion-baterias": './servicios.html?servicios=reparacion-baterias',
-  "detalles-reparacion-patinetes": './servicios.html?servicios=reparacion-patinetes',
-  "detalles-envios": './servicios.html?servicios=envios',
-  "detalles-pre-itvs": './servicios.html?servicios=pre-itvs',
-  "detalles-neumaticos": './servicios.html?servicios=neumaticos',
-  "detalles-puestas-a-punto": './servicios.html?servicios=puestas-a-punto',
-  "detalles-revisiones": './servicios.html?servicios=revisiones',
-};
-// Función para asignar event listeners a los botones
-function assignEventListeners() {
-  Object.entries(buttonUrls).forEach(([buttonId, url]) => {
-    const button = document.getElementById(buttonId);
-    if (button) {
-      button.addEventListener('click', function () {
-        window.location.href = url;
-      });
-    }
-  });
-}
-
-// Llamar a la función para asignar event listeners al cargar la página
-assignEventListeners();
 
 
 
@@ -102,6 +77,7 @@ function crearSliderServicios(containerId) {
           buttonId: 'detalles-revisiones'
       }
   ];
+
 
   // Crear las cards y añadirlas al swiperWrapper
   servicios.forEach(servicio => {
@@ -306,6 +282,7 @@ function handleResize() {
         document.querySelector("#cards-containers").remove();
       }
       crearSliderServicios(contenidoServicios);
+      addEventsOnServices();
     }
   } else {
     // Restaurar la estructura original si el ancho es mayor a 750px
@@ -314,6 +291,7 @@ function handleResize() {
         document.querySelector('#swiper-container').remove();
       }
       crearContenidoServicios(contenidoServicios);
+      addEventsOnServices();
     }
   }
 }
@@ -323,3 +301,31 @@ window.addEventListener("resize", handleResize);
 
 // Llamar a la función al cargar la página
 handleResize();
+
+function addEventsOnServices() {
+  // Objeto que mapea los IDs de los botones a sus respectivas URLs
+  const buttonUrls = {
+    "detalles-reparacion-motos": './servicios.html?servicios=reparacion-motos',
+    "detalles-reparacion-baterias": './servicios.html?servicios=reparacion-baterias',
+    "detalles-reparacion-patinetes": './servicios.html?servicios=reparacion-patinetes',
+    "detalles-envios": './servicios.html?servicios=envios',
+    "detalles-pre-itvs": './servicios.html?servicios=pre-itvs',
+    "detalles-neumaticos": './servicios.html?servicios=neumaticos',
+    "detalles-puestas-a-punto": './servicios.html?servicios=puestas-a-punto',
+    "detalles-revisiones": './servicios.html?servicios=revisiones',
+  };
+  // Función para asignar event listeners a los botones
+  function assignEventListeners() {
+    Object.entries(buttonUrls).forEach(([buttonId, url]) => {
+      const button = document.getElementById(buttonId);
+      if (button) {
+        button.addEventListener('click', function () {
+          window.location.href = url;
+        });
+      }
+    });
+  }
+
+  // Llamar a la función para asignar event listeners al cargar la página
+  assignEventListeners();
+}
