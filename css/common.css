@@ -642,6 +642,11 @@ div>.eapps-widget-toolbar {
   display: none;
 }
 
+/* EVITA PROBLEMAS DE OVERFLOW Y SIZING DEL HTML CAUSADOS POR EL PLUGIN DE GOOGLE REVIEWS */
+.Main__Content-sc-1oq93m5-1 {  
+  overflow: hidden;
+}
+
 @media (max-width: 1180px) {
   #nuestraEmpresa img {
     display: none;

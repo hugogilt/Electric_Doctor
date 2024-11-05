@@ -83,6 +83,81 @@
 }
 
 
+/* CHATGPT */
+/* Estilos del contenedor del carrusel */
+ /* Estilos del contenedor del carrusel */
+ .swiper-container {
+  width: 100%;
+  height: 300px;
+  /* Ajusta la altura según tus necesidades */
+  margin: 0 auto;
+  /* Centra el carrusel */
+  overflow: hidden;
+  /* Oculta el desbordamiento */
+}
+
+/* Estilos de cada carta */
+.swiper-slide {
+  background: #E5E5E5;
+  /* Fondo de cada carta */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: black;
+  /* Color de texto */
+  border: 1px solid #ccc;
+  /* Borde de las cartas */
+  border-radius: 10px;
+  /* Bordes redondeados */
+  height: 100%;
+  /* Mantiene la altura del contenedor */
+  flex-shrink: 0;
+  /* Para evitar que se reduzca el tamaño */
+  width: 80%;
+  /* Una carta ocupa el 100% del contenedor */
+}
+
+/* Estilo general de los puntos */
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 0.6rem !important;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* Gradientes de color de izquierda a derecha */
+.swiper-pagination-bullet:nth-child(1) {
+  background: linear-gradient(90deg, #3B014D, #5A015A);
+}
+.swiper-pagination-bullet:nth-child(2) {
+  background: linear-gradient(90deg, #5A015A, #7A0167);
+}
+.swiper-pagination-bullet:nth-child(3) {
+  background: linear-gradient(90deg, #7A0167, #9A0174);
+}
+.swiper-pagination-bullet:nth-child(4) {
+  background: linear-gradient(90deg, #9A0174, #B0016F);
+}
+.swiper-pagination-bullet:nth-child(5) {
+  background: linear-gradient(90deg, #B0016F, #C3006A);
+}
+.swiper-pagination-bullet:nth-child(6) {
+  background: linear-gradient(90deg, #C3006A, #D70066);
+}
+.swiper-pagination-bullet:nth-child(7) {
+  background: linear-gradient(90deg, #D70066, #EA0061);
+}
+.swiper-pagination-bullet:nth-child(8) {
+  background: linear-gradient(90deg, #EA0061, #A5005A); 
+}
+
+/* Punto activo para destacar */
+.swiper-pagination-bullet-active {
+  transform: scale(1.4);
+}
+
 
 @media (max-width: 1180px) {
   #contenido-servicios {
@@ -105,31 +180,6 @@
   }
 }
 
-@media (max-width: 600px) {
-  #contenido-servicios {
-    display: flex;
-  }
-
-  .rows {
-    display: grid;
-    grid: repeat(2, 1fr) / repeat(2, 1fr);
-  }
-
-  #contenido-servicios {
-    width: 90vw;
-  }
-
-  .card {
-    padding: 1em;
-  }
-
-  .card button {
-    margin-bottom: 0;
-  }
-}
-
-/* CHATGPT */
-
 
 /* Estilos para las cards en versión móvil */
 @media (max-width: 800px) {
@@ -151,21 +201,20 @@
 
 
 
+
 @media (max-width: 750px) {
   .card {
     width: 75%;
     /* Ajustar el ancho mínimo de cada card */
-    margin: 0 10px;
-    /* Margen entre cards */
   }
-
+  
   #cards-containers {
     overflow-x: hidden;
     /* Oculta el desbordamiento horizontal */
     position: relative;
     /* Para el posicionamiento de las cards */
   }
-
+  
   .sliding-card {
     display: flex;
     overflow-x: auto;
@@ -174,10 +223,33 @@
     /* Para el efecto de 'snap' */
   }
 
+  #contenido-servicios {
+    width: 100vw;
+  }
+  
   .card {
     scroll-snap-align: start;
     /* Alineación de las cards al deslizar */
     flex: 0 0 auto;
     /* Mantener el tamaño de la card */
+  }
+}
+
+@media (max-width: 600px) {
+  #contenido-servicios {
+    display: flex;
+  }
+
+  .rows {
+    display: grid;
+    grid: repeat(2, 1fr) / repeat(2, 1fr);
+  }
+
+  .card {
+    padding: 1em;
+  }
+
+  .card button {
+    margin-bottom: 0;
   }
 }
