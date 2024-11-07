@@ -22,56 +22,56 @@ function crearSliderServicios(containerId) {
   const servicios = [
       {
           id: 'reparacion-motos',
-          imgSrc: 'images/moto.png',
+          imgSrc: 'images/moto-dark-grey.png',
           alt: 'Moto',
           title: 'Reparación de Motos',
           buttonId: 'detalles-reparacion-motos'
       },
       {
           id: 'reparacion-baterias',
-          imgSrc: 'images/bateria.png',
+          imgSrc: 'images/bateria-dark-grey.png',
           alt: 'Bateria',
           title: 'Reparación de Baterías',
           buttonId: 'detalles-reparacion-baterias'
       },
       {
           id: 'reparacion-patinetes',
-          imgSrc: 'images/patinete.png',
+          imgSrc: 'images/patinete-dark-grey.png',
           alt: 'Patinete',
           title: 'Reparación de Patinetes',
           buttonId: 'detalles-reparacion-patinetes'
       },
       {
           id: 'envios',
-          imgSrc: 'images/camion.png',
+          imgSrc: 'images/camion-dark-grey.png',
           alt: 'Camion',
           title: 'Envío de Motos a toda la península',
           buttonId: 'detalles-envios'
       },
       {
           id: 'pre-itvs',
-          imgSrc: 'images/pre-itv.png',
+          imgSrc: 'images/pre-itv-dark-grey.png',
           alt: 'pre-itv',
           title: 'Pre-ITVS',
           buttonId: 'detalles-pre-itvs'
       },
       {
           id: 'neumaticos',
-          imgSrc: 'images/neumatico.png',
+          imgSrc: 'images/neumatico-dark-grey.png',
           alt: 'neumatico',
           title: 'Neumáticos',
           buttonId: 'detalles-neumaticos'
       },
       {
           id: 'puestas-a-punto',
-          imgSrc: 'images/puesta-a-punto.png',
+          imgSrc: 'images/puesta-a-punto-dark-grey.png',
           alt: 'Puesta a Punto',
           title: 'Puestas a Punto',
           buttonId: 'detalles-puestas-a-punto'
       },
       {
           id: 'revisiones',
-          imgSrc: 'images/revision.png',
+          imgSrc: 'images/revision-dark-grey.png',
           alt: 'Revision',
           title: 'Revisiones',
           buttonId: 'detalles-revisiones'
@@ -149,28 +149,28 @@ function crearContenidoServicios(parent) {
   const servicios1 = [
       {
           id: 'reparacion-motos',
-          imgSrc: 'images/moto.png',
+          imgSrc: 'images/moto-dark-grey.png',
           alt: 'Moto',
           title: 'Reparación de Motos',
           buttonId: 'detalles-reparacion-motos'
       },
       {
           id: 'reparacion-baterias',
-          imgSrc: 'images/bateria.png',
+          imgSrc: 'images/bateria-dark-grey.png',
           alt: 'Bateria',
           title: 'Reparación de Baterías',
           buttonId: 'detalles-reparacion-baterias'
       },
       {
           id: 'reparacion-patinetes',
-          imgSrc: 'images/patinete.png',
+          imgSrc: 'images/patinete-dark-grey.png',
           alt: 'Patinete',
           title: 'Reparación de Patinetes',
           buttonId: 'detalles-reparacion-patinetes'
       },
       {
           id: 'envios',
-          imgSrc: 'images/camion.png',
+          imgSrc: 'images/camion-dark-grey.png',
           alt: 'Camion',
           title: 'Envío de Motos a toda la península',
           buttonId: 'detalles-envios'
@@ -213,28 +213,28 @@ function crearContenidoServicios(parent) {
   const servicios2 = [
       {
           id: 'pre-itvs',
-          imgSrc: 'images/pre-itv.png',
+          imgSrc: 'images/pre-itv-dark-grey.png',
           alt: 'pre-itv',
           title: 'Pre-ITVS',
           buttonId: 'detalles-pre-itvs'
       },
       {
           id: 'neumaticos',
-          imgSrc: 'images/neumatico.png',
+          imgSrc: 'images/neumatico-dark-grey.png',
           alt: 'neumatico',
           title: 'Neumáticos',
           buttonId: 'detalles-neumaticos'
       },
       {
           id: 'puestas-a-punto',
-          imgSrc: 'images/puesta-a-punto.png',
+          imgSrc: 'images/puesta-a-punto-dark-grey.png',
           alt: 'Puesta a Punto',
           title: 'Puestas a Punto',
           buttonId: 'detalles-puestas-a-punto'
       },
       {
           id: 'revisiones',
-          imgSrc: 'images/revision.png',
+          imgSrc: 'images/revision-dark-grey.png',
           alt: 'Revision',
           title: 'Revisiones',
           buttonId: 'detalles-revisiones'

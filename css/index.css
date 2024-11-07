@@ -46,15 +46,18 @@
 }
 
 .card button {
-  background-color: #E5E5E5;
-  border: 2px solid #C0C0C0;
   border-radius: 24px;
   font-size: 0.7em;
-  color: #4D4D4D;
+  color: black;
   margin-bottom: 2em;
   margin-top: auto;
   padding: 0.5em;
   cursor: pointer;
+  background: linear-gradient(180deg, #FFEA00, #FF6C14);
+}
+
+.card button:hover {
+  background:  #FFEA00
 }
 
 
@@ -72,14 +75,17 @@
   align-items: center;
   flex-direction: column;
   flex: 1 1 10%;
-  background-color: #E5E5E5;
   text-align: center;
-  color: black;
+  /* background-color: #26597d; */
+  /* background: linear-gradient(45deg, #3B014D, #A5005A); */
+  /* background-color: #EFEFEF; */
+  background-color: #B8BCBB;
   border-radius: 8px;
   padding: 2em 2em 0em;
   min-height: 300px;
   width: auto;
   box-sizing: border-box;
+  color: #242827;
 }
 
 
@@ -98,13 +104,13 @@
 
 /* Estilos de cada carta */
 .swiper-slide {
-  background: #E5E5E5;
+  background-color: #B8BCBB;
   /* Fondo de cada carta */
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  color: black;
+  color: #242827;
   /* Color de texto */
   border: 1px solid #ccc;
   /* Borde de las cartas */

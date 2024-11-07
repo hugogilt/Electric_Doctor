@@ -305,7 +305,7 @@ nav.active a {
 /* IFRAME */
 .map-container {
   position: relative;
-  width: 70%;
+  width: 50%;
   padding-bottom: 30%;
   height: 0;
   overflow: hidden;
@@ -333,6 +333,12 @@ nav.active a {
 
 #titulo-citas {
   text-align: center;
+}
+
+#h2-citas > span {
+  font-size: 1.2em;
+  position: relative;
+  bottom: -3px;
 }
 
 #pedir-cita-form {
@@ -645,8 +651,14 @@ div>.eapps-widget-toolbar {
 
 /* EVITA PROBLEMAS DE OVERFLOW Y SIZING DEL HTML CAUSADOS POR EL PLUGIN DE GOOGLE REVIEWS */
 .Main__Content-sc-1oq93m5-1 {  
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+#reviews-container {
   overflow: hidden;
 }
+
 
 @media (max-width: 1180px) {
   #nuestraEmpresa img {
@@ -655,6 +667,11 @@ div>.eapps-widget-toolbar {
 
   #nuestraEmpresaContent {
     margin: 0 1em;
+  }
+
+  .map-container {
+    width: 100%;
+    padding-bottom: 60%;
   }
 }
 
@@ -717,6 +734,7 @@ div>.eapps-widget-toolbar {
   #calendarModal .modal-content {
     min-height: 370px;
   }
+
 
   @media (max-width: 438px) {
     header h1 {

@@ -11,98 +11,100 @@ const closeModal = document.getElementById('closeModal');
 const aceptarButton = document.createElement('button');
 aceptarButton.setAttribute('type', 'button');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
-pedirCitaButton.onclick = function() {
+pedirCitaButton.onclick = function () {
   openCalendarButton.classList.add("saltando");
 
   // Remover la clase después de la animación
   setTimeout(() => {
-      openCalendarButton.classList.remove("saltando");
+    openCalendarButton.classList.remove("saltando");
   }, 100); // Debe coincidir con la duración de la transición
 };
+let ejecutado = false;
+const reviewsScript = document.querySelector('#reviews-script');
 
 
 
 
 const nav = document.querySelector('nav');
-document.getElementById('hamburger').addEventListener('click', function() {
-    nav.classList.toggle('active'); // Alternar la clase 'active' para mostrar/ocultar el menú
-    const header = document.querySelector('header');
-    if (nav.classList.contains('active')) {
-        header.style.height = 'auto';
-    } else {
-        header.style.removeProperty('height');
-    }
+document.getElementById('hamburger').addEventListener('click', function () {
+  nav.classList.toggle('active'); // Alternar la clase 'active' para mostrar/ocultar el menú
+  const header = document.querySelector('header');
+  if (nav.classList.contains('active')) {
+    header.style.height = 'auto';
+  } else {
+    header.style.removeProperty('height');
+  }
 
 });
 
-window.onresize = function() {
-    if(window.innerWidth > 800)
-        nav.classList.remove('active')
+window.onresize = function () {
+  if (window.innerWidth > 800)
+    nav.classList.remove('active')
 }
 
 
 // MODAL LOGIN
 
 document.addEventListener("DOMContentLoaded", function () {
-    const userButton = document.getElementById("user");
-    const modal = document.getElementById("authModal");
-    const closeBtn = document.querySelector(".modal-close");
-    const loginSection = document.getElementById("login-section");
-    const registerSection = document.getElementById("register-section");
-    const toRegister = document.getElementById("toRegister");
-    const toLogin = document.getElementById("toLogin");
-  
-    // Abrir modal al hacer clic en el botón de usuario
-    userButton.addEventListener("click", () => {
-      modal.style.display = "flex";
-      loginSection.style.display = "flex";
-      registerSection.style.display = "none";
-    });
-  
-    // Cerrar modal al hacer clic en la 'X' o fuera del contenido
-    closeBtn.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
-    window.addEventListener("click", (event) => {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    });
-  
-    // Cambiar a formulario de registro
-    toRegister.addEventListener("click", (e) => {
-      e.preventDefault();
-      loginSection.style.display = "none";
-      registerSection.style.display = "block";
-    });
-  
-    // Cambiar a formulario de inicio de sesión
-    toLogin.addEventListener("click", (e) => {
-      e.preventDefault();
-      loginSection.style.display = "flex";
-      registerSection.style.display = "none";
-    });
-  
-    // Validación de contraseñas coincidentes en el registro
-    const registerForm = document.getElementById("registerForm");
-    registerForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const password = document.getElementById("registerPassword").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
-  
-      if (password !== confirmPassword) {
-        alert("Las contraseñas no coinciden.");
-      } else {
-        alert("Registro exitoso!");
-        modal.style.display = "none";
-      }
-    });
+  const userButton = document.getElementById("user");
+  const modal = document.getElementById("authModal");
+  const closeBtn = document.querySelector(".modal-close");
+  const loginSection = document.getElementById("login-section");
+  const registerSection = document.getElementById("register-section");
+  const toRegister = document.getElementById("toRegister");
+  const toLogin = document.getElementById("toLogin");
+
+  // Abrir modal al hacer clic en el botón de usuario
+  userButton.addEventListener("click", () => {
+    modal.style.display = "flex";
+    loginSection.style.display = "flex";
+    registerSection.style.display = "none";
   });
-  
 
-  //CALENDARIO PEDIR CITA
+  // Cerrar modal al hacer clic en la 'X' o fuera del contenido
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+  window.addEventListener("click", (event) => {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  });
 
-  let currentDate = new Date();
+  // Cambiar a formulario de registro
+  toRegister.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginSection.style.display = "none";
+    registerSection.style.display = "block";
+  });
+
+  // Cambiar a formulario de inicio de sesión
+  toLogin.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginSection.style.display = "flex";
+    registerSection.style.display = "none";
+  });
+
+  // Validación de contraseñas coincidentes en el registro
+  const registerForm = document.getElementById("registerForm");
+  registerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (password !== confirmPassword) {
+      alert("Las contraseñas no coinciden.");
+    } else {
+      alert("Registro exitoso!");
+      modal.style.display = "none";
+    }
+  });
+});
+
+
+//CALENDARIO PEDIR CITA
+
+let currentDate = new Date();
 currentDate.setDate(1);
 const selectedDayText = document.createElement('p');
 selectedDayText.id = 'selectedDay';
@@ -420,76 +422,103 @@ aceptarButton.addEventListener('click', () => {
 
 // Función para eliminar estilos inline de cualquier elemento
 function removeInlineStyles(node) {
-    if (node.style) {
-      node.removeAttribute('style');  // Eliminar el atributo 'style'
-    }
+  if (node.style) {
+    node.removeAttribute('style');  // Eliminar el atributo 'style'
   }
-  
-  // Función para verificar si el nodo <a> tiene los atributos deseados
-  function isTargetLink(node) {
-    return (
-      node.nodeName === 'A' &&
-      node.getAttribute('target') === '_blank' &&
-      node.getAttribute('rel') === 'noreferrer'
-    );
-  }
-  
-  // Función para observar y eliminar los estilos inline de todos los elementos
-  function observeAllElementsForStyles() {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        // Revisar todos los nodos agregados
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === 1 && isTargetLink(node)) {  // Solo elementos <a> con los atributos deseados
-            // Comprobar si el hermano anterior es un <script> con el tipo específico
-            if (node.previousElementSibling &&
-              node.previousElementSibling.nodeName === 'SCRIPT' &&
-              node.previousElementSibling.getAttribute('type') === 'application/ld+json') {
-              removeInlineStyles(node);  // Eliminar los estilos inline
-              node.querySelectorAll('*').forEach(removeInlineStyles);  // Eliminar estilos inline de los descendientes
-            }
-          }
-        });
-  
-        // Revisar cambios en los atributos
-        if (mutation.target.nodeType === 1 && mutation.target.nodeName === 'A' && mutation.attributeName === 'style') {
-          if (isTargetLink(mutation.target)) {  // Solo aplicar a elementos <a> con los atributos deseados
-            // Comprobar si el hermano anterior es un <script> con el tipo específico
-            if (mutation.target.previousElementSibling &&
-              mutation.target.previousElementSibling.nodeName === 'SCRIPT' &&
-              mutation.target.previousElementSibling.getAttribute('type') === 'application/ld+json') {
-              removeInlineStyles(mutation.target);  // Eliminar los estilos inline
-            }
+}
+
+// Función para verificar si el nodo <a> tiene los atributos deseados
+function isTargetLink(node) {
+  return (
+    node.nodeName === 'A' &&
+    node.getAttribute('target') === '_blank' &&
+    node.getAttribute('rel') === 'noreferrer'
+  );
+}
+
+// Función para observar y eliminar los estilos inline de todos los elementos
+function observeAllElementsForStyles() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      // Revisar todos los nodos agregados
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1 && isTargetLink(node)) {  // Solo elementos <a> con los atributos deseados
+          // Comprobar si el hermano anterior es un <script> con el tipo específico
+          if (node.previousElementSibling &&
+            node.previousElementSibling.nodeName === 'SCRIPT' &&
+            node.previousElementSibling.getAttribute('type') === 'application/ld+json') {
+            removeInlineStyles(node);  // Eliminar los estilos inline
+            node.querySelectorAll('*').forEach(removeInlineStyles);  // Eliminar estilos inline de los descendientes
           }
         }
+          if (!ejecutado && window.innerWidth < 600) {
+            const reviewsContainer = document.querySelector('#reviews-container');
+            //Guarda el primer elemento de las reviews:
+            let targetFirstReview = document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') ? document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') : null;
+            //Guarda la tercera review:
+            let targetReviews = document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') ? document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') : null;
+            let targetThirdReview = targetReviews[2];
+            //Guarda la última reseña:
+            let targetLastReview = targetReviews[9];
+            // Si existe la primera reseña, la tercera y la útlima, y le ha añadido cierta clase al contenedor (es lo que hace justo antes de
+            // mover las reseñas de sitio), cambia el alto del contenedor)
+            if (targetFirstReview && targetThirdReview && targetLastReview && reviewsContainer.classList.contains('eapps-widget-show-toolbar')) {
+              setTimeout( () => {
+                // Calcula la posición superior del primer elemento y la inferior del último
+              const startPosition = targetFirstReview.getBoundingClientRect().top + window.scrollY;
+              const endPosition = targetThirdReview.getBoundingClientRect().bottom + window.scrollY;
+  
+              // Calcula la altura que debe tener el contenedor
+              const calculatedHeight = endPosition - startPosition;
+  
+              // Aplica la altura calculada al contenedor
+              reviewsContainer.style.height = `${calculatedHeight + 20}px`;
+              ejecutado = true;
+              }, 500); 
+              // Hay que ejecutar el código con un poco de retraso ya que incluso después de cargar
+              // la última reseña hay un js que las cambia de sitio y esto ha de ejecutarse después
+            }
+          }
       });
-    });
-  
-    // Observar todo el DOM
-    observer.observe(document.body, {
-      childList: true,  // Detectar nodos agregados o eliminados
-      attributes: true,  // Observar cambios en atributos
-      subtree: true,  // Observar todos los descendientes del body
-      attributeFilter: ['style']  // Solo monitorear cambios en el atributo 'style'
-    });
-  
-    // Eliminar estilos inline de todos los elementos actuales que son <a> y tienen los atributos deseados
-    document.querySelectorAll('a[style]').forEach((link) => {
-      if (isTargetLink(link)) {
-        if (link.previousElementSibling &&
-          link.previousElementSibling.nodeName === 'SCRIPT' &&
-          link.previousElementSibling.getAttribute('type') === 'application/ld+json') {
-          removeInlineStyles(link);
+
+      // Revisar cambios en los atributos
+      if (mutation.target.nodeType === 1 && mutation.target.nodeName === 'A' && mutation.attributeName === 'style') {
+        if (isTargetLink(mutation.target)) {  // Solo aplicar a elementos <a> con los atributos deseados
+          // Comprobar si el hermano anterior es un <script> con el tipo específico
+          if (mutation.target.previousElementSibling &&
+            mutation.target.previousElementSibling.nodeName === 'SCRIPT' &&
+            mutation.target.previousElementSibling.getAttribute('type') === 'application/ld+json') {
+            removeInlineStyles(mutation.target);  // Eliminar los estilos inline
+          }
         }
       }
     });
-  }
+  });
+
+  // Observar todo el DOM
+  observer.observe(document.body, {
+    childList: true,  // Detectar nodos agregados o eliminados
+    attributes: true,  // Observar cambios en atributos
+    subtree: true,  // Observar todos los descendientes del body
+    attributeFilter: ['style']  // Solo monitorear cambios en el atributo 'style'
+  });
+
+  // Eliminar estilos inline de todos los elementos actuales que son <a> y tienen los atributos deseados
+  document.querySelectorAll('a[style]').forEach((link) => {
+    if (isTargetLink(link)) {
+      if (link.previousElementSibling &&
+        link.previousElementSibling.nodeName === 'SCRIPT' &&
+        link.previousElementSibling.getAttribute('type') === 'application/ld+json') {
+        removeInlineStyles(link);
+      }
+    }
+  });
+}
 
 
-  // Iniciar la observación del DOM
+// Iniciar la observación del DOM
 observeAllElementsForStyles();
 
 // Inicializar el calendario
 updateCalendar();
 
-  
