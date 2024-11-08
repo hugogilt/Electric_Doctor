@@ -21,6 +21,8 @@ pedirCitaButton.onclick = function () {
 };
 let ejecutado = false;
 const reviewsScript = document.querySelector('#reviews-script');
+const reviewsContainer = document.querySelector('#reviews-container');
+
 
 
 
@@ -100,6 +102,89 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+
+//DataBase Connection Register
+document.getElementById("registerButton").addEventListener("click", function(event) {
+  event.preventDefault(); // Prevenir el envío del formulario tradicional
+
+  // Obtener los valores del formulario
+  const nombre = document.getElementById("registerName").value;
+  const apellidos = document.getElementById("registerSurname").value;
+  const correo = document.getElementById("registerEmail").value;
+  const telefono = document.getElementById("registerPhone").value;
+  const password = document.getElementById("registerPassword").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  // Validar que las contraseñas coincidan
+  if (password !== confirmPassword) {
+      alert("Las contraseñas no coinciden.");
+      return;
+  }
+
+  // Crear un objeto con los datos del formulario
+  const formData = new FormData();
+  formData.append('nombre', nombre);
+  formData.append('apellidos', apellidos);
+  formData.append('correo', correo);
+  formData.append('telefono', telefono);
+  formData.append('password', password);
+  formData.append('confirmPassword', confirmPassword);
+
+  // Usar fetch() para enviar el formulario al servidor sin recargar la página
+  fetch('/php/procesar_registro.php', {
+      method: 'POST',
+      body: formData
+  })
+  .then(response => response.json())  // Esperar la respuesta en formato JSON
+  .then(data => {
+      // Verificar si la respuesta es exitosa
+      if (data.status === 'success') {
+          alert(data.message);  // Mostrar mensaje de éxito
+          document.getElementById("registerForm").reset(); // Limpiar el formulario
+      } else {
+          alert(data.message);  // Mostrar mensaje de error
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      alert('Ocurrió un error en el registro. Intenta nuevamente.');
+  });
+});
+
+//DataBase Connection Login
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const correo = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  fetch('procesar_login.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        nombre: nombre,
+        apellidos: apellidos,
+        correo: correo,
+        telefono: telefono,
+        password: password
+    }).toString()
+    
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.status === 'success') {
+          alert(data.message);  // Mostrar mensaje de éxito
+          // Opcional: redirigir o cerrar el modal
+      } else {
+          alert(data.message);  // Mostrar mensaje de error
+      }
+  })
+  .catch(error => console.error('Error en la solicitud:', error));
+});
+
 
 
 //CALENDARIO PEDIR CITA
@@ -442,6 +527,7 @@ function observeAllElementsForStyles() {
     mutations.forEach((mutation) => {
       // Revisar todos los nodos agregados
       mutation.addedNodes.forEach((node) => {
+        // Eliminar publicidad del plugin
         if (node.nodeType === 1 && isTargetLink(node)) {  // Solo elementos <a> con los atributos deseados
           // Comprobar si el hermano anterior es un <script> con el tipo específico
           if (node.previousElementSibling &&
@@ -451,34 +537,11 @@ function observeAllElementsForStyles() {
             node.querySelectorAll('*').forEach(removeInlineStyles);  // Eliminar estilos inline de los descendientes
           }
         }
-          if (!ejecutado && window.innerWidth < 600) {
-            const reviewsContainer = document.querySelector('#reviews-container');
-            //Guarda el primer elemento de las reviews:
-            let targetFirstReview = document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') ? document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') : null;
-            //Guarda la tercera review:
-            let targetReviews = document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') ? document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') : null;
-            let targetThirdReview = targetReviews[2];
-            //Guarda la última reseña:
-            let targetLastReview = targetReviews[9];
-            // Si existe la primera reseña, la tercera y la útlima, y le ha añadido cierta clase al contenedor (es lo que hace justo antes de
-            // mover las reseñas de sitio), cambia el alto del contenedor)
-            if (targetFirstReview && targetThirdReview && targetLastReview && reviewsContainer.classList.contains('eapps-widget-show-toolbar')) {
-              setTimeout( () => {
-                // Calcula la posición superior del primer elemento y la inferior del último
-              const startPosition = targetFirstReview.getBoundingClientRect().top + window.scrollY;
-              const endPosition = targetThirdReview.getBoundingClientRect().bottom + window.scrollY;
-  
-              // Calcula la altura que debe tener el contenedor
-              const calculatedHeight = endPosition - startPosition;
-  
-              // Aplica la altura calculada al contenedor
-              reviewsContainer.style.height = `${calculatedHeight + 20}px`;
-              ejecutado = true;
-              }, 500); 
-              // Hay que ejecutar el código con un poco de retraso ya que incluso después de cargar
-              // la última reseña hay un js que las cambia de sitio y esto ha de ejecutarse después
-            }
-          }
+        // Comprobar si es el div que contiene el span con "Review us on Google" y cambiarlo.
+        if (node.nodeType === 1 && node.classList.contains('HeaderWriteReviewButton__Component-sc-a5mrro-0')){
+          node.children[0].children[0].textContent = 'Déjanos tu reseña';
+        }
+        adecuarReseñasATamaño(); 
       });
 
       // Revisar cambios en los atributos
@@ -516,9 +579,46 @@ function observeAllElementsForStyles() {
 }
 
 
+function adecuarReseñasATamaño() {
+  if (window.innerWidth < 600) {
+    if (!ejecutado ) {
+    //Guarda el primer elemento de las reviews:
+    let targetFirstReview = document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') ? document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') : null;
+    //Guarda la tercera review:
+    let targetReviews = document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') ? document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') : null;
+    let targetThirdReview = targetReviews[2];
+    //Guarda la última reseña:
+    let targetLastReview = targetReviews[9];
+    // Si existe la primera reseña, la tercera y la útlima, y le ha añadido cierta clase al contenedor (es lo que hace justo antes de
+    // mover las reseñas de sitio), cambia el alto del contenedor)
+    if (targetFirstReview && targetThirdReview && targetLastReview && reviewsContainer.classList.contains('eapps-widget-show-toolbar')) {
+      setTimeout( () => {
+        // Calcula la posición superior del primer elemento y la inferior del último
+      const startPosition = targetFirstReview.getBoundingClientRect().top + window.scrollY;
+      const endPosition = targetThirdReview.getBoundingClientRect().bottom + window.scrollY;
+
+      // Calcula la altura que debe tener el contenedor
+      const calculatedHeight = endPosition - startPosition;
+
+      // Aplica la altura calculada al contenedor
+      reviewsContainer.style.height = `${calculatedHeight + 20}px`;
+      ejecutado = true;
+      }, 1000); 
+      // Hay que ejecutar el código con un poco de retraso ya que incluso después de cargar
+      // la última reseña hay un js que las cambia de sitio y esto ha de ejecutarse después
+    }
+    }
+
+  } else if(ejecutado) {
+    reviewsContainer.style.removeProperty('height');
+    ejecutado = false;
+  }
+}
+
+
 // Iniciar la observación del DOM
 observeAllElementsForStyles();
-
+window.onresize = adecuarReseñasATamaño;
 // Inicializar el calendario
 updateCalendar();
 

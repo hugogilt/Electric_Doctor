@@ -50,21 +50,17 @@
 
         <div id="register-section" class="modal-section" style="display: none;">
           <h2>Registro</h2>
+          <!-- Formulario de Registro -->
           <form id="registerForm">
-            <input class="input-auth" type="text" id="registerName" placeholder="Nombre" required>
+            <input class="input-auth" type="text" id="registerName" name="nombre" placeholder="Nombre" required>
+            <input class="input-auth" type="text" id="registerSurname" name="apellidos" placeholder="Apellidos" required>
+            <input class="input-auth" type="email" id="registerEmail" name="correo" placeholder="Correo Electrónico" required>
+            <input class="input-auth" type="tel" id="registerPhone" name="telefono" placeholder="Teléfono" required>
+            <input class="input-auth" type="password" id="registerPassword" name="password" placeholder="Contraseña" required>
+            <input class="input-auth" type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite la contraseña" required>
+            <button type="button" id="registerButton" class="modal-button">Registrarse</button>
+        </form>
 
-            <input class="input-auth" type="text" id="registerSurname" placeholder="Apellidos" required>
-
-            <input class="input-auth" type="email" id="registerEmail" placeholder="Correo Electrónico" required>
-
-            <input class="input-auth" type="tel" id="registerPhone" placeholder="Teléfono" required>
-
-            <input class="input-auth" type="password" id="registerPassword" placeholder="Contraseña" required>
-
-            <input class="input-auth" type="password" id="confirmPassword" placeholder="Repite la contraseña" required>
-
-            <button type="submit" class="modal-button">Registrarse</button>
-          </form>
           <p class="modal-text">¿Ya tienes cuenta? <a href="#" id="toLogin">Inicia sesión</a></p>
         </div>
       </div>
@@ -94,7 +90,7 @@
       </div>
       <div id="contenido-servicios">
         <img src="images/doctor.png" alt="Doctor">
-        
+
 
       </div>
     </section>
@@ -176,7 +172,7 @@
       </div>
 
     </section>
-    
+
     <script id="reviews-script" src="https://static.elfsight.com/platform/platform.js"></script>
     <div id="reviews-container" class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
   </main>
