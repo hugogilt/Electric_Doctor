@@ -35,36 +35,33 @@
     <!-- Modal de Inicio de Autenticación -->
     <div id="authModal" class="modal">
       <div class="modal-content">
-        <span class="modal-close">&times;</span>
-        <div id="login-section" class="modal-section">
-          <h2>Iniciar Sesión</h2>
-          <form id="loginForm">
-            <input class="input-auth" type="email" id="loginEmail" placeholder="Correo Electrónico" required>
-
-            <input class="input-auth" type="password" id="loginPassword" placeholder="Contraseña" required>
-
-            <button type="submit" class="modal-button">Acceder</button>
-          </form>
-          <p class="modal-text">¿No tienes cuenta? <a href="#" id="toRegister">¡Regístrate ya!</a></p>
-        </div>
-
-        <div id="register-section" class="modal-section" style="display: none;">
-          <h2>Registro</h2>
-          <!-- Formulario de Registro -->
-          <form id="registerForm">
-            <input class="input-auth" type="text" id="registerName" name="nombre" placeholder="Nombre" required>
-            <input class="input-auth" type="text" id="registerSurname" name="apellidos" placeholder="Apellidos" required>
-            <input class="input-auth" type="email" id="registerEmail" name="correo" placeholder="Correo Electrónico" required>
-            <input class="input-auth" type="tel" id="registerPhone" name="telefono" placeholder="Teléfono" required>
-            <input class="input-auth" type="password" id="registerPassword" name="password" placeholder="Contraseña" required>
-            <input class="input-auth" type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite la contraseña" required>
-            <button type="button" id="registerButton" class="modal-button">Registrarse</button>
-        </form>
-
-          <p class="modal-text">¿Ya tienes cuenta? <a href="#" id="toLogin">Inicia sesión</a></p>
-        </div>
+          <span class="modal-close">&times;</span>
+          <div id="login-section" class="modal-section">
+              <h2>Iniciar Sesión</h2>
+              <form id="loginForm">
+                  <input class="input-auth" type="email" id="loginEmail" placeholder="Correo Electrónico" required>
+                  <input class="input-auth" type="password" id="loginPassword" placeholder="Contraseña" required>
+                  <button type="submit" class="modal-button">Acceder</button>
+              </form>
+              <p class="modal-text">¿No tienes cuenta? <a href="#" id="toRegister">¡Regístrate ya!</a></p>
+          </div>
+  
+          <div id="register-section" class="modal-section" style="display: none;">
+              <h2>Registro</h2>
+              <form id="registerForm">
+                  <input class="input-auth" type="text" id="registerName" name="nombre" placeholder="Nombre" required>
+                  <input class="input-auth" type="text" id="registerSurname" name="apellidos" placeholder="Apellidos" required>
+                  <input class="input-auth" type="email" id="registerEmail" name="correo" placeholder="Correo Electrónico" required>
+                  <input class="input-auth" type="tel" id="registerPhone" name="telefono" placeholder="Teléfono" required>
+                  <input class="input-auth" type="password" id="registerPassword" name="password" placeholder="Contraseña" required>
+                  <input class="input-auth" type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite la contraseña" required>
+                  <button type="button" id="registerButton" class="modal-button">Registrarse</button>
+              </form>
+              <p class="modal-text">¿Ya tienes cuenta? <a href="#" id="toLogin">Inicia sesión</a></p>
+          </div>
       </div>
-    </div>
+  </div>
+  
 
   </header>
   <main>

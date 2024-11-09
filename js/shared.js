@@ -153,36 +153,32 @@ document.getElementById("registerButton").addEventListener("click", function(eve
 });
 
 //DataBase Connection Login
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+document.getElementById("loginForm").addEventListener("submit", function(event) {
   event.preventDefault();
+  const correo = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-  const correo = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
+  const formData = new FormData();
+  formData.append('correo', correo);
+  formData.append('password', password);
 
-  fetch('procesar_login.php', {
+  fetch('/php/procesar_login.php', {
       method: 'POST',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        nombre: nombre,
-        apellidos: apellidos,
-        correo: correo,
-        telefono: telefono,
-        password: password
-    }).toString()
-    
+      body: formData
   })
   .then(response => response.json())
   .then(data => {
       if (data.status === 'success') {
-          alert(data.message);  // Mostrar mensaje de éxito
-          // Opcional: redirigir o cerrar el modal
+          alert(data.message);  // Mensaje de éxito
+          // Redirigir o realizar acciones adicionales según sea necesario
       } else {
-          alert(data.message);  // Mostrar mensaje de error
+          alert(data.message);  // Mensaje de error
       }
   })
-  .catch(error => console.error('Error en la solicitud:', error));
+  .catch(error => {
+      console.error('Error:', error);
+      alert('Ocurrió un error en el inicio de sesión. Intenta nuevamente.');
+  });
 });
 
 
