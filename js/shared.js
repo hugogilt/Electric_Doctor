@@ -1,3 +1,7 @@
+if (window.location.protocol !== "https:") {
+  window.location.href = "https://electric-doctor.infinityfreeapp.com" + window.location.pathname + window.location.search;
+}
+
 // VARIABLES CALENDARIO
 const yearElement = document.getElementById('year');
 const monthElement = document.getElementById('month');
