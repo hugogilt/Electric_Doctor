@@ -1,6 +1,72 @@
-if (window.location.protocol !== "https:") {
-  window.location.href = "https://electric-doctor.infinityfreeapp.com" + window.location.pathname + window.location.search;
+// if (window.location.protocol !== "https:") {
+//   window.location.href = "https://electric-doctor.infinityfreeapp.com" + window.location.pathname + window.location.search;
+// }
+
+function positionUserMenu() {
+  // Obtener las coordenadas de la imagen (userTextSpan)
+  const rect = userTextSpan.getBoundingClientRect();
+
+  // Posicionar el menú a la derecha de la imagen
+  userMenu.style.left = `${rect.left}px`;
+  userMenu.style.top = `${rect.bottom + window.scrollY + 10}px`; // Lo coloca justo debajo de la imagen
 }
+
+
+function logOut() {
+  // Realizar la petición para cerrar sesión
+  fetch('/php/logout.php', {
+    method: 'GET'
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log("Sesión cerrada correctamente");
+        // Redirigir a la página de login o página principal
+        return true;
+      } else {
+        console.log("Error al cerrar sesión");
+      }
+    })
+    .catch(error => console.error("Error:", error));
+
+}
+
+function cerrarSesion() {
+  logOut();
+  if (userTextSpan.lastChild.nodeType === Node.TEXT_NODE) {
+    userTextSpan.removeChild(userTextSpan.lastChild);
+  }
+  userMenu.style.display = 'none';
+  modalCerrarSesion.style.display = 'none';
+
+}
+
+
+async function check_user_logged() {
+  try {
+    const response = await fetch('/php/check_session.php', {
+      method: 'GET'
+    });
+    const data = await response.json();
+
+    if (data.status === 'logged_in') {
+      console.log('El usuario está logueado');
+      if (userTextSpan.lastChild.nodeType !== Node.TEXT_NODE) {
+        userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
+      }
+      return true;
+    } else {
+      console.log('El usuario no está logueado');
+      return false;
+    }
+  } catch (error) {
+    console.error("Error al verificar la sesión:", error);
+    return false; // Opcional, puedes decidir cómo manejar los errores aquí
+  }
+}
+
+check_user_logged();
+
+
 
 // VARIABLES CALENDARIO
 const yearElement = document.getElementById('year');
@@ -11,7 +77,7 @@ const prevMonthButton = document.getElementById('prevMonth');
 const nextMonthButton = document.getElementById('nextMonth');
 const openCalendarButton = document.getElementById('abrir-calendario-button');
 const calendarModal = document.getElementById('calendarModal');
-const closeModal = document.getElementById('closeModal');
+const closeCalendarModal = document.getElementById('closeCalendarModal');
 const aceptarButton = document.createElement('button');
 aceptarButton.setAttribute('type', 'button');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
@@ -26,8 +92,14 @@ pedirCitaButton.onclick = function () {
 let ejecutado = false;
 const reviewsScript = document.querySelector('#reviews-script');
 const reviewsContainer = document.querySelector('#reviews-container');
-
-
+const correoErrorMessageLogin = document.querySelector('#correo-error-message-login');
+const passwordErrorMessageLogin = document.querySelector('#password-error-message-login');
+const passwordErrorMessageRegister = document.querySelector('#password-error-message-register');
+const confirmPasswordErrorMessageRegister = document.querySelector('#confirm-password-error-message-register');
+const userTextSpan = document.querySelector('#user-text');
+const userMenu = document.querySelector('#user-menu');
+const logoutButton = document.querySelector('#logout');
+const modalCerrarSesion = document.querySelector('#modal-cierre-sesion');
 
 
 
@@ -49,69 +121,135 @@ window.onresize = function () {
 }
 
 
-// MODAL LOGIN
+// MODAL LOGIN / REGISTER
 
-document.addEventListener("DOMContentLoaded", function () {
-  const userButton = document.getElementById("user");
-  const modal = document.getElementById("authModal");
-  const closeBtn = document.querySelector(".modal-close");
-  const loginSection = document.getElementById("login-section");
-  const registerSection = document.getElementById("register-section");
-  const toRegister = document.getElementById("toRegister");
-  const toLogin = document.getElementById("toLogin");
+function openLoginForm() {
+  loginSection.style.display = "flex";
+  registerSection.style.display = "none";
+  registerForm.reset();
+}
 
-  // Abrir modal al hacer clic en el botón de usuario
-  userButton.addEventListener("click", () => {
-    modal.style.display = "flex";
-    loginSection.style.display = "flex";
-    registerSection.style.display = "none";
-  });
+function openRegisterForm() {
+  loginSection.style.display = "none";
+  registerSection.style.display = "block";
+  document.getElementById("loginForm").reset();
+}
 
-  // Cerrar modal al hacer clic en la 'X' o fuera del contenido
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-  window.addEventListener("click", (event) => {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  });
+const userButton = document.getElementById("user-text");
+const authModal = document.getElementById("authModal");
+const closeBtn = document.querySelector(".modal-close");
+const loginSection = document.getElementById("login-section");
+const registerSection = document.getElementById("register-section");
+const toRegister = document.getElementById("toRegister");
+const toLogin = document.getElementById("toLogin");
 
-  // Cambiar a formulario de registro
-  toRegister.addEventListener("click", (e) => {
-    e.preventDefault();
-    loginSection.style.display = "none";
-    registerSection.style.display = "block";
-  });
+document.querySelectorAll('.password-container').forEach(container => {
+  const passwordField = container.querySelector('input[type="password"]');
+  const togglePassword = container.querySelector('.togglePassword');
+  togglePassword.addEventListener('click', function () {
+    const type = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = type;
 
-  // Cambiar a formulario de inicio de sesión
-  toLogin.addEventListener("click", (e) => {
-    e.preventDefault();
-    loginSection.style.display = "flex";
-    registerSection.style.display = "none";
-  });
-
-  // Validación de contraseñas coincidentes en el registro
-  const registerForm = document.getElementById("registerForm");
-  registerForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const password = document.getElementById("registerPassword").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
-
-    if (password !== confirmPassword) {
-      alert("Las contraseñas no coinciden.");
-    } else {
-      alert("Registro exitoso!");
-      modal.style.display = "none";
-    }
+    // Cambiar el ícono de Font Awesome
+    const icon = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+    togglePassword.classList = icon;
   });
 });
 
 
-//DataBase Connection Register
-document.getElementById("registerButton").addEventListener("click", function(event) {
-  event.preventDefault(); // Prevenir el envío del formulario tradicional
 
+
+// Abrir modal al hacer clic en el botón de usuario
+userButton.addEventListener("click", async (e) => {
+  const isLoggedIn = await check_user_logged();
+
+  if (!isLoggedIn) {
+    authModal.style.display = "flex";
+    loginSection.style.display = "flex";
+    registerSection.style.display = "none";
+    loginForm.reset();
+    correoErrorMessageLogin.textContent = '';
+    passwordErrorMessageLogin.textContent = '';
+  } else {
+    e.stopPropagation(e); // Evitar que el clic en el menú cierre el menú
+    positionUserMenu();
+    userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block'; // Alternar el menú
+    document.addEventListener('click', (e) => {
+      if (!userTextSpan.contains(e.target) && !userMenu.contains(e.target)) {
+        userMenu.style.display = 'none';
+        window.removeEventListener('resize', () => {
+          if (userMenu.style.display === 'block') {
+            positionUserMenu();
+          }
+        }); //Elimina el event listener cuando no se muestra el menú
+      }
+    });
+    window.addEventListener('resize', () => {
+      if (userMenu.style.display === 'block') {
+        positionUserMenu();
+      }
+    });
+    // Muestra el modal al hacer clic en el botón de cerrar sesión
+    logoutButton.addEventListener('click', () => {
+      modalCerrarSesion.style.display = 'flex';
+      userMenu.style.display = 'none';
+
+    });
+
+    // Cierra el modal si el usuario decide cancelar
+    document.querySelector('#cancelar-cierre-sesion').addEventListener('click', () => {
+      modalCerrarSesion.style.display = 'none';
+    });
+
+    // Llama a la función de cerrar sesión (aquí añades tu lógica de cerrar sesión)
+    document.querySelector('#confirmar-cierre-sesion').addEventListener('click', () => {
+      cerrarSesion();
+      // Por ejemplo, puedes redirigir al usuario a una página de logout o eliminar la sesión
+    });
+  }
+});
+
+// Cerrar authMal hacer clic en la 'X' o fuera del contenido
+closeBtn.addEventListener("click", () => {
+  authModal.style.display = "none";
+});
+window.addEventListener("click", (event) => {
+  if (event.target == authModal) {
+    authModal.style.display = "none";
+  }
+});
+
+// Cambiar a formulario de registro
+toRegister.addEventListener("click", (e) => {
+  e.preventDefault();
+  openRegisterForm();
+  correoErrorMessageLogin.textContent = '';
+  passwordErrorMessageLogin.textContent = '';
+  passwordErrorMessageRegister.textContent = '';
+  confirmPasswordErrorMessageRegister.textContent = '';
+  registerForm.reset();
+});
+
+
+// Cambiar a formulario de inicio de sesión
+toLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  openLoginForm();
+  correoErrorMessageLogin.textContent = '';
+  passwordErrorMessageLogin.textContent = '';
+  passwordErrorMessageRegister.textContent = '';
+  confirmPasswordErrorMessageRegister.textContent = '';
+});
+
+
+
+
+const registerForm = document.getElementById("registerForm");
+//DataBase Connection Register
+registerForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevenir el envío del formulario tradicional
+  passwordErrorMessageRegister.textContent = '';
+  confirmPasswordErrorMessageRegister.textContent = '';
   // Obtener los valores del formulario
   const nombre = document.getElementById("registerName").value;
   const apellidos = document.getElementById("registerSurname").value;
@@ -122,8 +260,11 @@ document.getElementById("registerButton").addEventListener("click", function(eve
 
   // Validar que las contraseñas coincidan
   if (password !== confirmPassword) {
-      alert("Las contraseñas no coinciden.");
-      return;
+    confirmPasswordErrorMessageRegister.textContent = 'Las contraseñas no coinciden.'
+    if (password.length < 8) {
+      passwordErrorMessageRegister.textContent = 'La contraseña debe tener al menos 8 carácteres'
+    }
+    return;
   }
 
   // Crear un objeto con los datos del formulario
@@ -137,53 +278,67 @@ document.getElementById("registerButton").addEventListener("click", function(eve
 
   // Usar fetch() para enviar el formulario al servidor sin recargar la página
   fetch('/php/procesar_registro.php', {
-      method: 'POST',
-      body: formData
+    method: 'POST',
+    body: formData
   })
-  .then(response => response.json())  // Esperar la respuesta en formato JSON
-  .then(data => {
+    .then(response => response.json())  // Esperar la respuesta en formato JSON
+    .then(data => {
       // Verificar si la respuesta es exitosa
       if (data.status === 'success') {
-          alert(data.message);  // Mostrar mensaje de éxito
-          document.getElementById("registerForm").reset(); // Limpiar el formulario
+        alert(data.message);  // Mostrar mensaje de éxito
+        document.getElementById("registerForm").reset(); // Limpiar el formulario
+        openLoginForm();
       } else {
-          alert(data.message);  // Mostrar mensaje de error
+        alert(data.message);  // Mostrar mensaje de error
       }
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.error('Error:', error);
       alert('Ocurrió un error en el registro. Intenta nuevamente.');
-  });
+    });
 });
 
+const loginForm = document.getElementById("loginForm");
 //DataBase Connection Login
-document.getElementById("loginForm").addEventListener("submit", function(event) {
+document.getElementById("loginForm").addEventListener("submit", function (event) {
   event.preventDefault();
   const correo = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
+  correoErrorMessageLogin.textContent = '';
+  passwordErrorMessageLogin.textContent = '';
+  passwordErrorMessageRegister.textContent = '';
+  confirmPasswordErrorMessageRegister.textContent = '';
 
   const formData = new FormData();
   formData.append('correo', correo);
   formData.append('password', password);
 
   fetch('/php/procesar_login.php', {
-      method: 'POST',
-      body: formData
+    method: 'POST',
+    body: formData
   })
-  .then(response => response.json())
-  .then(data => {
+    .then(response => response.json())
+    .then(data => {
       if (data.status === 'success') {
-          alert(data.message);  // Mensaje de éxito
-          // Redirigir o realizar acciones adicionales según sea necesario
+        authModal.style.display = 'none';
+        userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
       } else {
-          alert(data.message);  // Mensaje de error
+        if (data.message === 'Contraseña incorrecta') {
+          passwordErrorMessageLogin.textContent = 'Contraseña incorrecta'
+        } else if (data.message === 'Correo electrónico no encontrado') {
+          correoErrorMessageLogin.textContent = 'Correo electrónico no registrado'
+        } else {
+          alert(data.message);
+        }
       }
-  })
-  .catch(error => {
-      console.error('Error:', error);
-      alert('Ocurrió un error en el inicio de sesión. Intenta nuevamente.');
-  });
+    })
+    .catch(error => {
+      console.error('Error en el inicio de sesión:', error);
+      alert('Ocurrió un error en el inicio de sesión.');
+    });
 });
+
+
 
 
 
@@ -195,7 +350,6 @@ const selectedDayText = document.createElement('p');
 selectedDayText.id = 'selectedDay';
 
 datesElement.after(selectedDayText);
-
 let chosenDay;
 let chosenHour;
 let chosenYear;
@@ -431,13 +585,14 @@ const selectTime = (slot) => {
 
 };
 
+
 // Funciones para abrir y cerrar el modal
 openCalendarButton.addEventListener('click', () => {
   calendarModal.style.display = 'flex';
   updateCalendar();
 });
 
-closeModal.addEventListener('click', () => {
+closeCalendarModal.addEventListener('click', () => {
   calendarModal.style.display = 'none';
 });
 
@@ -538,10 +693,10 @@ function observeAllElementsForStyles() {
           }
         }
         // Comprobar si es el div que contiene el span con "Review us on Google" y cambiarlo.
-        if (node.nodeType === 1 && node.classList.contains('HeaderWriteReviewButton__Component-sc-a5mrro-0')){
+        if (node.nodeType === 1 && node.classList.contains('HeaderWriteReviewButton__Component-sc-a5mrro-0')) {
           node.children[0].children[0].textContent = 'Déjanos tu reseña';
         }
-        adecuarReseñasATamaño(); 
+        adecuarReseñasATamaño();
       });
 
       // Revisar cambios en los atributos
@@ -581,35 +736,35 @@ function observeAllElementsForStyles() {
 
 function adecuarReseñasATamaño() {
   if (window.innerWidth < 600) {
-    if (!ejecutado ) {
-    //Guarda el primer elemento de las reviews:
-    let targetFirstReview = document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') ? document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') : null;
-    //Guarda la tercera review:
-    let targetReviews = document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') ? document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') : null;
-    let targetThirdReview = targetReviews[2];
-    //Guarda la última reseña:
-    let targetLastReview = targetReviews[9];
-    // Si existe la primera reseña, la tercera y la útlima, y le ha añadido cierta clase al contenedor (es lo que hace justo antes de
-    // mover las reseñas de sitio), cambia el alto del contenedor)
-    if (targetFirstReview && targetThirdReview && targetLastReview && reviewsContainer.classList.contains('eapps-widget-show-toolbar')) {
-      setTimeout( () => {
-        // Calcula la posición superior del primer elemento y la inferior del último
-      const startPosition = targetFirstReview.getBoundingClientRect().top + window.scrollY;
-      const endPosition = targetThirdReview.getBoundingClientRect().bottom + window.scrollY;
+    if (!ejecutado) {
+      //Guarda el primer elemento de las reviews:
+      let targetFirstReview = document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') ? document.querySelector('.HeaderContainer__Inner-sc-1532ffp-0') : null;
+      //Guarda la tercera review:
+      let targetReviews = document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') ? document.querySelectorAll('.Balloon__StyledAuthorBlock-sc-1d6y62j-1') : null;
+      let targetThirdReview = targetReviews[2];
+      //Guarda la última reseña:
+      let targetLastReview = targetReviews[9];
+      // Si existe la primera reseña, la tercera y la útlima, y le ha añadido cierta clase al contenedor (es lo que hace justo antes de
+      // mover las reseñas de sitio), cambia el alto del contenedor)
+      if (targetFirstReview && targetThirdReview && targetLastReview && reviewsContainer.classList.contains('eapps-widget-show-toolbar')) {
+        setTimeout(() => {
+          // Calcula la posición superior del primer elemento y la inferior del último
+          const startPosition = targetFirstReview.getBoundingClientRect().top + window.scrollY;
+          const endPosition = targetThirdReview.getBoundingClientRect().bottom + window.scrollY;
 
-      // Calcula la altura que debe tener el contenedor
-      const calculatedHeight = endPosition - startPosition;
+          // Calcula la altura que debe tener el contenedor
+          const calculatedHeight = endPosition - startPosition;
 
-      // Aplica la altura calculada al contenedor
-      reviewsContainer.style.height = `${calculatedHeight + 20}px`;
-      ejecutado = true;
-      }, 1000); 
-      // Hay que ejecutar el código con un poco de retraso ya que incluso después de cargar
-      // la última reseña hay un js que las cambia de sitio y esto ha de ejecutarse después
+          // Aplica la altura calculada al contenedor
+          reviewsContainer.style.height = `${calculatedHeight + 20}px`;
+          ejecutado = true;
+        }, 1000);
+        // Hay que ejecutar el código con un poco de retraso ya que incluso después de cargar
+        // la última reseña hay un js que las cambia de sitio y esto ha de ejecutarse después
+      }
     }
-    }
 
-  } else if(ejecutado) {
+  } else if (ejecutado) {
     reviewsContainer.style.removeProperty('height');
     ejecutado = false;
   }

@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="icon" href="images/logo.ico" type="image/x-icon">
 
   <link rel="stylesheet" href="css/index.css">
@@ -30,38 +31,73 @@
       <a href="https://maps.app.goo.gl/h5aN8X4GmK59tT3H9">Dónde&nbsp;estamos</a>
       <a href="#">Nuestras&nbsp;instalaciones</a>
     </nav>
-    <img id="user" src="images/user.png" alt="User">
+    <span id="user-text"><img id="user" src="images/user.png" alt="User"></span>
+    <!-- Menú desplegable -->
+    <div id="user-menu" class="user-menu">
+      <ul>
+        <li>Perfil</li>
+        <li>Citas</li>
+        <li>Facturas</li>
+        <li id="logout">Cerrar Sesión</li>
+      </ul>
+    </div>
+    <!-- Modal de confirmación de cierre de sesión -->
+    <div id="modal-cierre-sesion" class="modal-cierre-sesion">
+      <div class="modal-cierre-sesion-content">
+        <p>¿Está seguro de que desea cerrar su sesión?</p>
+        <button id="confirmar-cierre-sesion" class="confirmar-cierre-sesion">Cerrar sesión</button>
+        <button id="cancelar-cierre-sesion" class="cancelar-cierre-sesion">Cancelar</button>
+      </div>
+    </div>
+    
 
     <!-- Modal de Inicio de Autenticación -->
     <div id="authModal" class="modal">
       <div class="modal-content">
-          <span class="modal-close">&times;</span>
-          <div id="login-section" class="modal-section">
-              <h2>Iniciar Sesión</h2>
-              <form id="loginForm">
-                  <input class="input-auth" type="email" id="loginEmail" placeholder="Correo Electrónico" required>
-                  <input class="input-auth" type="password" id="loginPassword" placeholder="Contraseña" required>
-                  <button type="submit" class="modal-button">Acceder</button>
-              </form>
-              <p class="modal-text">¿No tienes cuenta? <a href="#" id="toRegister">¡Regístrate ya!</a></p>
-          </div>
-  
-          <div id="register-section" class="modal-section" style="display: none;">
-              <h2>Registro</h2>
-              <form id="registerForm">
-                  <input class="input-auth" type="text" id="registerName" name="nombre" placeholder="Nombre" required>
-                  <input class="input-auth" type="text" id="registerSurname" name="apellidos" placeholder="Apellidos" required>
-                  <input class="input-auth" type="email" id="registerEmail" name="correo" placeholder="Correo Electrónico" required>
-                  <input class="input-auth" type="tel" id="registerPhone" name="telefono" placeholder="Teléfono" required>
-                  <input class="input-auth" type="password" id="registerPassword" name="password" placeholder="Contraseña" required>
-                  <input class="input-auth" type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite la contraseña" required>
-                  <button type="button" id="registerButton" class="modal-button">Registrarse</button>
-              </form>
-              <p class="modal-text">¿Ya tienes cuenta? <a href="#" id="toLogin">Inicia sesión</a></p>
-          </div>
+        <span class="modal-close">&times;</span>
+        <div id="login-section" class="modal-section">
+          <h2>Iniciar Sesión</h2>
+          <form id="loginForm">
+            <input class="input-auth" type="email" id="loginEmail" placeholder="Correo Electrónico" required>
+            <div class="password-container">
+              <input class="input-auth" type="password" id="loginPassword" placeholder="Contraseña" required>
+              <span><i class="fas fa-eye togglePassword eye-icon"></i></span>
+            </div>
+            <p class="login-or-register-error-message" id="correo-error-message-login"></p>
+            <p class="login-or-register-error-message" id="password-error-message-login"></p>
+            <button type="submit" class="modal-button">Acceder</button>
+          </form>
+          <p class="modal-text">¿No tienes cuenta? <a href="#" id="toRegister">¡Regístrate ya!</a></p>
+        </div>
+
+        <div id="register-section" class="modal-section" style="display: none;">
+          <h2>Registro</h2>
+          <form id="registerForm">
+            <input class="input-auth" type="text" id="registerName" name="nombre" placeholder="Nombre" required>
+            <input class="input-auth" type="text" id="registerSurname" name="apellidos" placeholder="Apellidos"
+              required>
+            <input class="input-auth" type="email" id="registerEmail" name="correo" placeholder="Correo Electrónico"
+              required>
+            <input class="input-auth" type="tel" id="registerPhone" name="telefono" placeholder="Teléfono" required>
+            <div class="password-container">
+              <input class="input-auth" type="password" id="registerPassword" name="password" placeholder="Contraseña"
+                required>
+              <span><i class="fas fa-eye togglePassword eye-icon"></i></span>
+            </div>
+            <div class="password-container">
+              <input class="input-auth" type="password" id="confirmPassword" name="confirmPassword"
+                placeholder="Repite la contraseña" required>
+              <span><i class="fas fa-eye togglePassword eye-icon"></i></span>
+            </div>
+            <p class="login-or-register-error-message" id="password-error-message-register"></p>
+            <p class="login-or-register-error-message" id="confirm-password-error-message-register"></p>
+            <button type="submit" id="registerButton" class="modal-button">Registrarse</button>
+          </form>
+          <p class="modal-text">¿Ya tienes cuenta? <a href="#" id="toLogin">Inicia sesión</a></p>
+        </div>
       </div>
-  </div>
-  
+    </div>
+
 
   </header>
   <main>
@@ -132,7 +168,7 @@
         <div id="calendarModal" class="modal">
           <div class="modal-content">
             <div class="calendar">
-              <span id="closeModal" class="close">&times;</span>
+              <span id="closeCalendarModal" class="close">&times;</span>
               <div class="header">
                 <button id="prevMonth" type="button">←</button>
                 <div id="monthYear">
@@ -156,7 +192,7 @@
           </div>
         </div>
         <div id="contenedor-pedir-cita-button" class="grupo-formulario">
-          <button type="button" id="pedir-cita-button">Pedir cita</button>
+          <button type="button" id="pedir-cita-button">Confirmar cita</button>
         </div>
       </form>
     </section>
