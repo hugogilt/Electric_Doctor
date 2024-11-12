@@ -632,10 +632,10 @@ aceptarButton.addEventListener('click', () => {
     };
 
     // Convertir el número del mes en el nombre del mes
-    chosenMonth = monthNames[chosenMonth] || 'mes inválido';
+    let chosenMonthName = monthNames[chosenMonth] || 'mes inválido';
 
     // Crear la fecha elegida como un string
-    const selectedDate = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonth} de ${chosenYear} a las ${chosenHour.textContent}h`;
+    const selectedDate = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonthName} de ${chosenYear} a las ${chosenHour.textContent}h`;
 
     // Seleccionar el botón de elegir fecha usando la constante existente
     if (openCalendarButton) {
@@ -643,9 +643,35 @@ aceptarButton.addEventListener('click', () => {
       openCalendarButton.textContent = selectedDate;
       pedirCitaButton.style.backgroundColor = '#4CAF50';
       pedirCitaButton.style.cursor = 'pointer';
-      pedirCitaButton.type = 'submit';
-      pedirCitaButton.onclick = null;
       openCalendarButton.style.width = 'auto';
+      pedirCitaButton.onclick = function () {
+        let chosenDate = `${chosenYear}-${chosenMonth}-${chosenDay.textContent}-${chosenHour.textContent}`;
+
+
+        // Función para enviar la fecha y hora al servidor
+        
+          fetch('/php/insertar_fecha_elegida.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ chosenDate: chosenDate }) // Enviamos la fecha y hora como un objeto JSON
+          })
+            .then(response => response.json()) // Recibimos la respuesta del servidor
+            .then(data => {
+              if (data.success) {
+                // Si la inserción fue exitosa
+                alert(data.message);
+              } else {
+                // Si hubo un error
+                alert(data.message);
+              }
+            })
+            .catch(error => console.error('Error al enviar la fecha y hora:', error));
+      
+
+
+      }
 
 
       // Ocultar el modal del calendario
