@@ -343,7 +343,6 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
 
 //CALENDARIO PEDIR CITA
-
 let currentDate = new Date();
 currentDate.setDate(1);
 const selectedDayText = document.createElement('p');
@@ -379,7 +378,7 @@ if (title) {
 
 
 // Aquí puedes agregar más días disponibles en formato 'YYYY-MM-DD'
-const availableDays = [
+const notAvailableDays = [
   '2024-11-01', '2024-11-02' // Asegúrate de que las fechas coincidan con el mes y año actual
 ];
 
@@ -417,7 +416,7 @@ const updateCalendar = () => {
   // Create date elements
   for (let day = 1; day <= daysInMonth; day++) {
     const dateDiv = document.createElement('div');
-    dateDiv.className = 'date ' + (isAvailable(day) ? 'available' : 'not-available');
+    dateDiv.className = 'date ' + (isNotAvailable(day) ? 'not-available' : 'available');
     dateDiv.textContent = day;
     dateDiv.addEventListener('click', () => selectDate(day));
     datesElement.appendChild(dateDiv);
@@ -425,10 +424,10 @@ const updateCalendar = () => {
 };
 
 //POR QUÉ TODO ESTÁ HECHO CON ARROW FUNCTIONS?
-const isAvailable = (day) => {
+const isNotAvailable = (day) => {
   // Crear una fecha en formato 'YYYY-MM-DD'
   const dateToCheck = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-  return availableDays.includes(dateToCheck);
+  return notAvailableDays.includes(dateToCheck);
 };
 
 const selectDate = (day) => {
@@ -446,7 +445,7 @@ const selectDate = (day) => {
     dayElement.classList.remove('selected-not-available');
   });
 
-  if (isAvailable(day)) {
+  if (!isNotAvailable(day)) {
     // Añadir la clase "selected" al día clicado, (seguramente haya una forma mejor de hacerlo)
     chosenDay = [...allDays].find(dayElement => dayElement.textContent === String(day));
     if (chosenDay) {
@@ -464,15 +463,15 @@ const selectDate = (day) => {
 
 };
 
-const isTimeAvailable = (date, hour, minute) => {
-  const availableSlots = [
-    '2024-11-01-9:00', '2024-11-01-9:30', '2024-11-01-10:00',
-    '2024-11-01-10:30', '2024-11-01-11:00', '2024-11-01-11:30',
-    '2024-11-01-16:00', '2024-11-01-16:30', '2024-11-01-17:00',
-    '2024-11-01-17:30', '2024-11-01-18:00', '2024-11-01-18:30',
-    '2024-11-02-9:00', '2024-11-02-10:00'
+const isTimeNotAvailable = (date, hour, minute) => {
+  const nonAvailableSlots = [
+    '2024-11-04-9:00', '2024-11-04-9:30', '2024-11-04-10:00',
+    '2024-11-04-10:30', '2024-11-04-11:00', '2024-11-04-11:30',
+    '2024-11-04-16:00', '2024-11-04-16:30', '2024-11-04-17:00',
+    '2024-11-04-17:30', '2024-11-04-18:00', '2024-11-04-18:30',
+    '2024-11-05-9:00', '2024-11-05-10:00', '2024-11-03-10:00'
   ];
-  return availableSlots.includes(`${date}-${hour}:${minute === 0 ? '00' : '30'}`);
+  return nonAvailableSlots.includes(`${date}-${hour}:${minute === 0 ? '00' : '30'}`);
 };
 
 const updateTimeSlots = (selectedDate) => {
@@ -488,11 +487,11 @@ const updateTimeSlots = (selectedDate) => {
       const slot = document.createElement('button');
       slot.type = 'button';
       const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
-      if (isTimeAvailable(selectedDate, hour, minute)) {
+      if (isTimeNotAvailable(selectedDate, hour, minute)) {
+        slot.className = 'not-available';
+      } else {
         slot.className = 'available';
         displayHours = true;
-      } else {
-        slot.className = 'not-available';
       }
       slot.textContent = formattedHour;
       slot.addEventListener('click', () => selectTime(slot));
@@ -506,19 +505,20 @@ const updateTimeSlots = (selectedDate) => {
       const slot = document.createElement('button');
       slot.type = 'button';
       const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
-      if (isTimeAvailable(selectedDate, hour, minute)) {
+      if (isTimeNotAvailable(selectedDate, hour, minute)) {
+        slot.className = 'not-available';
+      } else {
         slot.className = 'available';
         displayHours = true;
-      } else {
-        slot.className = 'not-available';
       }
       slot.textContent = formattedHour;
       slot.addEventListener('click', () => selectTime(slot));
       timeSlotsElement.appendChild(slot);
     }
   }
-  const hoursNotDisplay = document.querySelectorAll('button.not-available');
-  if (!displayHours) {
+  const hoursNotDisplay = document.querySelectorAll('.time-slots button');
+  let foundDate = notAvailableDays.find(day => day === selectedDate);
+  if (!displayHours || foundDate) {
     for (let hourNotDisplay of hoursNotDisplay) {
       hourNotDisplay.style.display = 'none'
     }
@@ -635,26 +635,25 @@ aceptarButton.addEventListener('click', () => {
     chosenMonth = monthNames[chosenMonth] || 'mes inválido';
 
     // Crear la fecha elegida como un string
-    const selectedDate = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonth} de ${chosenYear} a las ${chosenHour.textContent}`;
+    const selectedDate = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonth} de ${chosenYear} a las ${chosenHour.textContent}h`;
 
     // Seleccionar el botón de elegir fecha usando la constante existente
     if (openCalendarButton) {
       // Sustituir el textContent del botón con la fecha elegida
       openCalendarButton.textContent = selectedDate;
       pedirCitaButton.style.backgroundColor = '#4CAF50';
-      pedirCitaButton.onclick = null;
       pedirCitaButton.style.cursor = 'pointer';
       pedirCitaButton.type = 'submit';
+      pedirCitaButton.onclick = null;
       openCalendarButton.style.width = 'auto';
-    }
 
-    // Ocultar el modal del calendario
-    calendarModal.style.display = 'none';
+
+      // Ocultar el modal del calendario
+      calendarModal.style.display = 'none';
+    }
   } else {
     alert('Por favor, selecciona una fecha y una hora antes de aceptar.');
   }
-
-
 });
 
 
