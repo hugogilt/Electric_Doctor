@@ -1,34 +1,42 @@
 <?php
 session_start();
-// Conexión a la base de datos
 require '../config/conexion.php';
 
-// Recibimos los datos enviados por POST
 $data = json_decode(file_get_contents('php://input'), true);
+$fechaHora = $data['fechaHora'];
 
-// Obtenemos la fecha y hora
-$fechaHora = $data['chosenDate'];
+$response = array();
 
 try {
-    // Consulta para insertar la fecha y hora en la tabla Disponibilidad_Citas
-    $query = "INSERT INTO Disponibilidad_Citas (Fecha_Hora) VALUES (:fechaHora)";
+    // Consulta para verificar si la fecha y hora ya existen
+    $sqlCheck = "SELECT COUNT(*) FROM Disponibilidad_Citas WHERE Fecha_Hora = :fechaHora";
+    $stmtCheck = $conexion->prepare($sqlCheck);
+    $stmtCheck->bindParam(':fechaHora', $fechaHora);
+    $stmtCheck->execute();
+    $exists = $stmtCheck->fetchColumn();
 
-    // Preparamos la consulta
-    $stmt = $conexion->prepare($query);
-
-    // Vinculamos el parámetro
-    $stmt->bindParam(':fechaHora', $fechaHora);
-
-    // Ejecutamos la consulta
-    if ($stmt->execute()) {
-        // Si la inserción es exitosa, respondemos con un JSON de éxito
-        echo json_encode(['success' => true, 'message' => 'Reserva guardada con éxito']);
+    if ($exists > 0) {
+        // Si la fecha y hora ya existen, retornamos un mensaje de error
+        $response['success'] = false;
+        $response['message'] = 'La fecha y hora ya están ocupadas.';
     } else {
-        // Si hubo un error, respondemos con un JSON de error
-        echo json_encode(['success' => false, 'message' => 'Error al guardar la reserva']);
+        // Insertar la nueva fecha y hora si no está ocupada
+        $sqlInsert = "INSERT INTO Disponibilidad_Citas (Fecha_Hora) VALUES (:fechaHora)";
+        $stmtInsert = $conexion->prepare($sqlInsert);
+        $stmtInsert->bindParam(':fechaHora', $fechaHora);
+
+        if ($stmtInsert->execute()) {
+            $response['success'] = true;
+            $response['message'] = 'Reserva guardada con éxito';
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'Error al guardar la reserva';
+        }
     }
 } catch (PDOException $e) {
-    // En caso de error en la consulta
-    echo json_encode(['success' => false, 'message' => 'Error en la consulta: ' . $e->getMessage()]);
+    $response['success'] = false;
+    $response['message'] = 'Error en la consulta: ' . $e->getMessage();
 }
+
+echo json_encode($response);
 ?>

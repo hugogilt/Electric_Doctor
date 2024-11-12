@@ -100,8 +100,9 @@ const userTextSpan = document.querySelector('#user-text');
 const userMenu = document.querySelector('#user-menu');
 const logoutButton = document.querySelector('#logout');
 const modalCerrarSesion = document.querySelector('#modal-cierre-sesion');
-
-
+// Array global para almacenar los slots no disponibles
+let nonAvailableSlots = [];
+let selectedDate;
 
 const nav = document.querySelector('nav');
 document.getElementById('hamburger').addEventListener('click', function () {
@@ -377,7 +378,6 @@ if (title) {
 
 
 
-// Aquí puedes agregar más días disponibles en formato 'YYYY-MM-DD'
 const notAvailableDays = [
   '2024-11-01', '2024-11-02' // Asegúrate de que las fechas coincidan con el mes y año actual
 ];
@@ -421,6 +421,7 @@ const updateCalendar = () => {
     dateDiv.addEventListener('click', () => selectDate(day));
     datesElement.appendChild(dateDiv);
   }
+  obtenerFechasNoDisponibles();
 };
 
 //POR QUÉ TODO ESTÁ HECHO CON ARROW FUNCTIONS?
@@ -431,7 +432,7 @@ const isNotAvailable = (day) => {
 };
 
 const selectDate = (day) => {
-  const selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   timeSlotsElement.innerHTML = ''; // Limpiar slots anteriores
   updateTimeSlots(selectedDate); // Actualizar los slots de tiempo
   const dayOfWeek = new Date(selectedDate).toLocaleDateString('es-ES', { weekday: 'long' });
@@ -463,16 +464,30 @@ const selectDate = (day) => {
 
 };
 
-const isTimeNotAvailable = (date, hour, minute) => {
-  const nonAvailableSlots = [
-    '2024-11-04-9:00', '2024-11-04-9:30', '2024-11-04-10:00',
-    '2024-11-04-10:30', '2024-11-04-11:00', '2024-11-04-11:30',
-    '2024-11-04-16:00', '2024-11-04-16:30', '2024-11-04-17:00',
-    '2024-11-04-17:30', '2024-11-04-18:00', '2024-11-04-18:30',
-    '2024-11-05-9:00', '2024-11-05-10:00', '2024-11-03-10:00'
-  ];
-  return nonAvailableSlots.includes(`${date}-${hour}:${minute === 0 ? '00' : '30'}`);
-};
+
+
+// Función para obtener fechas no disponibles de la base de datos
+async function obtenerFechasNoDisponibles() {
+  try {
+    const response = await fetch('/php/obtener_fechas_reservadas.php');
+    const data = await response.json();
+
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      nonAvailableSlots = data; // Almacena las fechas obtenidas en el array global
+    }
+  } catch (error) {
+    console.error('Error al obtener las fechas no disponibles:', error);
+  }
+}
+
+function isTimeNotAvailable(date, hour, minute) {
+  const formattedDate = `${date}-${hour}:${minute === 0 ? '00' : '30'}`;
+  return nonAvailableSlots.includes(formattedDate);
+}
+
+
 
 const updateTimeSlots = (selectedDate) => {
   const morningStart = 9; // 9:00
@@ -487,12 +502,14 @@ const updateTimeSlots = (selectedDate) => {
       const slot = document.createElement('button');
       slot.type = 'button';
       const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
+
       if (isTimeNotAvailable(selectedDate, hour, minute)) {
         slot.className = 'not-available';
       } else {
         slot.className = 'available';
         displayHours = true;
       }
+
       slot.textContent = formattedHour;
       slot.addEventListener('click', () => selectTime(slot));
       timeSlotsElement.appendChild(slot);
@@ -505,12 +522,14 @@ const updateTimeSlots = (selectedDate) => {
       const slot = document.createElement('button');
       slot.type = 'button';
       const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
+
       if (isTimeNotAvailable(selectedDate, hour, minute)) {
         slot.className = 'not-available';
       } else {
         slot.className = 'available';
         displayHours = true;
       }
+
       slot.textContent = formattedHour;
       slot.addEventListener('click', () => selectTime(slot));
       timeSlotsElement.appendChild(slot);
@@ -548,7 +567,8 @@ const updateTimeSlots = (selectedDate) => {
   if (document.querySelector('#aceptar')) {
     aceptarButton.remove();
   }
-};
+}
+
 
 
 
@@ -613,7 +633,20 @@ nextMonthButton.addEventListener('click', () => {
   updateCalendar();
 });
 
-aceptarButton.addEventListener('click', () => {
+aceptarButton.addEventListener('click', async () => {
+  await obtenerFechasNoDisponibles();
+  let twoPointsPos = chosenHour.textContent.indexOf(":");
+  let hour = chosenHour.textContent.slice(0, twoPointsPos);
+  let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
+  if (isTimeNotAvailable(selectedDate, hour, minute)) {
+    alert('Esta hora acaba de ser reservada por otro usuario');
+    selectDate(chosenDay.textContent);
+    let selectedSlot = Array.from(document.querySelectorAll('.time-slots button')).find(element => element.textContent.trim() === chosenHour.textContent);
+    selectedSlot.classList.remove('available')
+    selectedSlot.classList.add('selected-not-available')
+    selectedSlot.click();
+    return;
+  }
 
   if (chosenDay && chosenHour) {
     const monthNames = {
@@ -635,40 +668,40 @@ aceptarButton.addEventListener('click', () => {
     let chosenMonthName = monthNames[chosenMonth] || 'mes inválido';
 
     // Crear la fecha elegida como un string
-    const selectedDate = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonthName} de ${chosenYear} a las ${chosenHour.textContent}h`;
+    const chosenDateString = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonthName} de ${chosenYear} a las ${chosenHour.textContent}h`;
 
     // Seleccionar el botón de elegir fecha usando la constante existente
     if (openCalendarButton) {
       // Sustituir el textContent del botón con la fecha elegida
-      openCalendarButton.textContent = selectedDate;
+      openCalendarButton.textContent = chosenDateString;
       pedirCitaButton.style.backgroundColor = '#4CAF50';
       pedirCitaButton.style.cursor = 'pointer';
       openCalendarButton.style.width = 'auto';
       pedirCitaButton.onclick = function () {
-        let chosenDate = `${chosenYear}-${chosenMonth}-${chosenDay.textContent}-${chosenHour.textContent}`;
+      let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
 
 
         // Función para enviar la fecha y hora al servidor
-        
-          fetch('/php/insertar_fecha_elegida.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ chosenDate: chosenDate }) // Enviamos la fecha y hora como un objeto JSON
+
+        fetch('/php/insertar_fecha_elegida.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ fechaHora: chosenDate }) // Enviamos la fecha y hora como un objeto JSON
+        })
+          .then(response => response.json()) // Recibimos la respuesta del servidor
+          .then(data => {
+            if (data.success) {
+              // Si la inserción fue exitosa
+              alert(data.message);
+            } else {
+              // Si hubo un error
+              alert(data.message);
+            }
           })
-            .then(response => response.json()) // Recibimos la respuesta del servidor
-            .then(data => {
-              if (data.success) {
-                // Si la inserción fue exitosa
-                alert(data.message);
-              } else {
-                // Si hubo un error
-                alert(data.message);
-              }
-            })
-            .catch(error => console.error('Error al enviar la fecha y hora:', error));
-      
+          .catch(error => console.error('Error al enviar la fecha y hora:', error));
+
 
 
       }
