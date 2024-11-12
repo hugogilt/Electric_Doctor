@@ -378,14 +378,26 @@ if (title) {
 
 
 
-const notAvailableDays = [
-  '2024-11-01', '2024-11-02' // Asegúrate de que las fechas coincidan con el mes y año actual
-];
+let notAvailableDays = [];
 
 const updateCalendar = () => {
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
+  //Introduce en notAvailableDays los Sábados y Domingos de cada mes dinámicamente.
+  notAvailableDays = [];
 
+  for (let dia = 1; dia <= 31; dia++) {
+    const fecha = new Date(year, month, dia);
+    
+    // Verifica si la fecha pertenece al mes actual
+    if (fecha.getMonth() !== month) break;
+
+    // Si es sábado (6) o domingo (0), añade al array
+    if (fecha.getDay() === 0 || fecha.getDay() === 6) {
+      notAvailableDays.push(fecha.getFullYear() + '-' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '-' + fecha.getDate().toString().padStart(2, '0'));
+    }
+}
+///////////////////////////////////////////
   yearElement.textContent = currentDate.toLocaleString('es-ES', { year: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase());
   monthElement.textContent = currentDate.toLocaleString('es-ES', { month: 'long' }).replace(/^\w/, (c) => c.toUpperCase());
 
