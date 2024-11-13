@@ -380,52 +380,79 @@ if (title) {
 
 let notAvailableDays = [];
 
+// Función para añadir los días anteriores al día actual en el mes seleccionado
+const addPastDaysToNotAvailable = (year, month) => {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  const currentDay = today.getDate();
+
+  // Si el mes y año son anteriores al mes y año actuales, añade todos los días de ese mes
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
+      const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      if (!notAvailableDays.includes(formattedDate)) {
+        notAvailableDays.push(formattedDate);
+      }
+    }
+  } else if (year === currentYear && month === currentMonth) {
+    // Si es el mes actual, añade solo los días anteriores al día actual
+    for (let day = 1; day < currentDay; day++) {
+      const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      if (!notAvailableDays.includes(formattedDate)) {
+        notAvailableDays.push(formattedDate);
+      }
+    }
+  }
+};
+
+// Función updateCalendar adaptada
 const updateCalendar = () => {
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
-  //Introduce en notAvailableDays los Sábados y Domingos de cada mes dinámicamente.
-  notAvailableDays = [];
 
+  // Llama a addPastDaysToNotAvailable con el año y mes actuales
+  addPastDaysToNotAvailable(year, month);
+
+  // Filtra `notAvailableDays` para eliminar los fines de semana del mes anterior
+  notAvailableDays = notAvailableDays.filter(dateString => {
+    const [y, m] = dateString.split('-').map(Number);
+    return !(y === year && m === month);
+  });
+
+  // Añade los sábados y domingos del mes actual
   for (let dia = 1; dia <= 31; dia++) {
     const fecha = new Date(year, month, dia);
-    
+
     // Verifica si la fecha pertenece al mes actual
     if (fecha.getMonth() !== month) break;
 
     // Si es sábado (6) o domingo (0), añade al array
     if (fecha.getDay() === 0 || fecha.getDay() === 6) {
-      notAvailableDays.push(fecha.getFullYear() + '-' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '-' + fecha.getDate().toString().padStart(2, '0'));
+      const formattedDate = `${fecha.getFullYear()}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getDate().toString().padStart(2, '0')}`;
+      if (!notAvailableDays.includes(formattedDate)) {
+        notAvailableDays.push(formattedDate);
+      }
     }
-}
-///////////////////////////////////////////
+  }
+
+  // Actualizar el resto del calendario (manteniendo el resto del código de updateCalendar)
   yearElement.textContent = currentDate.toLocaleString('es-ES', { year: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase());
   monthElement.textContent = currentDate.toLocaleString('es-ES', { month: 'long' }).replace(/^\w/, (c) => c.toUpperCase());
-
-  // Clear previous dates
   datesElement.innerHTML = '';
   timeSlotsElement.innerHTML = '';
   selectedDayText.textContent = '';
-  if (document.querySelector('#diaNoDisponibleAlerta')) {
-    dayNotAvailableWarning.remove();
-  }
-  if (document.querySelector('#horaNoDisponibleAlerta')) {
-    hourNotAvailableWarning.remove();
-  }
-  if (document.querySelector('#aceptar')) {
-    aceptarButton.remove();
-  }
+  if (document.querySelector('#diaNoDisponibleAlerta')) dayNotAvailableWarning.remove();
+  if (document.querySelector('#horaNoDisponibleAlerta')) hourNotAvailableWarning.remove();
+  if (document.querySelector('#aceptar')) aceptarButton.remove();
 
-
-  // Get the first day of the month
-  const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Ajuste para alinear correctamente los días
+  const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  // Create empty slots for days before the first day of the month
   for (let i = 0; i < firstDay; i++) {
     datesElement.innerHTML += '<div class="date"></div>';
   }
 
-  // Create date elements
   for (let day = 1; day <= daysInMonth; day++) {
     const dateDiv = document.createElement('div');
     dateDiv.className = 'date ' + (isNotAvailable(day) ? 'not-available' : 'available');
@@ -433,8 +460,11 @@ const updateCalendar = () => {
     dateDiv.addEventListener('click', () => selectDate(day));
     datesElement.appendChild(dateDiv);
   }
+
   obtenerFechasNoDisponibles();
 };
+
+
 
 //POR QUÉ TODO ESTÁ HECHO CON ARROW FUNCTIONS?
 const isNotAvailable = (day) => {
@@ -690,7 +720,7 @@ aceptarButton.addEventListener('click', async () => {
       pedirCitaButton.style.cursor = 'pointer';
       openCalendarButton.style.width = 'auto';
       pedirCitaButton.onclick = function () {
-      let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
+        let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
 
 
         // Función para enviar la fecha y hora al servidor
