@@ -509,6 +509,7 @@ const selectDate = (day) => {
 
 
 // Función para obtener fechas no disponibles de la base de datos
+// Y añadir las horas anteriores a la hora actual y una hora más de cortesía para el taller
 async function obtenerFechasNoDisponibles() {
   try {
     const response = await fetch('/php/obtener_fechas_reservadas.php');
@@ -519,10 +520,42 @@ async function obtenerFechasNoDisponibles() {
     } else {
       nonAvailableSlots = data; // Almacena las fechas obtenidas en el array global
     }
+
+    const now = new Date();
+    const today = now.toISOString().split('T')[0]; // Fecha de hoy en formato YYYY-MM-DD
+
+    // Hora actual redondeada al siguiente intervalo de 30 minutos
+    let currentHour = now.getHours();
+    let currentMinutes = now.getMinutes() > 0 ? Math.ceil(now.getMinutes() / 30) * 30 : 0;
+    if (currentMinutes === 60) {
+      currentHour += 1;
+      currentMinutes = 0;
+    }
+
+    // Crea los intervalos de 30 minutos desde las 9:00 hasta el siguiente intervalo completo
+    let hour = 9;
+    let minute = 0;
+    //Mientras la hora no sea mayor que la hora actual 
+    // y los minutos menores a los minutos actuales, lo añade al array de no disponibles
+    while (hour <= currentHour || (hour > currentHour && minute < currentMinutes)) {
+
+      const timeSlot = `${today}-${hour.toString()}:${minute.toString().padStart(2, '0')}`;
+      nonAvailableSlots.push(timeSlot);
+
+      // Incrementa de 30 en 30 minutos
+      minute += 30;
+      if (minute === 60) {
+        hour += 1;
+        minute = 0;
+      }
+    }
+
   } catch (error) {
     console.error('Error al obtener las fechas no disponibles:', error);
   }
 }
+
+
 
 function isTimeNotAvailable(date, hour, minute) {
   const formattedDate = `${date}-${hour}:${minute === 0 ? '00' : '30'}`;
