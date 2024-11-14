@@ -665,12 +665,18 @@ textarea {
 
 .available {
   background-color: lightgreen;
-  /* Color para días disponibles */
 }
 
 .not-available {
   background-color: lightgray;
-  /* Color para días no disponibles */
+}
+
+.reserved {
+  background-color: rgb(241, 183, 74);
+}
+
+.complete-day {
+  background-color: rgb(241, 183, 74);
 }
 
 .selected {

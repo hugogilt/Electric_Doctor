@@ -102,6 +102,7 @@ const logoutButton = document.querySelector('#logout');
 const modalCerrarSesion = document.querySelector('#modal-cierre-sesion');
 // Array global para almacenar los slots no disponibles
 let nonAvailableSlots = [];
+let reservedSlots = [];
 let selectedDate;
 
 const nav = document.querySelector('nav');
@@ -377,37 +378,133 @@ if (title) {
 }
 
 
-
+// SI TODOS LOS SLOTS SON NOT AVAILABLE
 let notAvailableDays = [];
 
-// Función para añadir los días anteriores al día actual en el mes seleccionado
-const addPastDaysToNotAvailable = (year, month) => {
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth();
-  const currentDay = today.getDate();
+//SI NO HAY NINGUN SLOT AVAILABLE, Y HAY AL MENOS UNO RESERVED
+let completeDays = [];
+function isDayComplete(date) {
+  return allSlots.every(time => reservedSlots.includes(`${date}-${time}`));
+}
 
-  // Si el mes y año son anteriores al mes y año actuales, añade todos los días de ese mes
-  if (year < currentYear || (year === currentYear && month < currentMonth)) {
-    for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
-      const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      if (!notAvailableDays.includes(formattedDate)) {
-        notAvailableDays.push(formattedDate);
-      }
+// SI HAY ALGUN SLOT AVAILABLE Y ALGUNO RESERVED
+let semiCompleteDays = [];
+
+
+const allSlots = [
+  "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
+  "12:00", "12:30", "13:00", "13:30",
+  "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"
+];
+
+function addCompleteDays(year, month) {
+  // Verificar y añadir los días con todos los slots ocupados al array notAvailableDays
+  const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+  for (let day = 1; day <= totalDaysInMonth; day++) {
+    const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+    // Si el día tiene al menos una hora reservada, lo agregamos a completeDays
+    // if (isDayPartiallyBooked(formattedDate) && !completeDays.includes(formattedDate)) {
+    //   completeDays.push(formattedDate);
+    // }
+    if (isDayComplete(formattedDate)) {
+      completeDays.push(formattedDate);
     }
-  } else if (year === currentYear && month === currentMonth) {
-    // Si es el mes actual, añade solo los días anteriores al día actual
-    for (let day = 1; day < currentDay; day++) {
-      const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      if (!notAvailableDays.includes(formattedDate)) {
-        notAvailableDays.push(formattedDate);
-      }
-    }
+
+    // // Si el día tiene todos los slots ocupados, lo agregamos a nonAvailableDays
+    // if (isDayFullyBooked(formattedDate) && !notAvailableDays.includes(formattedDate)) {
+    //   notAvailableDays.push(formattedDate);
+    // }
   }
-};
+}
+
+
+// // Función para verificar si todos los slots de un día están ocupados
+// function isDayFullyBooked(date) {
+//   // Filtra los slots que coinciden con el día específico
+//   const daySlots = [...reservedSlots, ...nonAvailableSlots].filter(slot => slot.startsWith(date));
+//   // Verifica que todos los slots de ese día estén ocupados
+//   return allSlots.every(time => daySlots.includes(`${date}-${time}`));
+// };
+
+// // Función para verificar si todos los slots de un día están ocupados
+// function isDayFullyBooked(date) {
+//   const daySlots = allUnavailableSlots.filter(slot => slot.startsWith(date));
+//   return allSlots.every(time => daySlots.includes(`${date}-${time}`));
+// };
+
+// // Función para verificar si al menos una hora está reservada en el día
+// function isDayPartiallyBooked(date) {
+//   const daySlots = reservedSlots.filter(slot => slot.startsWith(date));
+//   return daySlots.length > 0;
+// };
+
+
+// // Combinar los arrays reservedSlots y nonAvailableSlots
+// const allUnavailableSlots = [...reservedSlots, ...nonAvailableSlots];
+
+
+
+
+
+
+
+
+
+
+
+// // Función para actualizar días completos y no disponibles
+// const updateUnavailableAndCompleteDays = (year, month) => {
+//   addPastDaysToNotAvailable(year, month);
+
+//   for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
+//     const date = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+//     const daySlots = reservedSlots.filter(slot => slot.startsWith(date));
+
+//     if (daySlots.length > 0) {
+//       if (!completeDays.includes(date)) {
+//         completeDays.push(date);
+//       }
+//     } else if (isDayFullyBooked(date) && !notAvailableDays.includes(date)) {
+//       notAvailableDays.push(date);
+//     }
+//   }
+// };
+
+
+
+
+
+// function verificarDiasConSlotsCompletos() {
+//   debugger;
+//   const morningSlots = ["9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30"];
+//   const afternoonSlots = ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+//   const allSlots = [...morningSlots, ...afternoonSlots];
+
+//   const allUnavailableSlots = [...reservedSlots, ...nonAvailableSlots];
+//   const daysWithAllSlotsBooked = {};
+
+//   allUnavailableSlots.forEach(slot => {
+//     const [date, time] = slot.split('-');
+//     if (!daysWithAllSlotsBooked[date]) {
+//       daysWithAllSlotsBooked[date] = new Set();
+//     }
+//     daysWithAllSlotsBooked[date].add(time);
+//   });
+
+//   const fullyBookedDays = [];
+
+//   for (const [date, times] of Object.entries(daysWithAllSlotsBooked)) {
+//     if (allSlots.every(time => times.has(time))) {
+//       fullyBookedDays.push(date);
+//     }
+//   }
+
+//   return fullyBookedDays;
+// }
 
 // Función updateCalendar adaptada
-const updateCalendar = () => {
+async function updateCalendar() {
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
 
@@ -461,19 +558,23 @@ const updateCalendar = () => {
     datesElement.appendChild(dateDiv);
   }
 
-  obtenerFechasNoDisponibles();
+  await obtenerFechasNoDisponibles();
+  completeDays = [];
+  addCompleteDays(year, month);
+  addCompleteDayClass(year, month, completeDays); 
 };
 
 
 
-//POR QUÉ TODO ESTÁ HECHO CON ARROW FUNCTIONS?
-const isNotAvailable = (day) => {
+
+function isNotAvailable(day) {
   // Crear una fecha en formato 'YYYY-MM-DD'
   const dateToCheck = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   return notAvailableDays.includes(dateToCheck);
 };
 
 const selectDate = (day) => {
+  desactivarHorasAnteriores();
   selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   timeSlotsElement.innerHTML = ''; // Limpiar slots anteriores
   updateTimeSlots(selectedDate); // Actualizar los slots de tiempo
@@ -489,7 +590,7 @@ const selectDate = (day) => {
   });
 
   if (!isNotAvailable(day)) {
-    // Añadir la clase "selected" al día clicado, (seguramente haya una forma mejor de hacerlo)
+    // Añadir la clase "selected" al día clicado
     chosenDay = [...allDays].find(dayElement => dayElement.textContent === String(day));
     if (chosenDay) {
       chosenDay.classList.add('selected');
@@ -507,9 +608,7 @@ const selectDate = (day) => {
 };
 
 
-
 // Función para obtener fechas no disponibles de la base de datos
-// Y añadir las horas anteriores a la hora actual y una hora más de cortesía para el taller
 async function obtenerFechasNoDisponibles() {
   try {
     const response = await fetch('/php/obtener_fechas_reservadas.php');
@@ -518,42 +617,98 @@ async function obtenerFechasNoDisponibles() {
     if (data.error) {
       console.error(data.error);
     } else {
-      nonAvailableSlots = data; // Almacena las fechas obtenidas en el array global
+      reservedSlots = data; // Almacena las fechas obtenidas en el array global
     }
-
-    const now = new Date();
-    const today = now.toISOString().split('T')[0]; // Fecha de hoy en formato YYYY-MM-DD
-
-    // Hora actual redondeada al siguiente intervalo de 30 minutos
-    let currentHour = now.getHours();
-    let currentMinutes = now.getMinutes() > 0 ? Math.ceil(now.getMinutes() / 30) * 30 : 0;
-    if (currentMinutes === 60) {
-      currentHour += 1;
-      currentMinutes = 0;
-    }
-
-    // Crea los intervalos de 30 minutos desde las 9:00 hasta el siguiente intervalo completo
-    let hour = 9;
-    let minute = 0;
-    //Mientras la hora no sea mayor que la hora actual 
-    // y los minutos menores a los minutos actuales, lo añade al array de no disponibles
-    while (hour <= currentHour || (hour > currentHour && minute < currentMinutes)) {
-
-      const timeSlot = `${today}-${hour.toString()}:${minute.toString().padStart(2, '0')}`;
-      nonAvailableSlots.push(timeSlot);
-
-      // Incrementa de 30 en 30 minutos
-      minute += 30;
-      if (minute === 60) {
-        hour += 1;
-        minute = 0;
-      }
-    }
-
   } catch (error) {
     console.error('Error al obtener las fechas no disponibles:', error);
   }
 }
+
+// Función para añadir días al array correspondiente según el dia actual
+function addPastDaysToNotAvailable(year, month) {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  const currentDay = today.getDate();
+
+
+  // Añadir días anteriores al día actual al array de días no disponibles
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    // Añadir todos los días del mes si el mes es anterior al actual
+    for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
+      const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      if (!notAvailableDays.includes(formattedDate)) {
+        notAvailableDays.push(formattedDate);
+      }
+    }
+  } else if (year === currentYear && month === currentMonth) {
+    // Añadir solo los días anteriores al día actual en el mes actual
+    for (let day = 1; day < currentDay; day++) {
+      const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      if (!notAvailableDays.includes(formattedDate)) {
+        notAvailableDays.push(formattedDate);
+      }
+    }
+  }
+};
+
+
+// Añadir las horas anteriores a la hora actual y una hora más de cortesía para el taller
+function desactivarHorasAnteriores() {
+  const now = new Date();
+  const today = now.toISOString().split('T')[0]; // Fecha de hoy en formato YYYY-MM-DD
+
+  // Hora actual redondeada al siguiente intervalo de 30 minutos
+  let currentHour = now.getHours();
+  let currentMinutes = now.getMinutes() > 0 ? Math.ceil(now.getMinutes() / 30) * 30 : 0;
+  if (currentMinutes === 60) {
+    currentHour += 1;
+    currentMinutes = 0;
+  }
+
+  // Crea los intervalos de 30 minutos desde las 9:00 hasta el siguiente intervalo completo
+  let hour = 9;
+  let minute = 0;
+  //Mientras la hora no sea mayor que la hora actual 
+  // y los minutos menores a los minutos actuales, lo añade al array de no disponibles
+  while (hour <= currentHour || (hour > currentHour && minute < currentMinutes)) {
+
+    const timeSlot = `${today}-${hour.toString()}:${minute.toString().padStart(2, '0')}`;
+    nonAvailableSlots.push(timeSlot);
+
+    // Incrementa de 30 en 30 minutos
+    minute += 30;
+    if (minute === 60) {
+      hour += 1;
+      minute = 0;
+    }
+  }
+}
+
+
+function addCompleteDayClass(year, month, completeDays) {
+  // Recorre cada día en el array completeDays
+  completeDays.forEach(date => {
+    // Extrae el año, mes y día del string en formato YYYY-MM-DD
+    const [dateYear, dateMonth, dateDay] = date.split('-').map(Number);
+
+    // Verifica si el año y el mes coinciden con el mes del calendario actual
+    if (dateYear === year && dateMonth === month + 1) {
+      // Busca el elemento del calendario que corresponde a dateDay
+      const dayElement = Array.from(datesElement.children).find(
+        el => el.classList.contains('date') && el.textContent == dateDay
+      );
+
+      // Si el elemento existe, añade la clase 'completeDay'
+      if (dayElement) {
+        dayElement.classList.add('complete-day');
+      }
+    }
+  });
+}
+
+
+
 
 
 
@@ -561,6 +716,12 @@ function isTimeNotAvailable(date, hour, minute) {
   const formattedDate = `${date}-${hour}:${minute === 0 ? '00' : '30'}`;
   return nonAvailableSlots.includes(formattedDate);
 }
+
+function isTimeReserved(date, hour, minute) {
+  const formattedDate = `${date}-${hour}:${minute === 0 ? '00' : '30'}`;
+  return reservedSlots.includes(formattedDate);
+}
+
 
 
 
@@ -580,6 +741,8 @@ const updateTimeSlots = (selectedDate) => {
 
       if (isTimeNotAvailable(selectedDate, hour, minute)) {
         slot.className = 'not-available';
+      } else if (isTimeReserved(selectedDate, hour, minute)) {
+        slot.className = 'reserved';
       } else {
         slot.className = 'available';
         displayHours = true;
@@ -597,9 +760,10 @@ const updateTimeSlots = (selectedDate) => {
       const slot = document.createElement('button');
       slot.type = 'button';
       const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
-
       if (isTimeNotAvailable(selectedDate, hour, minute)) {
         slot.className = 'not-available';
+      } else if (isTimeReserved(selectedDate, hour, minute)) {
+        slot.className = 'reserved';
       } else {
         slot.className = 'available';
         displayHours = true;
@@ -713,8 +877,8 @@ aceptarButton.addEventListener('click', async () => {
   let twoPointsPos = chosenHour.textContent.indexOf(":");
   let hour = chosenHour.textContent.slice(0, twoPointsPos);
   let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
-  if (isTimeNotAvailable(selectedDate, hour, minute)) {
-    alert('Esta hora acaba de ser reservada por otro usuario');
+  if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
+    alert('Esta hora ya no se encuentra disponible');
     selectDate(chosenDay.textContent);
     let selectedSlot = Array.from(document.querySelectorAll('.time-slots button')).find(element => element.textContent.trim() === chosenHour.textContent);
     selectedSlot.classList.remove('available')
@@ -907,6 +1071,4 @@ function adecuarReseñasATamaño() {
 // Iniciar la observación del DOM
 observeAllElementsForStyles();
 window.onresize = adecuarReseñasATamaño;
-// Inicializar el calendario
-updateCalendar();
 
