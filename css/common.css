@@ -841,6 +841,28 @@ div>.eapps-widget-toolbar {
   }
 }
 
+@media (max-height: 700px) {
+  .modal-content {
+    font-size: 0.8em;
+  }
+
+  #timeSlots button {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-height: 620px) {
+  .modal-content {
+    font-size: 0.6em;
+  }
+
+  #timeSlots button {
+    font-size: 0.75em;
+  }
+}
+
+
+
 @media (max-width: 650px) {
   #pedir-cita-form {
     width: 95%;
