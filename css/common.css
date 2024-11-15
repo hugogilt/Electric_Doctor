@@ -667,8 +667,12 @@ textarea {
   background-color: lightgreen;
 }
 
-.not-available {
-  background-color: lightgray;
+.semi-complete-day {
+  background: linear-gradient(90deg, lightgreen, rgb(241, 183, 74));
+}
+
+.date.not-available, button.not-available {
+  background: lightgray;
 }
 
 .reserved {
@@ -680,11 +684,11 @@ textarea {
 }
 
 .selected {
-  background-color: #3362a4;
-  /* Color para horas seleccionadas */
+  background: #3362a4;
   color: white;
-  /* Color de texto para horas seleccionadas */
 }
+
+
 
 .time-slots {
   margin-top: 1em;
@@ -745,8 +749,8 @@ textarea {
   transition: color 0.2s ease;
 }
 
-.calendar .selected-not-available {
-  background-color: #f28b82;
+.calendar .date.selected-not-available {
+  background: #f28b82;
   /* Color para horas seleccionadas */
   color: white;
   /* Color de texto para horas seleccionadas */

@@ -345,6 +345,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
 
 //CALENDARIO PEDIR CITA
+const fechaActual = new Date();
 let currentDate = new Date();
 currentDate.setDate(1);
 const selectedDayText = document.createElement('p');
@@ -386,12 +387,47 @@ function isDayNotAvailable(date) {
 
 //SI NO HAY NINGUN SLOT AVAILABLE, Y HAY AL MENOS UNO RESERVED
 let completeDays = [];
+
 function isDayComplete(date) {
-  return allSlots.every(time => reservedSlots.includes(`${date}-${time}`));
+  // Verifica si todas las horas del día están en alguno de los dos arrays
+  const allSlotsCovered = allSlots.every(time =>
+    reservedSlots.includes(`${date}-${time}`) || nonAvailableSlots.includes(`${date}-${time}`)
+  );
+
+  // Verifica si al menos una hora está en reservedSlots
+  const hasReservedSlot = allSlots.some(time =>
+    reservedSlots.includes(`${date}-${time}`)
+  );
+
+  // El día es completo si se cumplen ambas condiciones
+  return allSlotsCovered && hasReservedSlot;
 }
+
 
 // SI HAY ALGUN SLOT AVAILABLE Y ALGUNO RESERVED
 let semiCompleteDays = [];
+function isDaySemiComplete(date) {
+  let hasReservedSlot = false;
+  let hasFreeSlot = false;
+
+  for (const time of allSlots) {
+    const fullSlot = `${date}-${time}`;
+    if (reservedSlots.includes(fullSlot)) {
+      hasReservedSlot = true;
+    } else if (!nonAvailableSlots.includes(fullSlot)) {
+      hasFreeSlot = true;
+    }
+
+    // Si se cumplen ambas condiciones, no hace falta seguir comprobando
+    if (hasReservedSlot && hasFreeSlot) {
+      return true;
+    }
+  }
+
+  // Devuelve true solo si ambas condiciones se cumplen
+  return hasReservedSlot && hasFreeSlot;
+}
+
 
 
 const allSlots = [
@@ -422,90 +458,16 @@ function addNotAvailableDays(year, month) {
   }
 }
 
-
-// // Función para verificar si todos los slots de un día están ocupados
-// function isDayFullyBooked(date) {
-//   // Filtra los slots que coinciden con el día específico
-//   const daySlots = [...reservedSlots, ...nonAvailableSlots].filter(slot => slot.startsWith(date));
-//   // Verifica que todos los slots de ese día estén ocupados
-//   return allSlots.every(time => daySlots.includes(`${date}-${time}`));
-// };
-
-// // Función para verificar si todos los slots de un día están ocupados
-// function isDayFullyBooked(date) {
-//   const daySlots = allUnavailableSlots.filter(slot => slot.startsWith(date));
-//   return allSlots.every(time => daySlots.includes(`${date}-${time}`));
-// };
-
-// // Función para verificar si al menos una hora está reservada en el día
-// function isDayPartiallyBooked(date) {
-//   const daySlots = reservedSlots.filter(slot => slot.startsWith(date));
-//   return daySlots.length > 0;
-// };
-
-
-// // Combinar los arrays reservedSlots y nonAvailableSlots
-// const allUnavailableSlots = [...reservedSlots, ...nonAvailableSlots];
-
-
-
-
-
-
-
-
-
-
-
-// // Función para actualizar días completos y no disponibles
-// const updateUnavailableAndCompleteDays = (year, month) => {
-//   addPastDaysToNotAvailable(year, month);
-
-//   for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
-//     const date = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-//     const daySlots = reservedSlots.filter(slot => slot.startsWith(date));
-
-//     if (daySlots.length > 0) {
-//       if (!completeDays.includes(date)) {
-//         completeDays.push(date);
-//       }
-//     } else if (isDayFullyBooked(date) && !notAvailableDays.includes(date)) {
-//       notAvailableDays.push(date);
-//     }
-//   }
-// };
-
-
-
-
-
-// function verificarDiasConSlotsCompletos() {
-//   debugger;
-//   const morningSlots = ["9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30"];
-//   const afternoonSlots = ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
-//   const allSlots = [...morningSlots, ...afternoonSlots];
-
-//   const allUnavailableSlots = [...reservedSlots, ...nonAvailableSlots];
-//   const daysWithAllSlotsBooked = {};
-
-//   allUnavailableSlots.forEach(slot => {
-//     const [date, time] = slot.split('-');
-//     if (!daysWithAllSlotsBooked[date]) {
-//       daysWithAllSlotsBooked[date] = new Set();
-//     }
-//     daysWithAllSlotsBooked[date].add(time);
-//   });
-
-//   const fullyBookedDays = [];
-
-//   for (const [date, times] of Object.entries(daysWithAllSlotsBooked)) {
-//     if (allSlots.every(time => times.has(time))) {
-//       fullyBookedDays.push(date);
-//     }
-//   }
-
-//   return fullyBookedDays;
-// }
+function addSemiCompleteDays(year, month) {
+  // Verificar y añadir los días con todos los slots ocupados al array notAvailableDays
+  const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+  for (let day = 1; day <= totalDaysInMonth; day++) {
+    const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    if (isDaySemiComplete(formattedDate)) {
+      semiCompleteDays.push(formattedDate);
+    }
+  }
+}
 
 // Función updateCalendar adaptada
 async function updateCalendar() {
@@ -563,16 +525,21 @@ async function updateCalendar() {
   }
 
   await obtenerFechasNoDisponibles();
+  if (month === fechaActual.getMonth()) {
+    desactivarHorasAnteriores();
+    addNotAvailableDays(year, month);
+    addNotAvailableDaysClass(year, month, notAvailableDays)
+  }
+
 
   completeDays = [];
   addCompleteDays(year, month);
   addCompleteDayClass(year, month, completeDays);
 
-  if (month === new Date().getMonth()) {
-    desactivarHorasAnteriores();
-    addNotAvailableDays(year, month);
-    addNotAvailableDaysClass(year, month, notAvailableDays)
-  }
+  semiCompleteDays = [];
+  addSemiCompleteDays(year, month);
+  addSemiCompleteDaysClass(year, month, semiCompleteDays)
+  console.log(semiCompleteDays)
 
 };
 
@@ -583,6 +550,12 @@ function isNotAvailable(day) {
   // Crear una fecha en formato 'YYYY-MM-DD'
   const dateToCheck = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   return notAvailableDays.includes(dateToCheck);
+};
+
+function isComplete(day) {
+  // Crear una fecha en formato 'YYYY-MM-DD'
+  const dateToCheck = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  return completeDays.includes(dateToCheck);
 };
 
 const selectDate = (day) => {
@@ -600,7 +573,7 @@ const selectDate = (day) => {
     dayElement.classList.remove('selected-not-available');
   });
 
-  if (!isNotAvailable(day)) {
+  if (!isNotAvailable(day) && !isComplete(day)) {
     // Añadir la clase "selected" al día clicado
     chosenDay = [...allDays].find(dayElement => dayElement.textContent === String(day));
     if (chosenDay) {
@@ -731,7 +704,7 @@ function addNotAvailableDaysClass(year, month, notAvailableDays) {
         el => el.classList.contains('date') && el.textContent == dateDay
       );
 
-      // Si el elemento existe, añade la clase 'completeDay'
+      // Si el elemento existe, añade la clase 'not-available'
       if (dayElement) {
         dayElement.classList.add('not-available');
       }
@@ -739,6 +712,26 @@ function addNotAvailableDaysClass(year, month, notAvailableDays) {
   });
 }
 
+function addSemiCompleteDaysClass(year, month, semiCompleteDays) {
+  // Recorre cada día en el array semiCompleteDays
+  semiCompleteDays.forEach(date => {
+    // Extrae el año, mes y día del string en formato YYYY-MM-DD
+    const [dateYear, dateMonth, dateDay] = date.split('-').map(Number);
+
+    // Verifica si el año y el mes coinciden con el mes del calendario actual
+    if (dateYear === year && dateMonth === month + 1) {
+      // Busca el elemento del calendario que corresponde a dateDay
+      const dayElement = Array.from(datesElement.children).find(
+        el => el.classList.contains('date') && el.textContent == dateDay
+      );
+
+      // Si el elemento existe, añade la clase 'semi-complete-day'
+      if (dayElement) {
+        dayElement.classList.add('semi-complete-day');
+      }
+    }
+  });
+}
 
 
 
@@ -906,17 +899,33 @@ nextMonthButton.addEventListener('click', () => {
 
 aceptarButton.addEventListener('click', async () => {
   await obtenerFechasNoDisponibles();
+  console.log(year.textContent)
+  console.log(currentDate.getMonth())
+  addCompleteDays(year.textContent, currentDate.getMonth());
+  addNotAvailableDays(year.textContent, currentDate.getMonth());
   let twoPointsPos = chosenHour.textContent.indexOf(":");
   let hour = chosenHour.textContent.slice(0, twoPointsPos);
   let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
   if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
     alert('Esta hora ya no se encuentra disponible');
+
+    if (completeDays.includes(selectedDate) || notAvailableDays.includes(selectedDate)) {
+    chosenDay.classList.remove('available');
+    chosenDay.classList.remove('semi-complete-day');
+    updateCalendar();
+    chosenDay.classList.add('selected-not-available');
     selectDate(chosenDay.textContent);
-    let selectedSlot = Array.from(document.querySelectorAll('.time-slots button')).find(element => element.textContent.trim() === chosenHour.textContent);
-    selectedSlot.classList.remove('available')
-    selectedSlot.classList.add('selected-not-available')
-    selectedSlot.click();
+    chosenDay.click();
     return;
+    } else {
+      selectDate(chosenDay.textContent);
+      let selectedSlot = Array.from(document.querySelectorAll('.time-slots button')).find(element => element.textContent.trim() === chosenHour.textContent);
+      selectedSlot.classList.remove('available');
+      selectedSlot.classList.add('selected-not-available');
+      selectedSlot.click();
+      return;
+    }
+    
   }
 
   if (chosenDay && chosenHour) {
