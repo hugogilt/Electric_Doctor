@@ -380,6 +380,9 @@ if (title) {
 
 // SI TODOS LOS SLOTS SON NOT AVAILABLE
 let notAvailableDays = [];
+function isDayNotAvailable(date) {
+  return allSlots.every(time => nonAvailableSlots.includes(`${date}-${time}`));
+}
 
 //SI NO HAY NINGUN SLOT AVAILABLE, Y HAY AL MENOS UNO RESERVED
 let completeDays = [];
@@ -402,19 +405,20 @@ function addCompleteDays(year, month) {
   const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
   for (let day = 1; day <= totalDaysInMonth; day++) {
     const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-    // Si el día tiene al menos una hora reservada, lo agregamos a completeDays
-    // if (isDayPartiallyBooked(formattedDate) && !completeDays.includes(formattedDate)) {
-    //   completeDays.push(formattedDate);
-    // }
     if (isDayComplete(formattedDate)) {
       completeDays.push(formattedDate);
     }
+  }
+}
 
-    // // Si el día tiene todos los slots ocupados, lo agregamos a nonAvailableDays
-    // if (isDayFullyBooked(formattedDate) && !notAvailableDays.includes(formattedDate)) {
-    //   notAvailableDays.push(formattedDate);
-    // }
+function addNotAvailableDays(year, month) {
+  // Verificar y añadir los días con todos los slots ocupados al array notAvailableDays
+  const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+  for (let day = 1; day <= totalDaysInMonth; day++) {
+    const formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    if (isDayNotAvailable(formattedDate)) {
+      notAvailableDays.push(formattedDate);
+    }
   }
 }
 
@@ -559,9 +563,17 @@ async function updateCalendar() {
   }
 
   await obtenerFechasNoDisponibles();
+
   completeDays = [];
   addCompleteDays(year, month);
-  addCompleteDayClass(year, month, completeDays); 
+  addCompleteDayClass(year, month, completeDays);
+
+  if (month === new Date().getMonth()) {
+    desactivarHorasAnteriores();
+    addNotAvailableDays(year, month);
+    addNotAvailableDaysClass(year, month, notAvailableDays)
+  }
+
 };
 
 
@@ -574,7 +586,6 @@ function isNotAvailable(day) {
 };
 
 const selectDate = (day) => {
-  desactivarHorasAnteriores();
   selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   timeSlotsElement.innerHTML = ''; // Limpiar slots anteriores
   updateTimeSlots(selectedDate); // Actualizar los slots de tiempo
@@ -702,6 +713,27 @@ function addCompleteDayClass(year, month, completeDays) {
       // Si el elemento existe, añade la clase 'completeDay'
       if (dayElement) {
         dayElement.classList.add('complete-day');
+      }
+    }
+  });
+}
+
+function addNotAvailableDaysClass(year, month, notAvailableDays) {
+  // Recorre cada día en el array notAvailableDays
+  notAvailableDays.forEach(date => {
+    // Extrae el año, mes y día del string en formato YYYY-MM-DD
+    const [dateYear, dateMonth, dateDay] = date.split('-').map(Number);
+
+    // Verifica si el año y el mes coinciden con el mes del calendario actual
+    if (dateYear === year && dateMonth === month + 1) {
+      // Busca el elemento del calendario que corresponde a dateDay
+      const dayElement = Array.from(datesElement.children).find(
+        el => el.classList.contains('date') && el.textContent == dateDay
+      );
+
+      // Si el elemento existe, añade la clase 'completeDay'
+      if (dayElement) {
+        dayElement.classList.add('not-available');
       }
     }
   });
