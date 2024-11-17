@@ -963,7 +963,7 @@ aceptarButton.addEventListener('click', async () => {
         let hour = chosenHour.textContent.slice(0, twoPointsPos);
         let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
         if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
-          alert('Esta hora ya no se encuentra disponible');
+          showAlert('Esta hora ya no se encuentra disponible');
           return;
         }
           let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
@@ -1002,6 +1002,47 @@ aceptarButton.addEventListener('click', async () => {
       alert('Por favor, selecciona una fecha y una hora antes de aceptar.');
     }
   });
+
+
+// ALERT MESSAGES
+function showAlert(message, type) {
+  // Crear contenedor si no existe
+  let alertContainer = document.getElementById('alert-container');
+  if (!alertContainer) {
+      alertContainer = document.createElement('div');
+      alertContainer.id = 'alert-container';
+      document.body.appendChild(alertContainer);
+  }
+
+  // Crear el mensaje
+  const alertBox = document.createElement('div');
+  alertBox.className = `alert-box ${type === 'positive' ? 'alert-positive' : 'alert-negative'}`;
+  alertBox.textContent = message;
+
+  // Agregar al contenedor
+  alertContainer.appendChild(alertBox);
+
+  // Mostrar confeti si es positivo
+  if (type === 'positive') {
+      confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 } // Ajusta el punto desde donde sale el confeti
+      });
+  }
+
+  // Ocultar mensaje después de 3 segundos
+  setTimeout(() => {
+      alertBox.remove();
+  }, 3000);
+}
+
+
+
+
+showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+
+
 
 
 // REVIEWS
