@@ -961,46 +961,58 @@ aceptarButton.addEventListener('click', async () => {
       openCalendarButton.style.width = 'auto';
       pedirCitaForm.addEventListener("submit", async function (event) {
         event.preventDefault();  // Detiene el envío del formulario
-        debugger;  // Puedes depurar aquí para ver el flujo
-    
+
         // COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
         await obtenerFechasNoDisponibles();
         let twoPointsPos = chosenHour.textContent.indexOf(":");
         let hour = chosenHour.textContent.slice(0, twoPointsPos);
         let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
         if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
-            showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
-            return;
+          showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+          return;
         }
-    
+
         let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
-    
-        // Función para enviar la fecha y hora al servidor
-        try {
-            const response = await fetch('/php/insertar_fecha_elegida.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ fechaHora: chosenDate })  // Enviamos la fecha y hora como un objeto JSON
-            });
-    
-            const data = await response.json();  // Recibimos la respuesta del servidor
-    
-            if (data.success) {
-                // Si la inserción fue exitosa
-                showAlert(data.message, 'positive');
-            } else {
-                // Si hubo un error
-                showAlert(data.message, 'negative');
-            }
-        } catch (error) {
-            console.error('Error al procesar la cita:', error);
-            showAlert('Hubo un problema al procesar tu solicitud.', 'negative');
+
+        // Recoger los datos del formulario
+        const nombre = document.getElementById('nombre').value;
+        const apellidos = document.getElementById('apellidos').value;
+        const telefono = document.getElementById('telefono').value;
+        const correo = document.getElementById('correo').value;
+        const marca = document.getElementById('marca').value;
+        const anio = document.getElementById('anio').value;
+        const problema = document.getElementById('problema').value;
+        const fechaHora = chosenDate; // Este valor debe ser el valor de la fecha seleccionada
+
+        // Crear el objeto JSON con los datos
+        const datosCita = {
+          nombre: nombre,
+          apellidos: apellidos,
+          telefono: telefono,
+          correo: correo,
+          marca: marca,
+          anio: anio,
+          problema: problema,
+          fechaHora: fechaHora
+        };
+
+        // Enviar los datos al servidor
+        const response = await fetch('/php/insertar_datos_citas.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(datosCita)
+        });
+
+        const data = await response.json();
+        if (data.status === 'success') {
+          showAlert(data.message, 'positive');
+        } else {
+          showAlert(data.message, 'negative');
         }
-        
-    });
-    
+      });
+
 
 
       // Ocultar el modal del calendario

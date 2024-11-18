@@ -30,25 +30,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fechaHora = $data->fechaHora;
 
         try {
-            // Preparar la consulta SQL para insertar los datos en la tabla de Clientes
-            $sql = "INSERT INTO Clientes (nombre, apellidos, telefono, correo_electronico, marca_vehiculo, anio_matriculacion, problema, fecha_cita) 
-                    VALUES (:nombre, :apellidos, :telefono, :correo_electronico, :marca_vehiculo, :anio_matriculacion, :problema, :fecha_cita)";
+            // Insertar datos del cliente en la tabla Clientes
+            $sql_cliente = "INSERT INTO Clientes (Nombre, Apellidos, Telefono, Correo_electronico) 
+                            VALUES (:nombre, :apellidos, :telefono, :correo_electronico)";
             
             // Preparar la declaración
-            $stmt = $conexion->prepare($sql);
+            $stmt_cliente = $conexion->prepare($sql_cliente);
 
             // Vincular los parámetros con los valores
-            $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':apellidos', $apellidos);
-            $stmt->bindParam(':telefono', $telefono);
-            $stmt->bindParam(':correo_electronico', $correo);
-            $stmt->bindParam(':marca_vehiculo', $marca);
-            $stmt->bindParam(':anio_matriculacion', $anio);
-            $stmt->bindParam(':problema', $problema);
-            $stmt->bindParam(':fecha_cita', $fechaHora);
+            $stmt_cliente->bindParam(':nombre', $nombre);
+            $stmt_cliente->bindParam(':apellidos', $apellidos);
+            $stmt_cliente->bindParam(':telefono', $telefono);
+            $stmt_cliente->bindParam(':correo_electronico', $correo);
 
-            // Ejecutar la consulta
-            $stmt->execute();
+            // Ejecutar la consulta para insertar en Clientes
+            $stmt_cliente->execute();
+
+            // Obtener el ID del cliente recién insertado
+            $id_cliente = $conexion->lastInsertId();
+
+            // Insertar datos de la cita en la tabla Citas
+            $sql_cita = "INSERT INTO Citas (ID_Cliente, Modelo_Vehiculo, Ano_Matriculacion, Motivo, Fecha_Hora) 
+                         VALUES (:id_cliente, :marca_vehiculo, :anio_matriculacion, :problema, :fecha_cita)";
+            
+            // Preparar la declaración
+            $stmt_cita = $conexion->prepare($sql_cita);
+
+            // Vincular los parámetros con los valores
+            $stmt_cita->bindParam(':id_cliente', $id_cliente);
+            $stmt_cita->bindParam(':marca_vehiculo', $marca);
+            $stmt_cita->bindParam(':anio_matriculacion', $anio);
+            $stmt_cita->bindParam(':problema', $problema);
+            $stmt_cita->bindParam(':fecha_cita', $fechaHora);
+
+            // Ejecutar la consulta para insertar en Citas
+            $stmt_cita->execute();
 
             // Si la inserción fue exitosa
             $response['status'] = 'success';
