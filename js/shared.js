@@ -898,9 +898,8 @@ nextMonthButton.addEventListener('click', () => {
 });
 
 aceptarButton.addEventListener('click', async () => {
+  //COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
   await obtenerFechasNoDisponibles();
-  console.log(year.textContent)
-  console.log(currentDate.getMonth())
   addCompleteDays(year.textContent, currentDate.getMonth());
   addNotAvailableDays(year.textContent, currentDate.getMonth());
   let twoPointsPos = chosenHour.textContent.indexOf(":");
@@ -910,13 +909,13 @@ aceptarButton.addEventListener('click', async () => {
     alert('Esta hora ya no se encuentra disponible');
 
     if (completeDays.includes(selectedDate) || notAvailableDays.includes(selectedDate)) {
-    chosenDay.classList.remove('available');
-    chosenDay.classList.remove('semi-complete-day');
-    updateCalendar();
-    chosenDay.classList.add('selected-not-available');
-    selectDate(chosenDay.textContent);
-    chosenDay.click();
-    return;
+      chosenDay.classList.remove('available');
+      chosenDay.classList.remove('semi-complete-day');
+      updateCalendar();
+      chosenDay.classList.add('selected-not-available');
+      selectDate(chosenDay.textContent);
+      chosenDay.click();
+      return;
     } else {
       selectDate(chosenDay.textContent);
       let selectedSlot = Array.from(document.querySelectorAll('.time-slots button')).find(element => element.textContent.trim() === chosenHour.textContent);
@@ -925,7 +924,7 @@ aceptarButton.addEventListener('click', async () => {
       selectedSlot.click();
       return;
     }
-    
+
   }
 
   if (chosenDay && chosenHour) {
@@ -957,43 +956,93 @@ aceptarButton.addEventListener('click', async () => {
       pedirCitaButton.style.backgroundColor = '#4CAF50';
       pedirCitaButton.style.cursor = 'pointer';
       openCalendarButton.style.width = 'auto';
-      pedirCitaButton.onclick = function () {
-        let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
+      pedirCitaButton.onclick = async function () {
+        //COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
+        await obtenerFechasNoDisponibles();
+        let twoPointsPos = chosenHour.textContent.indexOf(":");
+        let hour = chosenHour.textContent.slice(0, twoPointsPos);
+        let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
+        if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
+          showAlert('Esta hora ya no se encuentra disponible');
+          return;
+        }
+          let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
 
 
-        // Función para enviar la fecha y hora al servidor
+          // Función para enviar la fecha y hora al servidor
 
-        fetch('/php/insertar_fecha_elegida.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ fechaHora: chosenDate }) // Enviamos la fecha y hora como un objeto JSON
-        })
-          .then(response => response.json()) // Recibimos la respuesta del servidor
-          .then(data => {
-            if (data.success) {
-              // Si la inserción fue exitosa
-              alert(data.message);
-            } else {
-              // Si hubo un error
-              alert(data.message);
-            }
+          fetch('/php/insertar_fecha_elegida.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ fechaHora: chosenDate }) // Enviamos la fecha y hora como un objeto JSON
           })
-          .catch(error => console.error('Error al enviar la fecha y hora:', error));
+            .then(response => response.json()) // Recibimos la respuesta del servidor
+            .then(data => {
+              if (data.success) {
+                // Si la inserción fue exitosa
+                alert(data.message);
+              } else {
+                // Si hubo un error
+                alert(data.message);
+              }
+            })
+            .catch(error => console.error('Error al enviar la fecha y hora:', error));
 
 
 
+        }
+
+
+        // Ocultar el modal del calendario
+        calendarModal.style.display = 'none';
       }
-
-
-      // Ocultar el modal del calendario
-      calendarModal.style.display = 'none';
+    } else {
+      alert('Por favor, selecciona una fecha y una hora antes de aceptar.');
     }
-  } else {
-    alert('Por favor, selecciona una fecha y una hora antes de aceptar.');
+  });
+
+
+// ALERT MESSAGES
+function showAlert(message, type) {
+  // Crear contenedor si no existe
+  let alertContainer = document.getElementById('alert-container');
+  if (!alertContainer) {
+      alertContainer = document.createElement('div');
+      alertContainer.id = 'alert-container';
+      document.body.appendChild(alertContainer);
   }
-});
+
+  // Crear el mensaje
+  const alertBox = document.createElement('div');
+  alertBox.className = `alert-box ${type === 'positive' ? 'alert-positive' : 'alert-negative'}`;
+  alertBox.textContent = message;
+
+  // Agregar al contenedor
+  alertContainer.appendChild(alertBox);
+
+  // Mostrar confeti si es positivo
+  if (type === 'positive') {
+      confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 } // Ajusta el punto desde donde sale el confeti
+      });
+  }
+
+  // Ocultar mensaje después de 3 segundos
+  setTimeout(() => {
+      alertBox.remove();
+  }, 3000);
+}
+
+
+
+
+showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+
+
 
 
 // REVIEWS
