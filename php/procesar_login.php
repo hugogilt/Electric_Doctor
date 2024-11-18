@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user['contrasena'])) {
                 // Guardamos la información del usuario en la sesión
                 $_SESSION['nombre'] = $user['nombre'];  // Guardamos el nombre del usuario
+                $_SESSION['correo'] = $correo;  // Guardamos el nombre del usuario
                 $_SESSION['is_logged_in'] = true;           // Marcamos como logueado
 
                 // Respuesta de éxito

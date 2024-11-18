@@ -12,33 +12,42 @@ function positionUserMenu() {
 }
 
 
-function logOut() {
-  // Realizar la petición para cerrar sesión
-  fetch('/php/logout.php', {
-    method: 'GET'
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log("Sesión cerrada correctamente");
-        // Redirigir a la página de login o página principal
-        return true;
-      } else {
-        console.log("Error al cerrar sesión");
-      }
-    })
-    .catch(error => console.error("Error:", error));
+async function logOut() {
+  try {
+    const response = await fetch('/php/logout.php', {
+      method: 'GET'
+    });
 
-}
-
-function cerrarSesion() {
-  logOut();
-  if (userTextSpan.lastChild.nodeType === Node.TEXT_NODE) {
-    userTextSpan.removeChild(userTextSpan.lastChild);
+    if (response.ok) {
+      console.log("Sesión cerrada correctamente");
+      return true; // Si la sesión se cerró correctamente, retornamos true
+    } else {
+      console.log("Error al cerrar sesión - Código de estado:", response.status);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error en la petición de cierre de sesión:", error);
+    return false;
   }
-  userMenu.style.display = 'none';
-  modalCerrarSesion.style.display = 'none';
-
 }
+
+async function cerrarSesion() {
+  // Esperar a que logOut() finalice antes de continuar con el resto del código
+  const sessionClosed = await logOut();
+
+  if (sessionClosed) {
+    // Comprobar si el último hijo de userTextSpan es un nodo de texto
+    if (userTextSpan.lastChild && userTextSpan.lastChild.nodeType === Node.TEXT_NODE) {
+      userTextSpan.removeChild(userTextSpan.lastChild);
+    }
+    userMenu.style.display = 'none';
+    modalCerrarSesion.style.display = 'none';
+    autorellenarFormularioCitas();
+  } else {
+    console.log("No se cerró la sesión correctamente, no se ejecuta el código siguiente.");
+  }
+}
+
 
 
 async function check_user_logged() {
@@ -325,6 +334,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
       if (data.status === 'success') {
         authModal.style.display = 'none';
         userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
+        autorellenarFormularioCitas();
       } else {
         if (data.message === 'Contraseña incorrecta') {
           passwordErrorMessageLogin.textContent = 'Contraseña incorrecta'
@@ -974,42 +984,65 @@ aceptarButton.addEventListener('click', async () => {
 
         let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
 
-        // Recoger los datos del formulario
-        const nombre = document.getElementById('nombre').value;
-        const apellidos = document.getElementById('apellidos').value;
-        const telefono = document.getElementById('telefono').value;
+
         const correo = document.getElementById('correo').value;
-        const marca = document.getElementById('marca').value;
-        const anio = document.getElementById('anio').value;
-        const problema = document.getElementById('problema').value;
-        const fechaHora = chosenDate; // Este valor debe ser el valor de la fecha seleccionada
-
-        // Crear el objeto JSON con los datos
-        const datosCita = {
-          nombre: nombre,
-          apellidos: apellidos,
-          telefono: telefono,
-          correo: correo,
-          marca: marca,
-          anio: anio,
-          problema: problema,
-          fechaHora: fechaHora
-        };
-
-        // Enviar los datos al servidor
-        const response = await fetch('/php/insertar_datos_citas.php', {
+        // Realizar la solicitud AJAX para verificar el correo
+        const correoResponse = await fetch('/php/verificar_correo_usuarios.php', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify(datosCita)
+          body: JSON.stringify({ correo: correo })
         });
 
-        const data = await response.json();
-        if (data.status === 'success') {
-          showAlert(data.message, 'positive');
+        const dataRespuesta = await correoResponse.json();
+        if (dataRespuesta.status === 'exists' && !check_user_logged()) { //Si el correo existe en la tabla usuarios y no ha iniciado sesión
+          authModal.style.display = "flex";
+          loginSection.style.display = "flex";
+          registerSection.style.display = "none";
+          loginForm.reset();
+          correoErrorMessageLogin.textContent = '';
+          passwordErrorMessageLogin.textContent = '';
+          document.getElementById("loginEmail").value = correo;
+          return false; // No proceder con la inserción
         } else {
-          showAlert(data.message, 'negative');
+          // Recoger los datos del formulario
+          const nombre = document.getElementById('nombre').value;
+          const apellidos = document.getElementById('apellidos').value;
+          const telefono = document.getElementById('telefono').value;
+          const marca = document.getElementById('marca').value;
+          const anio = document.getElementById('anio').value;
+          const problema = document.getElementById('problema').value;
+          const fechaHora = chosenDate; // Este valor debe ser el valor de la fecha seleccionada
+
+          // Crear el objeto JSON con los datos
+          const datosCita = {
+            nombre: nombre,
+            apellidos: apellidos,
+            telefono: telefono,
+            correo: correo,
+            marca: marca,
+            anio: anio,
+            problema: problema,
+            fechaHora: fechaHora,
+            dataRespuesta: dataRespuesta
+          };
+
+          // Enviar los datos al servidor
+          const response = await fetch('/php/insertar_datos_citas.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datosCita)
+          });
+
+          const data = await response.json();
+          if (data.status === 'success') {
+            showAlert(data.message, 'positive');
+          } else {
+            showAlert(data.message, 'negative');
+          }
         }
       });
 
@@ -1082,15 +1115,48 @@ function showAlert(message, type) {
 }
 
 
+//CAMBIAR WEB EN FUNCION DE USUARIO
+
+async function getUserData() {
+  try {
+    const response = await fetch('/php/get_user_data.php', {
+      method: 'GET'
+    });
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
+  }
+}
+
+async function autorellenarFormularioCitas() {
+  const isLoggedIn = await check_user_logged();
+  const inputs = {
+    nombre: 'Nombre',
+    apellidos: 'Apellidos',
+    telefono: 'Telefono',
+    correo: 'Correo_Electronico',
+  };
+  if (isLoggedIn) {
+    const userData = await getUserData();
+    console.log(userData);
+    for (const [id, key] of Object.entries(inputs)) {
+      const input = document.getElementById(id);
+      input.value = userData[key];
+      input.disabled = true;
+    }
+  } else {
+    for (const [id, key] of Object.entries(inputs)) {
+      const input = document.getElementById(id);
+      input.value = '';
+      input.disabled = false;
+    }
+  }
+}
 
 
-
-
-
-
-
-
-
+autorellenarFormularioCitas();
 
 
 
