@@ -4,7 +4,7 @@ require '../config/conexion.php';
 
 try {
     // Consulta para obtener todas las fechas y horas no disponibles
-    $sql = "SELECT Fecha_Hora FROM Disponibilidad_Citas";
+    $sql = "SELECT Fecha_Hora FROM Citas";
     $stmt = $conexion->prepare($sql);
     $stmt->execute();
     

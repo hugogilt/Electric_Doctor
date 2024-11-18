@@ -81,6 +81,7 @@ const closeCalendarModal = document.getElementById('closeCalendarModal');
 const aceptarButton = document.createElement('button');
 aceptarButton.setAttribute('type', 'button');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
+const pedirCitaForm = document.querySelector('#pedir-cita-form');
 pedirCitaButton.onclick = function () {
   openCalendarButton.classList.add("saltando");
 
@@ -287,16 +288,16 @@ registerForm.addEventListener("submit", function (event) {
     .then(data => {
       // Verificar si la respuesta es exitosa
       if (data.status === 'success') {
-        alert(data.message);  // Mostrar mensaje de éxito
+        showAlert(data.message, 'positive');  // Mostrar mensaje de éxito
         document.getElementById("registerForm").reset(); // Limpiar el formulario
         openLoginForm();
       } else {
-        alert(data.message);  // Mostrar mensaje de error
+        showAlert(data.message, 'negative'); // Mostrar mensaje de error
       }
     })
     .catch(error => {
       console.error('Error:', error);
-      alert('Ocurrió un error en el registro. Intenta nuevamente.');
+      showAlert('Ocurrió un error en el registro. Intenta nuevamente.', 'negative')
     });
 });
 
@@ -330,13 +331,13 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
         } else if (data.message === 'Correo electrónico no encontrado') {
           correoErrorMessageLogin.textContent = 'Correo electrónico no registrado'
         } else {
-          alert(data.message);
+          showAlert(data.message, 'negative');
         }
       }
     })
     .catch(error => {
       console.error('Error en el inicio de sesión:', error);
-      alert('Ocurrió un error en el inicio de sesión.');
+      showAlert('Ocurrió un error en el inicio de sesión.', 'negative');
     });
 });
 
@@ -906,7 +907,7 @@ aceptarButton.addEventListener('click', async () => {
   let hour = chosenHour.textContent.slice(0, twoPointsPos);
   let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
   if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
-    alert('Esta hora ya no se encuentra disponible');
+    showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
 
     if (completeDays.includes(selectedDate) || notAvailableDays.includes(selectedDate)) {
       chosenDay.classList.remove('available');
@@ -953,55 +954,62 @@ aceptarButton.addEventListener('click', async () => {
     if (openCalendarButton) {
       // Sustituir el textContent del botón con la fecha elegida
       openCalendarButton.textContent = chosenDateString;
+      pedirCitaButton.type = 'submit';
+      pedirCitaButton.onclick = null;
       pedirCitaButton.style.backgroundColor = '#4CAF50';
       pedirCitaButton.style.cursor = 'pointer';
       openCalendarButton.style.width = 'auto';
-      pedirCitaButton.onclick = async function () {
-        //COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
+      pedirCitaForm.addEventListener("submit", async function (event) {
+        event.preventDefault();  // Detiene el envío del formulario
+        debugger;  // Puedes depurar aquí para ver el flujo
+    
+        // COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
         await obtenerFechasNoDisponibles();
         let twoPointsPos = chosenHour.textContent.indexOf(":");
         let hour = chosenHour.textContent.slice(0, twoPointsPos);
         let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
         if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
-          showAlert('Esta hora ya no se encuentra disponible');
-          return;
+            showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+            return;
         }
-          let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
-
-
-          // Función para enviar la fecha y hora al servidor
-
-          fetch('/php/insertar_fecha_elegida.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ fechaHora: chosenDate }) // Enviamos la fecha y hora como un objeto JSON
-          })
-            .then(response => response.json()) // Recibimos la respuesta del servidor
-            .then(data => {
-              if (data.success) {
+    
+        let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
+    
+        // Función para enviar la fecha y hora al servidor
+        try {
+            const response = await fetch('/php/insertar_fecha_elegida.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ fechaHora: chosenDate })  // Enviamos la fecha y hora como un objeto JSON
+            });
+    
+            const data = await response.json();  // Recibimos la respuesta del servidor
+    
+            if (data.success) {
                 // Si la inserción fue exitosa
-                alert(data.message);
-              } else {
+                showAlert(data.message, 'positive');
+            } else {
                 // Si hubo un error
-                alert(data.message);
-              }
-            })
-            .catch(error => console.error('Error al enviar la fecha y hora:', error));
-
-
-
+                showAlert(data.message, 'negative');
+            }
+        } catch (error) {
+            console.error('Error al procesar la cita:', error);
+            showAlert('Hubo un problema al procesar tu solicitud.', 'negative');
         }
+        
+    });
+    
 
 
-        // Ocultar el modal del calendario
-        calendarModal.style.display = 'none';
-      }
-    } else {
-      alert('Por favor, selecciona una fecha y una hora antes de aceptar.');
+      // Ocultar el modal del calendario
+      calendarModal.style.display = 'none';
     }
-  });
+  } else {
+    showAlert('Por favor, selecciona una fecha y una hora antes de aceptar.', 'negative');
+  }
+});
 
 
 // ALERT MESSAGES
@@ -1009,38 +1017,67 @@ function showAlert(message, type) {
   // Crear contenedor si no existe
   let alertContainer = document.getElementById('alert-container');
   if (!alertContainer) {
-      alertContainer = document.createElement('div');
-      alertContainer.id = 'alert-container';
-      document.body.appendChild(alertContainer);
+    alertContainer = document.createElement('div');
+    alertContainer.id = 'alert-container';
+    document.body.appendChild(alertContainer);
   }
 
-  // Crear el mensaje
+  // Eliminar mensajes anteriores si existen
+  while (alertContainer.firstChild) {
+    alertContainer.firstChild.remove();
+  }
+
+  // Crear el nuevo mensaje
   const alertBox = document.createElement('div');
   alertBox.className = `alert-box ${type === 'positive' ? 'alert-positive' : 'alert-negative'}`;
-  alertBox.textContent = message;
 
-  // Agregar al contenedor
+  // Crear el ícono
+  const icon = document.createElement('i');
+  icon.className = 'fas fa-info-circle';
+  icon.style.marginRight = '10px'; // Separar un poco del texto
+
+  // Crear el texto del mensaje
+  const textNode = document.createTextNode(message);
+
+  // Crear la imagen
+  const image = document.createElement('img');
+  image.src = 'images/doctor.png';  // Ruta de la imagen
+  image.alt = 'Doctor';
+  image.style.width = '30px';  // Puedes ajustar el tamaño de la imagen
+  image.style.marginLeft = '10px';  // Espacio entre el mensaje y la imagen
+
+  // Añadir el ícono, el texto y la imagen al mensaje
+  alertBox.appendChild(icon);
+  alertBox.appendChild(textNode);
+  alertBox.appendChild(image);
+
+  // Agregar el nuevo mensaje al contenedor
   alertContainer.appendChild(alertBox);
 
   // Mostrar confeti si es positivo
   if (type === 'positive') {
-      confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 } // Ajusta el punto desde donde sale el confeti
-      });
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.3 }
+    });
   }
 
-  // Ocultar mensaje después de 3 segundos
+  // Eliminar mensaje después de que la animación termine
   setTimeout(() => {
-      alertBox.remove();
-  }, 3000);
+    alertBox.remove();
+  }, 5000);
 }
 
 
 
 
-showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+
+
+
+
+
+
 
 
 

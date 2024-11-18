@@ -9,7 +9,7 @@ $response = array();
 
 try {
     // Consulta para verificar si la fecha y hora ya existen
-    $sqlCheck = "SELECT COUNT(*) FROM Disponibilidad_Citas WHERE Fecha_Hora = :fechaHora";
+    $sqlCheck = "SELECT COUNT(*) FROM Citas WHERE Fecha_Hora = :fechaHora";
     $stmtCheck = $conexion->prepare($sqlCheck);
     $stmtCheck->bindParam(':fechaHora', $fechaHora);
     $stmtCheck->execute();
@@ -18,10 +18,10 @@ try {
     if ($exists > 0) {
         // Si la fecha y hora ya existen, retornamos un mensaje de error
         $response['success'] = false;
-        $response['message'] = 'La fecha y hora ya están ocupadas.';
+        $response['message'] = 'La hora seleccionada ya no se encuentra disponible';
     } else {
         // Insertar la nueva fecha y hora si no está ocupada
-        $sqlInsert = "INSERT INTO Disponibilidad_Citas (Fecha_Hora) VALUES (:fechaHora)";
+        $sqlInsert = "INSERT INTO Citas (Fecha_Hora) VALUES (:fechaHora)";
         $stmtInsert = $conexion->prepare($sqlInsert);
         $stmtInsert->bindParam(':fechaHora', $fechaHora);
 
