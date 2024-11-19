@@ -304,12 +304,13 @@ nav.active a {
 
 #authModal .modal-content .modal-section .password-container input {
   width: 100%;
-padding: 0;
-margin: 0;
-height: initial;
+  padding: 0;
+  margin: 0;
+  height: initial;
 }
 
-.fa-eye, .fa-eye-slash{
+.fa-eye,
+.fa-eye-slash {
   cursor: pointer;
   color: #6c757d;
   display: flex;
@@ -319,8 +320,8 @@ height: initial;
 
 
 #authModal input:focus-visible {
-    outline: none;
-    border: none;
+  outline: none;
+  border: none;
 }
 
 /* MENU DESPLEGABLE USUARIO */
@@ -464,7 +465,7 @@ height: initial;
   text-align: center;
 }
 
-#h2-citas > span {
+#h2-citas>span {
   font-size: 1.2em;
   position: relative;
   bottom: -3px;
@@ -504,6 +505,12 @@ input[type="email"]::placeholder,
 input[type="number"]::placeholder,
 textarea::placeholder {
   color: #999;
+}
+
+input.disabled {
+  background-color: #f0f0f0;
+  color: #777;
+  cursor: not-allowed;
 }
 
 #pedir-cita-button {
@@ -671,7 +678,8 @@ textarea {
   background: linear-gradient(90deg, lightgreen, rgb(241, 183, 74));
 }
 
-.date.not-available, button.not-available {
+.date.not-available,
+button.not-available {
   background: lightgray;
 }
 
@@ -749,7 +757,8 @@ textarea {
   transition: color 0.2s ease;
 }
 
-.calendar .date.selected-not-available, button.selected-not-available {
+.calendar .date.selected-not-available,
+button.selected-not-available {
   background: #f44336;
   /* Color para horas seleccionadas */
   color: white;
@@ -789,7 +798,7 @@ div>.eapps-widget-toolbar {
 }
 
 /* EVITA PROBLEMAS DE OVERFLOW Y SIZING DEL HTML CAUSADOS POR EL PLUGIN DE GOOGLE REVIEWS */
-.Main__Content-sc-1oq93m5-1 {  
+.Main__Content-sc-1oq93m5-1 {
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -809,15 +818,19 @@ div>.eapps-widget-toolbar {
   transform: translateX(-50%);
   z-index: 1000;
   display: flex;
-  flex-direction: column;  /* Los mensajes siguen siendo en columna */
+  flex-direction: column;
+  /* Los mensajes siguen siendo en columna */
   gap: 10px;
-  align-items: center;  /* Asegura que los mensajes se centren horizontalmente */
+  align-items: center;
+  /* Asegura que los mensajes se centren horizontalmente */
 }
 
 /* Estilo base de los mensajes */
 .alert-box {
-  display: flex;  /* Usamos flexbox para alinear icono, texto e imagen */
-  align-items: center;  /* Centrar los elementos verticalmente */
+  display: flex;
+  /* Usamos flexbox para alinear icono, texto e imagen */
+  align-items: center;
+  /* Centrar los elementos verticalmente */
   padding: 15px 20px;
   border-radius: 5px;
   color: white;
@@ -828,14 +841,16 @@ div>.eapps-widget-toolbar {
 
 /* Mensaje positivo */
 .alert-positive {
-  background-color: #4caf50; /* Verde */
+  background-color: #4caf50;
+  /* Verde */
   color: white;
   border: 1px solid #3e8e41;
 }
 
 /* Mensaje negativo */
 .alert-negative {
-  background-color: #f44336; /* Rojo */
+  background-color: #f44336;
+  /* Rojo */
   color: white;
   border: 1px solid #d32f2f;
 }
@@ -844,17 +859,24 @@ div>.eapps-widget-toolbar {
 @keyframes bounceIn {
   0% {
     opacity: 0;
-    transform: translateY(-100px); /* Empieza fuera de pantalla */
+    transform: translateY(-100px);
+    /* Empieza fuera de pantalla */
   }
+
   60% {
     opacity: 1;
-    transform: translateY(0); /* Llega al punto base */
+    transform: translateY(0);
+    /* Llega al punto base */
   }
+
   80% {
-    transform: translateY(-20px); /* Rebote hacia arriba */
+    transform: translateY(-20px);
+    /* Rebote hacia arriba */
   }
+
   100% {
-    transform: translateY(0); /* Se queda fijo */
+    transform: translateY(0);
+    /* Se queda fijo */
   }
 }
 
@@ -863,6 +885,7 @@ div>.eapps-widget-toolbar {
   0% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }

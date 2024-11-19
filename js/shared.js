@@ -19,14 +19,15 @@ async function logOut() {
     });
 
     if (response.ok) {
-      console.log("Sesión cerrada correctamente");
       return true; // Si la sesión se cerró correctamente, retornamos true
     } else {
-      console.log("Error al cerrar sesión - Código de estado:", response.status);
+      // console.log("Error al cerrar sesión - Código de estado:", response.status); CÓDIGO DE ESTADO DE ERROR
+      showAlert('Error al cerrar la sesión, inténtelo de nuevo.', 'negative');
       return false;
     }
   } catch (error) {
-    console.error("Error en la petición de cierre de sesión:", error);
+    // console.error("Error en la petición de cierre de sesión:", error); CÓDIGO DE ERROR
+    showAlert('Error al cerrar la sesión, inténtelo de nuevo.', 'negative');
     return false;
   }
 }
@@ -42,9 +43,10 @@ async function cerrarSesion() {
     }
     userMenu.style.display = 'none';
     modalCerrarSesion.style.display = 'none';
+    showAlert("Sesión cerrada exitosamente", 'positive');
     autorellenarFormularioCitas();
   } else {
-    console.log("No se cerró la sesión correctamente, no se ejecuta el código siguiente.");
+    showAlert('Error al cerrar la sesión, inténtelo de nuevo.', 'negative');
   }
 }
 
@@ -58,17 +60,15 @@ async function check_user_logged() {
     const data = await response.json();
 
     if (data.status === 'logged_in') {
-      console.log('El usuario está logueado');
       if (userTextSpan.lastChild.nodeType !== Node.TEXT_NODE) {
         userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
       }
       return true;
     } else {
-      console.log('El usuario no está logueado');
       return false;
     }
   } catch (error) {
-    console.error("Error al verificar la sesión:", error);
+    // console.error("Error al verificar la sesión:", error);
     return false; // Opcional, puedes decidir cómo manejar los errores aquí
   }
 }
@@ -91,7 +91,9 @@ const aceptarButton = document.createElement('button');
 aceptarButton.setAttribute('type', 'button');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
 const pedirCitaForm = document.querySelector('#pedir-cita-form');
+let eventListenerAñadido = false;
 pedirCitaButton.onclick = function () {
+  showAlert('Por favor, elija fecha', 'negative')
   openCalendarButton.classList.add("saltando");
 
   // Remover la clase después de la animación
@@ -305,8 +307,8 @@ registerForm.addEventListener("submit", function (event) {
       }
     })
     .catch(error => {
-      console.error('Error:', error);
-      showAlert('Ocurrió un error en el registro. Intenta nuevamente.', 'negative')
+      // console.error('Error:', error);
+      showAlert('Ocurrió un error en el registro. Inténtelo de nuevo.', 'negative')
     });
 });
 
@@ -334,6 +336,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
       if (data.status === 'success') {
         authModal.style.display = 'none';
         userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
+        showAlert('Sesión iniciada exitosamente', 'positive');
         autorellenarFormularioCitas();
       } else {
         if (data.message === 'Contraseña incorrecta') {
@@ -346,7 +349,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
       }
     })
     .catch(error => {
-      console.error('Error en el inicio de sesión:', error);
+      // console.error('Error en el inicio de sesión:', error);
       showAlert('Ocurrió un error en el inicio de sesión.', 'negative');
     });
 });
@@ -550,7 +553,6 @@ async function updateCalendar() {
   semiCompleteDays = [];
   addSemiCompleteDays(year, month);
   addSemiCompleteDaysClass(year, month, semiCompleteDays)
-  console.log(semiCompleteDays)
 
 };
 
@@ -610,12 +612,12 @@ async function obtenerFechasNoDisponibles() {
     const data = await response.json();
 
     if (data.error) {
-      console.error(data.error);
+      // console.error(data.error);
     } else {
       reservedSlots = data; // Almacena las fechas obtenidas en el array global
     }
   } catch (error) {
-    console.error('Error al obtener las fechas no disponibles:', error);
+    // console.error('Error al obtener las fechas no disponibles:', error);
   }
 }
 
@@ -969,83 +971,86 @@ aceptarButton.addEventListener('click', async () => {
       pedirCitaButton.style.backgroundColor = '#4CAF50';
       pedirCitaButton.style.cursor = 'pointer';
       openCalendarButton.style.width = 'auto';
-      pedirCitaForm.addEventListener("submit", async function (event) {
-        event.preventDefault();  // Detiene el envío del formulario
+      // ---------------------
+      if (!eventListenerAñadido) {
+        pedirCitaForm.addEventListener("submit", async function (event) {
+          event.preventDefault();  // Detiene el envío del formulario
 
-        // COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
-        await obtenerFechasNoDisponibles();
-        let twoPointsPos = chosenHour.textContent.indexOf(":");
-        let hour = chosenHour.textContent.slice(0, twoPointsPos);
-        let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
-        if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
-          showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
-          return;
-        }
+          // COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
+          await obtenerFechasNoDisponibles();
+          let twoPointsPos = chosenHour.textContent.indexOf(":");
+          let hour = chosenHour.textContent.slice(0, twoPointsPos);
+          let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
+          if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
+            showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+            return;
+          }
 
-        let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
+          let chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
 
 
-        const correo = document.getElementById('correo').value;
-        // Realizar la solicitud AJAX para verificar el correo
-        const correoResponse = await fetch('/php/verificar_correo_usuarios.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ correo: correo })
-        });
-
-        const dataRespuesta = await correoResponse.json();
-        if (dataRespuesta.status === 'exists' && !check_user_logged()) { //Si el correo existe en la tabla usuarios y no ha iniciado sesión
-          authModal.style.display = "flex";
-          loginSection.style.display = "flex";
-          registerSection.style.display = "none";
-          loginForm.reset();
-          correoErrorMessageLogin.textContent = '';
-          passwordErrorMessageLogin.textContent = '';
-          document.getElementById("loginEmail").value = correo;
-          return false; // No proceder con la inserción
-        } else {
-          // Recoger los datos del formulario
-          const nombre = document.getElementById('nombre').value;
-          const apellidos = document.getElementById('apellidos').value;
-          const telefono = document.getElementById('telefono').value;
-          const marca = document.getElementById('marca').value;
-          const anio = document.getElementById('anio').value;
-          const problema = document.getElementById('problema').value;
-          const fechaHora = chosenDate; // Este valor debe ser el valor de la fecha seleccionada
-
-          // Crear el objeto JSON con los datos
-          const datosCita = {
-            nombre: nombre,
-            apellidos: apellidos,
-            telefono: telefono,
-            correo: correo,
-            marca: marca,
-            anio: anio,
-            problema: problema,
-            fechaHora: fechaHora,
-            dataRespuesta: dataRespuesta
-          };
-
-          // Enviar los datos al servidor
-          const response = await fetch('/php/insertar_datos_citas.php', {
+          const correo = document.getElementById('correo').value;
+          // Realizar la solicitud AJAX para verificar el correo
+          const correoResponse = await fetch('/php/verificar_correo_usuarios.php', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json'
             },
-            body: JSON.stringify(datosCita)
+            body: JSON.stringify({ correo: correo })
           });
 
-          const data = await response.json();
-          if (data.status === 'success') {
-            showAlert(data.message, 'positive');
-          } else {
-            showAlert(data.message, 'negative');
-          }
-        }
-      });
+          const dataRespuesta = await correoResponse.json();
+          if (dataRespuesta.status === 'exists' && !check_user_logged()) { //Si el correo existe en la tabla usuarios y no ha iniciado sesión
+            authModal.style.display = "flex";
+            loginSection.style.display = "flex";
+            registerSection.style.display = "none";
+            loginForm.reset();
+            correoErrorMessageLogin.textContent = '';
+            passwordErrorMessageLogin.textContent = '';
+            document.getElementById("loginEmail").value = correo;
+            return false; // No proceder con la inserción
+          } else {  // si el correo existe y ha iniciado sesión o no existe
+            // Recoger los datos del formulario
+            const nombre = document.getElementById('nombre').value;
+            const apellidos = document.getElementById('apellidos').value;
+            const telefono = document.getElementById('telefono').value;
+            const marca = document.getElementById('marca').value;
+            const anio = document.getElementById('anio').value;
+            const problema = document.getElementById('problema').value;
+            const fechaHora = chosenDate; // Este valor debe ser el valor de la fecha seleccionada
 
+            // Crear el objeto JSON con los datos
+            const datosCita = {
+              nombre: nombre,
+              apellidos: apellidos,
+              telefono: telefono,
+              correo: correo,
+              marca: marca,
+              anio: anio,
+              problema: problema,
+              fechaHora: fechaHora,
+              dataRespuesta: dataRespuesta
+            };
+
+            // Enviar los datos al servidor
+            const response = await fetch('/php/insertar_datos_citas.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(datosCita)
+            });
+
+            const data = await response.json();
+            if (data.status === 'success') {
+              showAlert(data.message, 'positive');
+            } else {
+              showAlert(data.message, 'negative');
+            }
+          }
+          eventListenerAñadido = true;
+        });
+      }
 
 
       // Ocultar el modal del calendario
@@ -1123,10 +1128,9 @@ async function getUserData() {
       method: 'GET'
     });
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
-    console.error("Error al obtener los datos:", error);
+    // console.error("Error al obtener los datos:", error);
   }
 }
 
@@ -1140,17 +1144,18 @@ async function autorellenarFormularioCitas() {
   };
   if (isLoggedIn) {
     const userData = await getUserData();
-    console.log(userData);
     for (const [id, key] of Object.entries(inputs)) {
       const input = document.getElementById(id);
       input.value = userData[key];
       input.disabled = true;
+      input.classList.add('disabled');
     }
   } else {
     for (const [id, key] of Object.entries(inputs)) {
       const input = document.getElementById(id);
       input.value = '';
       input.disabled = false;
+      input.classList.remove('disabled');
     }
   }
 }

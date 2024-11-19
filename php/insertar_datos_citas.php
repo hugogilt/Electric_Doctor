@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fechaHora = $data->fechaHora;
         $dataRespuesta = $data->dataRespuesta;
 
-        if ($dataRespuesta->status == 'exists') {
+        if ($dataRespuesta->status == 'exists') { // si es usuario
             $id_usuario = $dataRespuesta->id_usuario;
 
             try {
@@ -73,8 +73,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $response['status'] = 'error';
                 $response['message'] = 'Error al registrar la cita: ' . $e->getMessage();
             }
-        } else {
-            // Si dataRespuesta->status no es 'exists', comprobar si el correo ya existe
+        } else { // si es cliente
+            
             try {
                 // Verificar si el correo electrónico ya está registrado en la base de datos
                 $sql_check_email = "SELECT ID_Cliente FROM Clientes WHERE Correo_electronico = :correo";
