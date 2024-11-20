@@ -9,10 +9,10 @@ try {
     $stmt->execute();
     
     // Fetch all results in a single array
-    $nonAvailableSlots = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $reservedSlots = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
     // Convert the PHP array to JSON
-    echo json_encode($nonAvailableSlots);
+    echo json_encode($reservedSlots);
 } catch (PDOException $e) {
     echo json_encode(['error' => 'Error al obtener las fechas: ' . $e->getMessage()]);
 }

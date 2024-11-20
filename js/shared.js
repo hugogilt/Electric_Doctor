@@ -310,11 +310,26 @@ registerForm.addEventListener("submit", function (event) {
       // console.error('Error:', error);
       showAlert('Ocurrió un error en el registro. Inténtelo de nuevo.', 'negative')
     });
+
+  fetch('/php/PHPMailer-master/src/enviar_correo.php', {
+    method: 'POST',
+    body: formData
+  })
+    .then(response => response.text())  // Obtener la respuesta del servidor
+    .then(data => {
+      // Aquí puedes manejar la respuesta, como mostrar un mensaje de éxito
+      alert(data); // O lo que sea necesario
+    })
+    .catch(error => {
+      // En caso de error, lo mostramos
+      console.error('Error al enviar el correo:', error);
+      alert('Error al enviar el correo.');
+    });
 });
 
 const loginForm = document.getElementById("loginForm");
 //DataBase Connection Login
-document.getElementById("loginForm").addEventListener("submit", function (event) {
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
   event.preventDefault();
   const correo = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
@@ -327,32 +342,62 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
   formData.append('correo', correo);
   formData.append('password', password);
 
-  fetch('/php/procesar_login.php', {
-    method: 'POST',
-    body: formData
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        authModal.style.display = 'none';
-        userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
-        showAlert('Sesión iniciada exitosamente', 'positive');
-        autorellenarFormularioCitas();
-      } else {
-        if (data.message === 'Contraseña incorrecta') {
-          passwordErrorMessageLogin.textContent = 'Contraseña incorrecta'
-        } else if (data.message === 'Correo electrónico no encontrado') {
-          correoErrorMessageLogin.textContent = 'Correo electrónico no registrado'
-        } else {
-          showAlert(data.message, 'negative');
-        }
-      }
-    })
-    .catch(error => {
-      // console.error('Error en el inicio de sesión:', error);
-      showAlert('Ocurrió un error en el inicio de sesión.', 'negative');
+  try {
+    const response = await fetch('/php/procesar_login.php', {
+      method: 'POST',
+      body: formData
     });
+
+    const data = await response.json();
+
+    if (data.status === 'success') {
+      authModal.style.display = 'none';
+      userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
+      showAlert('Sesión iniciada exitosamente', 'positive');
+
+      const userData = await getUserData();
+      if (userData['Rol'] === 'admin') {
+        console.log('es admin!!');
+        document.body.classList.add('admin')
+        if (!document.querySelector('#panel-admin')) {
+          const panelAdminLi = document.createElement("li");
+          panelAdminLi.id = "panel-admin";  // Asignar el ID
+
+          const panelAdminLink = document.createElement("a");
+
+          // Añadir el texto "Panel Admin" al <li>
+          panelAdminLink.textContent = "Panel Admin";
+          panelAdminLink.href = './php/panel-admin.php';
+
+          panelAdminLi.appendChild(panelAdminLink);
+
+          // Obtener la lista <ul> donde se van a añadir los elementos
+          const userMenuUl = userMenu.querySelector("ul");
+
+          // Insertar el nuevo <li> como primer elemento de la lista
+          userMenuUl.insertBefore(panelAdminLi, userMenuUl.firstChild);
+        }
+
+      } else if (document.querySelector('#panel-admin')) {
+        document.querySelector('#panel-admin').remove();
+      }
+
+      autorellenarFormularioCitas();
+    } else {
+      if (data.message === 'Contraseña incorrecta') {
+        passwordErrorMessageLogin.textContent = 'Contraseña incorrecta';
+      } else if (data.message === 'Correo electrónico no encontrado') {
+        correoErrorMessageLogin.textContent = 'Correo electrónico no registrado';
+      } else {
+        showAlert(data.message, 'negative');
+      }
+    }
+  } catch (error) {
+    // Manejar errores de la solicitud
+    showAlert('Ocurrió un error en el inicio de sesión.', 'negative');
+  }
 });
+
 
 
 

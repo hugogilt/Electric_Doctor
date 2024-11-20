@@ -674,7 +674,7 @@ textarea {
   background-color: lightgreen;
 }
 
-.semi-complete-day {
+.admin .semi-complete-day {
   background: linear-gradient(90deg, lightgreen, rgb(241, 183, 74));
 }
 
@@ -684,12 +684,13 @@ button.not-available {
 }
 
 .reserved {
-  background-color: rgb(241, 183, 74);
+  background: lightgray;
 }
 
-.complete-day {
-  background-color: rgb(241, 183, 74);
+.admin .reserved, .admin .complete-day {
+  background: rgb(241, 183, 74);
 }
+
 
 .selected {
   background: #3362a4;

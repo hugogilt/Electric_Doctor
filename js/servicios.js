@@ -10,6 +10,31 @@ const botonPreITVs = document.getElementById('pre-itvs');
 const botonNeumaticos = document.getElementById('neumaticos');
 const botonPuestasAPunto = document.getElementById('puestas-a-punto');
 const botonRevisiones = document.getElementById('revisiones');
+const botonesServicios = document.querySelectorAll('#servicios button');
+let eventListenerAgregado = false;
+
+
+function scrollHandler() {
+    divInformacionServicio.scrollIntoView({ behavior: 'smooth' });
+}
+
+window.onresize = () => {
+    if (window.innerWidth < 750) {
+        if (!eventListenerAgregado) {
+            for (let boton of botonesServicios) {
+                boton.addEventListener('click', scrollHandler);
+            }
+            eventListenerAgregado = true;
+        }
+        
+    } else {
+        for (let boton of botonesServicios) {
+            boton.removeEventListener('click', scrollHandler);
+        }
+        eventListenerAgregado = false;
+    }
+};
+
 
 
 if (title) {
@@ -36,8 +61,9 @@ if (botonReparacionMotos) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/moto.png';
+        img.src = './images/servicios/reparacion-motos.jpeg';
         img.alt = 'Moto';
+        img.id = 'reparacion-motos-img'
 
         const pLargo = document.createElement('p');
         pLargo.textContent = 'En nuestro taller, realizamos diagnósticos precisos y reparaciones expertas en motos eléctricas. Nuestro equipo calificado utiliza tecnología avanzada y piezas de calidad, garantizando un servicio confiable. Elegirnos significa contar con atención personalizada y un compromiso con la satisfacción del cliente, asegurando que tu moto vuelva a la carretera en perfectas condiciones.';
@@ -65,8 +91,9 @@ if (botonReparacionBaterias) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/bateria.png';
+        img.src = './images/servicios/reparacion-baterias.jpeg';
         img.alt = 'Bateria';
+        img.id = 'reparacion-baterias-img'
 
         const pLargo = document.createElement('p');
         pLargo.textContent = 'En nuestro taller, realizamos diagnósticos detallados y reparaciones de baterías de motos eléctricas. Utilizamos tecnología avanzada para garantizar que tu batería funcione de manera eficiente. Elegirnos significa confiar en un equipo experto que se preocupa por la seguridad y la satisfacción del cliente, asegurando que tu moto eléctrica tenga la autonomía necesaria para tus recorridos.';
@@ -95,8 +122,9 @@ if (botonReparacionPatinetes) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/patinete.png';
+        img.src = './images/servicios/reparacion-patinetes.jpeg';
         img.alt = 'Reparación de Patinetes';
+        img.id = 'reparacion-patinetes-img'
 
         const pLargo = document.createElement('p');
         pLargo.textContent = 'Nuestro taller se especializa en la reparación y mantenimiento de patinetes eléctricos. Realizamos diagnósticos exhaustivos y reparaciones en componentes clave, asegurando que tu patinete esté siempre listo para rodar. Al elegirnos, obtienes un servicio rápido y de calidad, respaldado por un equipo comprometido con tu satisfacción y la seguridad en cada trayecto.';
@@ -125,8 +153,9 @@ if (botonEnvios) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/camion.png';
+        img.src = './images/servicios/envio-motos.jpg';
         img.alt = 'Envíos';
+        img.id = 'envio-motos-img'
 
         const pLargo = document.createElement('p');
         pLargo.textContent = 'Nuestro taller proporciona un servicio de envíos eficiente y confiable para motos eléctricas y patinetes. Nos aseguramos de que tus vehículos lleguen en perfectas condiciones y a tiempo. Al elegir nuestro servicio de envíos, cuentas con un equipo dedicado que se preocupa por la seguridad de tu vehículo y la satisfacción del cliente, garantizando una experiencia sin complicaciones.';
@@ -155,8 +184,9 @@ if (botonPreITVs) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/pre-itv.png';
+        img.src = './images/servicios/pre-itv.jpeg';
         img.alt = 'Pre-ITVs';
+        img.id = 'pre-itv-img'
 
         const pLargo = document.createElement('p');
         pLargo.textContent = 'En nuestro taller, ofrecemos servicios de revisión pre-ITV para motos eléctricas y patinetes, garantizando que estén en óptimas condiciones antes de la inspección. Nuestros técnicos revisan todos los aspectos necesarios para cumplir con las normativas de seguridad y emisiones. Al elegir nuestro servicio, te aseguras de que tu vehículo esté preparado para pasar la ITV sin inconvenientes, brindándote tranquilidad y confianza en la carretera.';
@@ -185,9 +215,9 @@ if (botonNeumaticos) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/neumatico.png';
+        img.src = './images/servicios/neumaticos.jpg';
         img.alt = 'Neumáticos';
-
+        img.id = 'neumaticos-img'
         const pLargo = document.createElement('p');
         pLargo.textContent = 'En nuestro taller, proporcionamos servicios de venta y cambio de neumáticos para motos eléctricas y patinetes. Garantizamos que nuestros neumáticos sean de alta calidad y adecuados para tu vehículo. Nuestros expertos te asesoran sobre las mejores opciones y se encargan de la instalación para asegurar tu seguridad y rendimiento. Al elegir nuestro servicio, disfrutas de una conducción más segura y eficiente en cada trayecto.';
 
@@ -215,8 +245,9 @@ if (botonPuestasAPunto) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/puesta-a-punto.png';
+        img.src = './images/servicios/puesta-a-punto.jpeg';
         img.alt = 'Puestas a Punto';
+        img.id = 'puesta-a-punto-img'
 
         const pLargo = document.createElement('p');
         pLargo.textContent = 'En nuestro taller, ofrecemos servicios de puesta a punto para motos eléctricas y patinetes, revisando todos los componentes esenciales. Desde la batería hasta el sistema de frenos, garantizamos que cada parte funcione de manera óptima. Al elegir nuestro servicio, te aseguras de que tu vehículo esté en perfectas condiciones, mejorando su rendimiento y prolongando su vida útil. La seguridad y satisfacción del cliente son nuestra prioridad.';
@@ -245,8 +276,9 @@ if (botonRevisiones) {
 
         // Crea el elemento img
         const img = document.createElement('img');
-        img.src = './images/revision.png';
+        img.src = './images/servicios/revisiones.jpeg';
         img.alt = 'Revisiones';
+        img.id = 'revisiones-img'
 
         const pLargo = document.createElement('p');
         pLargo.textContent = 'En nuestro taller, ofrecemos servicios de revisión para motos eléctricas y patinetes, asegurando que todos los componentes estén en perfecto estado. Realizamos chequeos exhaustivos para detectar posibles fallos y mantener tu vehículo en óptimas condiciones. Al elegir nuestras revisiones, obtienes la tranquilidad de saber que tu moto o patinete está seguro y listo para la carretera, mejorando su rendimiento y prolongando su vida útil.';

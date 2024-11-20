@@ -12,111 +12,148 @@
 #titulo-servicios {
   text-align: center;
 }
- 
 
-  
-  #servicios img {
-    width: 25%;
-    align-self: center;
-  }
 
-  
+
+#servicios img {
+  width: 100%;
+  height: 234px;
+  object-fit: cover;
+  align-self: center;
+}
+
+#servicios #reparacion-motos-img {
+  object-position: 50% 26.37%;
+}
+
+#servicios #pre-itv-img {
+  object-position: 30%;
+}
+
+#servicios #envio-motos-img {
+  object-position: 50% 0;
+}
+
+#servicios #neumaticos-img {
+  object-position: 0 0;
+}
+
+#contenido-servicios {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  margin: 2em;
+  width: 40%;
+  gap: 2em;
+}
+
+
+#listado-servicios {
+  padding: 2em 0;
+}
+
+.botones-servicios {
+  padding: 1em;
+  border-radius: 10px;
+  display: block;
+  margin: 4em 0;
+  width: 100%;
+  font-weight: bold;
+  border: 2px solid white;
+  background-color: rgba(200, 200, 200, 0.6);
+  color: black;
+}
+
+#informacion-servicio {
+  width: auto;
+  height: auto;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  padding: 2em;
+  border-radius: 10px;
+  border: 2px solid white;
+  background-color: rgba(200, 200, 200, 0.6);
+}
+
+
+#informacion-servicio h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.8em;
+  letter-spacing: 1px;
+}
+
+
+/* REVIEWS */
+
+a[href="https://elfsight.com/google-reviews-widget/?utm_source=websites&utm_medium=clients&utm_content=google-reviews&utm_term=%25website_domain%25&utm_campaign=free-widget"] {
+  display: none;
+}
+
+div>.eapps-widget-toolbar {
+  display: none;
+}
+
+
+/* Precarga imágenes como fondos (se cargan automáticamente al abrir la página) */
+body::before {
+  content: '';
+  display: none;
+  background: url('../images/servicios/envio-motos.jpg') no-repeat,
+    url('../images/servicios/neumaticos.jpg') no-repeat,
+    url('../images/servicios/pre-itv.jpeg') no-repeat,
+    url('../images/servicios/puesta-a-punto.jpeg') no-repeat,
+    url('../images/servicios/reparacion-baterias.jpeg') no-repeat,
+    url('../images/servicios/reparacion-motos.jpeg') no-repeat,
+    url('../images/servicios/reparacion-patinetes.jpeg') no-repeat,
+    url('../images/servicios/revisiones.jpeg') no-repeat;
+
+}
+
+
+@media (max-width: 1700px) {
   #contenido-servicios {
-    display: grid;
-    grid-template-columns: 30% 70%;
-    margin: 2em;
-    width: 40%;
-    gap: 2em;
+    display: block;
+    width: 70%;
   }
-
 
   #listado-servicios {
-    padding: 2em 0;
+    display: grid;
+    grid: repeat(2, 1fr) / repeat(4, 1fr);
+    gap: 1em;
   }
-  
+
   .botones-servicios {
-    padding: 1em;
-    border-radius: 10px;
-    display: block;
-    margin: 4em 0;
-    width: 100%;
-    font-weight: bold;
-    border: 2px solid white;
-    background-color: rgba(200, 200, 200, 0.6);
-    color: black;
+    margin: 1em 0;
   }
 
   #informacion-servicio {
-    width: auto;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
     height: auto;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-    padding: 2em;
-    border-radius: 10px;
-    border: 2px solid white;
-    background-color: rgba(200, 200, 200, 0.6);
+  }
+}
+
+
+@media (max-width: 750px) {
+  #contenido-servicios {
+    width: 95%;
   }
 
-
-  #informacion-servicio h3 {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.8em;
-    letter-spacing: 1px;
-  }
-  
-
-  
-  
-  a[href="https://elfsight.com/google-reviews-widget/?utm_source=websites&utm_medium=clients&utm_content=google-reviews&utm_term=%25website_domain%25&utm_campaign=free-widget"] {
-    display: none;
-  }
-  
-   div > .eapps-widget-toolbar {
-    display: none;
-   }
-
-
-   @media (max-width: 1700px) {
-    #contenido-servicios {
-      display: block;
-      width: 70%;
-    }
-
-    #listado-servicios {
-      display: grid;
-      grid: repeat(2, 1fr) / repeat(4, 1fr);
-      gap: 1em;
-    }
-
-    .botones-servicios {
-      margin: 1em 0;
-    }
-
-    #informacion-servicio {
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-      height: auto;
-    }
+  #listado-servicios {
+    display: grid;
+    grid: repeat(4, 1fr) / repeat(2, 1fr);
+    width: 80%;
+    margin: 0 auto;
   }
 
-
-  @media (max-width: 750px) {
-    #contenido-servicios {
-      width: 80%;
-    }
-
-    #listado-servicios {
-      display: grid;
-      grid: repeat(4, 1fr) / repeat(2, 1fr);
-      width: 80%;
-      margin: 0 auto;
-    }
-
-    .botones-servicios {
-      margin: 0.5em 0;
-    }
+  #informacion-servicio {
+    padding: 0.8em;
   }
+
+  .botones-servicios {
+    margin: 0.5em 0;
+  }
+}
