@@ -47,10 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         // Si la inserción fue exitosa
-        $_SESSION['nombre'] = $_POST['nombre'];  // Guardamos el nombre del usuario
-        $_SESSION['apellidos'] = $_POST['apellidos'];  // Guardamos los apellidos del usuario
-        $_SESSION['correo'] = $_POST['correo'];  // Guardamos el correo del usuario
-        $_SESSION['telefono'] = $_POST['telefono'];  // Guardamos el telefono del usuario
         $response['status'] = 'success';
         $response['message'] = 'Usuario registrado exitosamente!';
     } catch (PDOException $e) {

@@ -260,10 +260,11 @@ toLogin.addEventListener("click", (e) => {
 
 const registerForm = document.getElementById("registerForm");
 //DataBase Connection Register
-registerForm.addEventListener("submit", function (event) {
+registerForm.addEventListener("submit", async function (event) {
   event.preventDefault(); // Prevenir el envío del formulario tradicional
   passwordErrorMessageRegister.textContent = '';
   confirmPasswordErrorMessageRegister.textContent = '';
+  
   // Obtener los valores del formulario
   const nombre = document.getElementById("registerName").value;
   const apellidos = document.getElementById("registerSurname").value;
@@ -274,9 +275,9 @@ registerForm.addEventListener("submit", function (event) {
 
   // Validar que las contraseñas coincidan
   if (password !== confirmPassword) {
-    confirmPasswordErrorMessageRegister.textContent = 'Las contraseñas no coinciden.'
+    confirmPasswordErrorMessageRegister.textContent = 'Las contraseñas no coinciden.';
     if (password.length < 8) {
-      passwordErrorMessageRegister.textContent = 'La contraseña debe tener al menos 8 carácteres'
+      passwordErrorMessageRegister.textContent = 'La contraseña debe tener al menos 8 carácteres.';
     }
     return;
   }
@@ -290,42 +291,38 @@ registerForm.addEventListener("submit", function (event) {
   formData.append('password', password);
   formData.append('confirmPassword', confirmPassword);
 
-  // Usar fetch() para enviar el formulario al servidor sin recargar la página
-  fetch('/php/procesar_registro.php', {
-    method: 'POST',
-    body: formData
-  })
-    .then(response => response.json())  // Esperar la respuesta en formato JSON
-    .then(data => {
-      // Verificar si la respuesta es exitosa
-      if (data.status === 'success') {
-        showAlert(data.message, 'positive');  // Mostrar mensaje de éxito
-        document.getElementById("registerForm").reset(); // Limpiar el formulario
-        openLoginForm();
-      } else {
-        showAlert(data.message, 'negative'); // Mostrar mensaje de error
-      }
-    })
-    .catch(error => {
-      // console.error('Error:', error);
-      showAlert('Ocurrió un error en el registro. Inténtelo de nuevo.', 'negative')
+  try {
+    // Enviar el formulario al servidor
+    const response1 = await fetch('/php/procesar_registro.php', {
+      method: 'POST',
+      body: formData
     });
 
-  fetch('/php/PHPMailer-master/src/enviar_correo.php', {
-    method: 'POST',
-    body: formData
-  })
-    .then(response => response.text())  // Obtener la respuesta del servidor
-    .then(data => {
-      // Aquí puedes manejar la respuesta, como mostrar un mensaje de éxito
-      alert(data); // O lo que sea necesario
-    })
-    .catch(error => {
-      // En caso de error, lo mostramos
-      console.error('Error al enviar el correo:', error);
-      alert('Error al enviar el correo.');
-    });
+    const data1 = await response1.json();
+
+    if (data1.status === 'success') {
+      showAlert(data1.message, 'positive');  // Mostrar mensaje de éxito
+      document.getElementById("registerForm").reset(); // Limpiar el formulario
+      openLoginForm();
+
+      // Enviar el correo solo si el registro fue exitoso
+      const response2 = await fetch('/php/PHPMailer-master/src/enviar_correo.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data2 = await response2.text();
+    } else {
+       //TOFIX: No estoy comprobando realmente que este sea el problema
+      showAlert('Este correo ya está asociado a una cuenta, por favor, inicie sesión.', 'negative'); // Mostrar mensaje de error del registro
+    }
+  } catch (error) {
+    // Manejar errores en cualquiera de las peticiones
+    // console.error('Error:', error);
+    showAlert('Ocurrió un error en el registro o en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
+  }
 });
+
 
 const loginForm = document.getElementById("loginForm");
 //DataBase Connection Login

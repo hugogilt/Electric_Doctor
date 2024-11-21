@@ -32,7 +32,6 @@ try {
     $stmt->bindParam(':email', $emailUsuario, PDO::PARAM_STR);
 
     // Ejecutar la consulta
-    echo "Email: $emailUsuario, Token: $token";
     $stmt->execute();
 
     // Si la actualización fue exitosa
@@ -58,10 +57,12 @@ function enviarCorreo($destinatario, $asunto, $cuerpo) {
         // Añadir destinatario
         $mail->addAddress($destinatario); // Dirección de correo a la que se enviará el correo
         $mail->Subject = $asunto; // Asunto del correo
+        $mail->isHTML(true);
         $mail->Body    = $cuerpo; // Cuerpo del mensaje (puede ser HTML o texto)
 
         // Enviar el correo
         if ($mail->send()) {
+            echo $_POST['correo'];
             echo 'Correo enviado correctamente.';
         } else {
             echo 'Error al enviar el correo: ' . $mail->ErrorInfo;
@@ -71,19 +72,21 @@ function enviarCorreo($destinatario, $asunto, $cuerpo) {
     }
 }
 
-$destinatario = 'torsudo@gmail.com';
+$destinatario = $emailUsuario;
 $asunto = "Verifica tu cuenta";
 $verification_link = "https://electric-doctor.infinityfreeapp.com/php/PHPMailer-master/src/verificar_correo.php?token=$token";
 $cuerpo = "
 <html>
-<head>
-  <title>Verifica tu cuenta</title>
-</head>
-<body>
-  <p>Haz clic en el enlace para verificar tu correo:</p>
-  <a href='$verification_link'>Verificar mi cuenta</a>
+<body style='font-family: Arial, sans-serif; background: linear-gradient(180deg, #FFEA00, #FF6C14); margin: 0; padding: 20px; text-align: center;'>
+  <div style='background: linear-gradient(45deg, #3B014D, #A5005A); border-radius: 15px; padding: 20px; max-width: 400px; margin: auto; color: white; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);'>
+    <h1 style='color: #FFEA00; font-size: 2rem; margin-bottom: 15px;'>¡Verifica tu cuenta!</h1>
+    <p style='color: #FFF; font-size: 1.1rem; margin-bottom: 20px;'>Haz clic en el botón de abajo para completar el proceso de verificación de tu cuenta.</p>
+    <a href='$verification_link' target='_blank' style='display: inline-block; background-color: #FFEA00; color: #3B014D; text-decoration: none; padding: 15px 20px; border-radius: 10px; font-size: 1rem; font-weight: bold;'>Verificar mi cuenta</a>
+    <p style='margin-top: 20px; font-size: 0.9rem; color: #FFC;'>Si no solicitaste este correo, ignóralo.</p>
+  </div>
 </body>
 </html>
+
 ";
 
 enviarCorreo($destinatario, $asunto, $cuerpo);
