@@ -856,6 +856,74 @@ div>.eapps-widget-toolbar {
   border: 1px solid #d32f2f;
 }
 
+
+
+/* MODAL VERIFICAR CORREO */
+/* Estilo básico para el modal */
+.modal-verificar-correo {
+  display: none; /* Esconde el modal por defecto */
+  position: fixed; /* Fija el modal en la pantalla */
+  z-index: 10; /* Asegura que el modal esté por encima de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Si es necesario, permite desplazamiento */
+  background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro con opacidad */
+  color: black;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.modal-verificar-correo * {
+  box-sizing: content-box;
+}
+
+/* Estilo para el contenido del modal */
+.modal-verificar-correo-content {
+  background-color: #fefefe;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  height: auto;
+}
+
+/* Estilo para el botón de cerrar */
+.modal-verificar-correo-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: -0.4em;
+}
+
+.modal-verificar-correo-close:hover,
+.modal-verificar-correo-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilo para el botón dentro del modal */
+#modal-verificar-correo-send-email {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+#modal-verificar-correo-send-email:hover {
+  background-color: #45a049;
+}
+
+
+
+
+
 /* Animación: Caída con un rebote */
 @keyframes bounceIn {
   0% {

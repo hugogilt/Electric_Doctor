@@ -6,41 +6,71 @@ ini_set('display_errors', 1);
 include './configurar_phpmailer.php';
 include '../../../config/conexion.php';
 
+
 function generarToken($longitud = 32) {
     return bin2hex(random_bytes($longitud)); // Genera un token seguro
 }
 
 // Obtener el correo electrónico del formulario
-if (isset($_POST['correo'])) {
-    $emailUsuario = $_POST['correo']; // El correo enviado desde el formulario
+if (isset($_POST['correo']) && isset($_POST['nonVerifiedType'])) {
+    $emailUsuario = $_POST['correo']; // Valor de la variable 'correo'
+    $nonVerifiedType = $_POST['nonVerifiedType']; // Valor de la variable 'nonVerifiedType'
     $token = generarToken(); // Generar el token
+    echo $nonVerifiedType;
 } else {
     echo "No se ha proporcionado un email.";
     exit;
 }
 
 // Conectar a la base de datos (usando PDO)
-try {
-    // Preparar la consulta SQL para actualizar el token en la tabla de usuarios
-    $sql = "UPDATE Usuarios SET token = :token WHERE correo_electronico = :email";
-
-    // Preparar la declaración
-    $stmt = $conexion->prepare($sql);
-
-    // Vincular los parámetros con los valores
-    $stmt->bindParam(':token', $token, PDO::PARAM_STR);
-    $stmt->bindParam(':email', $emailUsuario, PDO::PARAM_STR);
-
-    // Ejecutar la consulta
-    $stmt->execute();
-
-    // Si la actualización fue exitosa
-    echo "Token insertado correctamente en la base de datos.";
-
-} catch (PDOException $e) {
-    // Si hay un error en la actualización
-    echo "Error al insertar el token: " . $e->getMessage();
-    exit;
+if ($nonVerifiedType == 'user') {
+    try {
+        // Preparar la consulta SQL para actualizar el token en la tabla de usuarios
+        $sql = "UPDATE Usuarios SET token = :token WHERE correo_electronico = :email";
+    
+        // Preparar la declaración
+        $stmt = $conexion->prepare($sql);
+    
+        // Vincular los parámetros con los valores
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $emailUsuario, PDO::PARAM_STR);
+    
+        // Ejecutar la consulta
+        $stmt->execute();
+    
+        // Si la actualización fue exitosa
+        echo "Token insertado correctamente en la base de datos usuarios." . $nonVerifiedType;
+    
+    } catch (PDOException $e) {
+        // Si hay un error en la actualización
+        echo "Error al insertar el token: " . $e->getMessage();
+        exit;
+    }
+} else if ($nonVerifiedType == 'client') {
+    try {
+        // Preparar la consulta SQL para actualizar el token en la tabla de usuarios
+        $sql = "UPDATE Clientes SET token = :token WHERE correo_electronico = :email";
+    
+        // Preparar la declaración
+        $stmt = $conexion->prepare($sql);
+    
+        // Vincular los parámetros con los valores
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $emailUsuario, PDO::PARAM_STR);
+    
+        // Ejecutar la consulta
+        $stmt->execute();
+    
+        // Si la actualización fue exitosa
+        echo "Token insertado correctamente en la base de datos clientes.";
+    
+    } catch (PDOException $e) {
+        // Si hay un error en la actualización
+        echo "Error al insertar el token: " . $e->getMessage();
+        exit;
+    }
+} else {
+    echo 'subnormal';
 }
 
 
@@ -62,7 +92,6 @@ function enviarCorreo($destinatario, $asunto, $cuerpo) {
 
         // Enviar el correo
         if ($mail->send()) {
-            echo $_POST['correo'];
             echo 'Correo enviado correctamente.';
         } else {
             echo 'Error al enviar el correo: ' . $mail->ErrorInfo;

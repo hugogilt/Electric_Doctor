@@ -112,6 +112,8 @@ const userTextSpan = document.querySelector('#user-text');
 const userMenu = document.querySelector('#user-menu');
 const logoutButton = document.querySelector('#logout');
 const modalCerrarSesion = document.querySelector('#modal-cierre-sesion');
+let correoFormulario;
+let nonVerifiedType;
 // Array global para almacenar los slots no disponibles
 let nonAvailableSlots = [];
 let reservedSlots = [];
@@ -290,6 +292,7 @@ registerForm.addEventListener("submit", async function (event) {
   formData.append('telefono', telefono);
   formData.append('password', password);
   formData.append('confirmPassword', confirmPassword);
+  formData.append('nonVerifiedType', 'user')
 
   try {
     // Enviar el formulario al servidor
@@ -1086,6 +1089,14 @@ aceptarButton.addEventListener('click', async () => {
             const data = await response.json();
             if (data.status === 'success') {
               showAlert(data.message, 'positive');
+            }else if (data.status === 'not-verified-user' || data.status === 'not-verified-client') {
+              verificationModal.style.display = 'flex';
+              correoFormulario = data.correo;
+              if (data.status === 'not-verified-user') {
+                nonVerifiedType = 'user';
+              } else {
+                nonVerifiedType = 'client'
+              }
             } else {
               showAlert(data.message, 'negative');
             }
@@ -1323,4 +1334,48 @@ function adecuarReseñasATamaño() {
 // Iniciar la observación del DOM
 observeAllElementsForStyles();
 window.onresize = adecuarReseñasATamaño;
+
+
+
+
+
+// MODAL VERIFICAR CORREO
+// Obtén los elementos del DOM
+const verificationModal = document.getElementById('modal-verificar-correo');
+const closeModalBtn = document.getElementById('modal-verificar-correo-close');
+const sendVerificationEmailBtn = document.getElementById('modal-verificar-correo-send-email');
+
+
+
+// Cierra el modal cuando el usuario hace clic en la "X"
+closeModalBtn.onclick = function() {
+  verificationModal.style.display = 'none';
+}
+
+// Cierra el modal si el usuario hace clic fuera del modal
+window.onclick = function(event) {
+  if (event.target === verificationModal) {
+    verificationModal.style.display = 'none';
+  }
+}
+
+
+
+// Función para el botón de enviar correo de verificación
+sendVerificationEmailBtn.onclick = async function () {
+  try {
+    const response = await fetch('/php/PHPMailer-master/src/enviar_correo.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', // Tipo de contenido apropiado para strings
+      },
+      body: `correo=${encodeURIComponent(correoFormulario)}&nonVerifiedType=${encodeURIComponent(nonVerifiedType)}` // Codificar el string en formato URL
+    });
+
+    const data = await response.text(); // Obtener la respuesta del servidor como texto
+    showAlert(data); // Mostrar la respuesta como alerta
+  } catch (error) {
+    showAlert('Ocurrió un error en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
+  }
+};
 
