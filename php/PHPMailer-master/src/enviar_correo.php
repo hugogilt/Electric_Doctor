@@ -22,6 +22,13 @@ if (isset($_POST['correo']) && isset($_POST['nonVerifiedType'])) {
     exit;
 }
 
+$nombre = $_POST['nombre'];
+$apellidos = $_POST['apellidos'];
+$telefono = $_POST['telefono'];
+$marca = $_POST['marca'];
+$anio = $_POST['anio'];
+$problema = $_POST['problema'];
+
 // Conectar a la base de datos (usando PDO)
 if ($nonVerifiedType == 'user') {
     try {

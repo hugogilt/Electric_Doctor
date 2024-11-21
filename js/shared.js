@@ -292,7 +292,7 @@ registerForm.addEventListener("submit", async function (event) {
   formData.append('telefono', telefono);
   formData.append('password', password);
   formData.append('confirmPassword', confirmPassword);
-  formData.append('nonVerifiedType', 'user')
+  formData.append('nonVerifiedType', 'user');
 
   try {
     // Enviar el formulario al servidor
@@ -1045,7 +1045,8 @@ aceptarButton.addEventListener('click', async () => {
           });
 
           const dataRespuesta = await correoResponse.json();
-          if (dataRespuesta.status === 'exists' && !check_user_logged()) { //Si el correo existe en la tabla usuarios y no ha iniciado sesión
+          let isUserLogged = await check_user_logged();
+          if (dataRespuesta.status === 'exists' && !isUserLogged) { //Si el correo existe en la tabla usuarios y no ha iniciado sesión
             authModal.style.display = "flex";
             loginSection.style.display = "flex";
             registerSection.style.display = "none";
@@ -1345,6 +1346,29 @@ const verificationModal = document.getElementById('modal-verificar-correo');
 const closeModalBtn = document.getElementById('modal-verificar-correo-close');
 const sendVerificationEmailBtn = document.getElementById('modal-verificar-correo-send-email');
 
+function cogerCamposFormularioCita() {
+// Obtener los valores del formulario
+const nombre = document.getElementById("nombre").value;
+const apellidos = document.getElementById("apellidos").value;
+const telefono = document.getElementById("telefono").value;
+const marca = document.getElementById("marca").value;
+const anio = document.getElementById("anio").value;
+const problema = document.getElementById("problema").value;
+
+
+// Crear un objeto con los datos del formulario
+const formData = new FormData();
+formData.append('nombre', nombre);
+formData.append('apellidos', apellidos);
+formData.append('correo', correoFormulario);
+formData.append('telefono', telefono);
+formData.append('marca', marca);
+formData.append('anio', anio);
+formData.append('problema', problema);
+formData.append('nonVerifiedType', nonVerifiedType);
+
+return formData;
+}
 
 
 // Cierra el modal cuando el usuario hace clic en la "X"
@@ -1366,10 +1390,7 @@ sendVerificationEmailBtn.onclick = async function () {
   try {
     const response = await fetch('/php/PHPMailer-master/src/enviar_correo.php', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', // Tipo de contenido apropiado para strings
-      },
-      body: `correo=${encodeURIComponent(correoFormulario)}&nonVerifiedType=${encodeURIComponent(nonVerifiedType)}` // Codificar el string en formato URL
+      body: cogerCamposFormularioCita()
     });
 
     const data = await response.text(); // Obtener la respuesta del servidor como texto

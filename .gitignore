@@ -9,3 +9,5 @@ shared-recarga en cada click dia.js
 shared-recarga en cada mes.js
 verificacion.html
 verificado.html
+config/conexion.php
+php/PHPMailer-master/src/configurar_phpmailer.php
