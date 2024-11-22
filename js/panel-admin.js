@@ -7,13 +7,39 @@ const timeSlotsElement = document.getElementById('timeSlots');
 const prevMonthButton = document.getElementById('prevMonth');
 const nextMonthButton = document.getElementById('nextMonth');
 const openCalendarButton = document.getElementById('citas');
+const openInvoicesButton = document.getElementById('facturas')
 const calendarModal = document.getElementById('calendarModal');
 const closeCalendarModal = document.getElementById('closeCalendarModal');
-const aceptarButton = document.createElement('button');
-aceptarButton.setAttribute('type', 'button');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
 let eventListenerAñadido = false;
 let ejecutado = false;
+// Array global para almacenar los slots no disponibles
+let nonAvailableSlots = [];
+let reservedSlots = [];
+let selectedDate;
+const formModal = document.getElementById("modal-formulario");
+const closeFormModal = document.getElementById("cerrar-modal-formulario");
+closeCalendarModal.addEventListener('click', function () {
+  formModal.style.display = 'none';
+})
+
+const nombreInput = document.getElementById('nombre');
+const apellidosInput = document.getElementById('apellidos');
+const telefonoInput = document.getElementById('telefono');
+const correoInput = document.getElementById('correo');
+const modeloInput = document.getElementById('marca');
+const anioInput = document.getElementById('anio');
+const problemaInput = document.getElementById('problema');
+
+const contenedorProblema = document.getElementById('contenedor-problema');
+const aceptarButton = document.createElement('button');
+aceptarButton.type = 'submit';
+aceptarButton.id = 'aceptar';
+aceptarButton.textContent = 'Aceptar';
+
+const inputsForm = document.querySelectorAll('input');
+
+const userTextSpan = document.querySelector('#user-text');
 
 
 
@@ -47,7 +73,7 @@ const title = document.querySelector('#title');
 if (title) {
   title.addEventListener('click', function () {
     // Redirigir a otra URL
-    window.location.href = './index.html';
+    window.location.href = 'https://electric-doctor.infinityfreeapp.com';
   });
 }
 
@@ -180,7 +206,6 @@ async function updateCalendar() {
   selectedDayText.textContent = '';
   if (document.querySelector('#diaNoDisponibleAlerta')) dayNotAvailableWarning.remove();
   if (document.querySelector('#horaNoDisponibleAlerta')) hourNotAvailableWarning.remove();
-  if (document.querySelector('#aceptar')) aceptarButton.remove();
 
   const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -500,21 +525,15 @@ const updateTimeSlots = (selectedDate) => {
   if (document.querySelector('#horaNoDisponibleAlerta')) { //Elimino hora no disponible alerta cuando clicko cualquiero otro día
     hourNotAvailableWarning.remove();
   }
-  if (document.querySelector('#aceptar')) {
-    aceptarButton.remove();
-  }
 }
 
 
 
 
-const selectTime = (slot) => {
+async function selectTime(slot) {
   const slots = document.querySelectorAll('.time-slots button');
   if (document.querySelector('#horaNoDisponibleAlerta')) {
     hourNotAvailableWarning.remove();
-  }
-  if (document.querySelector('#aceptar')) {
-    aceptarButton.remove();
   }
   for (let s of slots) {
     s.classList.remove('selected');
@@ -522,12 +541,29 @@ const selectTime = (slot) => {
   }
   if (slot.classList.contains('available')) {
     slot.classList.add('selected');
-    aceptarButton.id = 'aceptar';
-    aceptarButton.textContent = 'Aceptar'
-    timeSlotsElement.after(aceptarButton);
     chosenHour = slot;
+    formModal.style.display = 'flex';
+    contenedorProblema.appendChild(aceptarButton);
+    for (let inputForm of inputsForm) {
+      inputForm.value = '';
+    }
+    problemaInput.value = '';
   }
-  else {
+  else if (slot.classList.contains('reserved')) {
+    const datosCita = await obtenerDatosCita(selectedDate+'-'+slot.textContent);
+    formModal.style.display = 'flex';
+    nombreInput.value = datosCita.Nombre;
+    apellidosInput.value = datosCita.Apellidos;
+    telefonoInput.value = datosCita.Telefono;
+    correoInput.value = datosCita.Correo_Electronico;
+    modeloInput.value = datosCita.Modelo_Vehiculo;
+    anioInput.value = datosCita.Ano_Matriculacion;
+    problemaInput.value = datosCita.Motivo;
+    
+    if (document.getElementById('aceptar')) {
+      aceptarButton.remove();
+    }
+  } else {
     slot.classList.add('selected-not-available');
     hourNotAvailableWarning = document.createElement('p');
     hourNotAvailableWarning.textContent = ('Esta hora no está disponible');
@@ -556,6 +592,9 @@ closeCalendarModal.addEventListener('click', () => {
 window.addEventListener('click', (event) => {
   if (event.target === calendarModal) {
     calendarModal.style.display = 'none';
+  }
+  if (event.target === formModal) {
+    formModal.style.display = 'none';
   }
 });
 
@@ -704,7 +743,7 @@ aceptarButton.addEventListener('click', async () => {
             const data = await response.json();
             if (data.status === 'success') {
               showAlert(data.message, 'positive');
-            }else if (data.status === 'not-verified-user' || data.status === 'not-verified-client') {
+            } else if (data.status === 'not-verified-user' || data.status === 'not-verified-client') {
               verificationModal.style.display = 'flex';
               correoFormulario = data.correo;
               if (data.status === 'not-verified-user') {
@@ -728,3 +767,107 @@ aceptarButton.addEventListener('click', async () => {
     showAlert('Por favor, selecciona una fecha y una hora antes de aceptar.', 'negative');
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+openInvoicesButton.addEventListener('click', async function () {
+  await obtenerCitas();
+})
+
+
+//Obtener datos cita
+async function obtenerDatosCita(fechaHora) {
+  try {
+      // Realizar la solicitud al servidor
+      const response = await fetch('/php/obtener_datos_cita.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ Fecha_Hora: fechaHora })
+      });
+
+      // Convertir la respuesta a JSON
+      const data = await response.json();
+
+      if (data.error) {
+          console.error(data.error);
+          alert(`Error: ${data.error}`);
+      } else {
+          // Devolver los datos obtenidos
+          return data;
+      }
+  } catch (error) {
+      console.error('Error al obtener los datos de la cita:', error);
+      alert('Ocurrió un error al obtener los datos.');
+  }
+}
+
+
+async function obtenerCitas() {
+  try {
+      const response = await fetch('/php/obtener_citas.php', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+          console.error(data.error);
+          alert(`Error: ${data.error}`);
+      } else if (data.citas) {
+          console.log('Citas obtenidas:', data.citas);
+
+          data.citas.forEach(cita => {
+              console.log(`Cita ID: ${cita.ID_Cita}`);
+              console.log(`Modelo: ${cita.Modelo_Vehiculo}`);
+              console.log(`Año: ${cita.Ano_Matriculacion}`);
+              console.log(`Fecha y hora: ${cita.Fecha_Hora}`);
+              console.log(`Motivo: ${cita.Motivo}`);
+              console.log(`Estado: ${cita.Estado}`);
+              console.log(`Nombre: ${cita.Nombre}`);
+              console.log(`Apellidos: ${cita.Apellidos}`);
+              console.log(`Teléfono: ${cita.Telefono}`);
+              console.log(`Correo: ${cita.Correo_Electronico}`);
+          });
+      }
+  } catch (error) {
+      console.error('Error al obtener las citas:', error);
+      alert('Ocurrió un error al obtener las citas.');
+  }
+}
+
+// Llamar a la función para obtener las citas
+
+async function check_user_logged() {
+  try {
+    const response = await fetch('/php/check_session.php', {
+      method: 'GET'
+    });
+    const data = await response.json();
+
+    if (data.status === 'logged_in') {
+      if (userTextSpan.lastChild.nodeType !== Node.TEXT_NODE) {
+        userTextSpan.appendChild(document.createTextNode(`Nos alegra verte de nuevo, ${data.nombre}`));
+      }
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    // console.error("Error al verificar la sesión:", error);
+    return false; // Opcional, puedes decidir cómo manejar los errores aquí
+  }
+}

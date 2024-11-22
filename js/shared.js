@@ -92,6 +92,10 @@ aceptarButton.setAttribute('type', 'button');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
 const pedirCitaForm = document.querySelector('#pedir-cita-form');
 let eventListenerAñadido = false;
+// Array global para almacenar los slots no disponibles
+let nonAvailableSlots = [];
+let reservedSlots = [];
+let selectedDate;
 pedirCitaButton.onclick = function () {
   showAlert('Por favor, elija fecha', 'negative')
   openCalendarButton.classList.add("saltando");
@@ -114,10 +118,7 @@ const logoutButton = document.querySelector('#logout');
 const modalCerrarSesion = document.querySelector('#modal-cierre-sesion');
 let correoFormulario;
 let nonVerifiedType;
-// Array global para almacenar los slots no disponibles
-let nonAvailableSlots = [];
-let reservedSlots = [];
-let selectedDate;
+
 
 const nav = document.querySelector('nav');
 document.getElementById('hamburger').addEventListener('click', function () {
@@ -1402,3 +1403,78 @@ sendVerificationEmailBtn.onclick = async function () {
   }
 };
 
+
+
+
+
+
+
+
+
+//Obtener datos cita
+async function obtenerDatosCita(fechaHora) {
+  try {
+      // Realizar la solicitud al servidor
+      const response = await fetch('/php/obtener_datos_cita.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ Fecha_Hora: fechaHora })
+      });
+
+      // Convertir la respuesta a JSON
+      const data = await response.json();
+
+      if (data.error) {
+          console.error(data.error);
+          alert(`Error: ${data.error}`);
+      } else {
+          // Devolver los datos obtenidos
+          return data;
+      }
+  } catch (error) {
+      console.error('Error al obtener los datos de la cita:', error);
+      alert('Ocurrió un error al obtener los datos.');
+  }
+}
+
+
+async function obtenerCitas() {
+  try {
+      const response = await fetch('/php/obtener_citas.php', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+          console.error(data.error);
+          alert(`Error: ${data.error}`);
+      } else if (data.citas) {
+          console.log('Citas obtenidas:', data.citas);
+
+          data.citas.forEach(cita => {
+              console.log(`Cita ID: ${cita.ID_Cita}`);
+              console.log(`Modelo: ${cita.Modelo_Vehiculo}`);
+              console.log(`Año: ${cita.Ano_Matriculacion}`);
+              console.log(`Fecha y hora: ${cita.Fecha_Hora}`);
+              console.log(`Motivo: ${cita.Motivo}`);
+              console.log(`Estado: ${cita.Estado}`);
+              console.log(`Nombre: ${cita.Nombre}`);
+              console.log(`Apellidos: ${cita.Apellidos}`);
+              console.log(`Teléfono: ${cita.Telefono}`);
+              console.log(`Correo: ${cita.Correo_Electronico}`);
+          });
+      }
+  } catch (error) {
+      console.error('Error al obtener las citas:', error);
+      alert('Ocurrió un error al obtener las citas.');
+  }
+}
+
+// Llamar a la función
+obtenerCitas(); //TOFIX: La llamaré al entrar a mis citas, no al principio del código

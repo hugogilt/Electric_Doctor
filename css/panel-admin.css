@@ -312,7 +312,7 @@
     background-color: lightgreen;
   }
   
-  .admin .semi-complete-day {
+  .semi-complete-day {
     background: linear-gradient(90deg, lightgreen, rgb(241, 183, 74));
   }
   
@@ -325,7 +325,7 @@
     background: lightgray;
   }
   
-  .admin .reserved, .admin .complete-day {
+  .reserved, .complete-day {
     background: rgb(241, 183, 74);
   }
   
@@ -481,3 +481,155 @@
     justify-content: center;
     align-items: center;
   }
+
+
+  /* MODAL FORMULARIO */
+
+  #modal-formulario {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+  }
+  
+  .modal-formulario-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 685px;
+    position: relative;
+    border-radius: 12px;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* FORMULARIO */
+#citas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2em;
+}
+
+#titulo-citas {
+  text-align: center;
+}
+
+.modal-formulario-content h2 {
+  color: #02014E;
+  text-align: center;
+  font-size: 2em;
+  margin: 0.3em 0;
+}
+
+#h2-citas>span {
+  font-size: 1.2em;
+  position: relative;
+  bottom: -3px;
+}
+
+#pedir-cita-form {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 600px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  justify-content: center;
+  font-size: 0.7em;
+  box-sizing: content-box;
+  border: 1px solid #02014E;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+input[type="text"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="email"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+  color: #999;
+}
+
+input.disabled {
+  background-color: #f0f0f0;
+  color: #777;
+  cursor: not-allowed;
+}
+
+#pedir-cita-button {
+  grid-column: span 2;
+  width: 100%;
+  padding: 12px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  transition: background-color 0.3s;
+}
+
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+textarea {
+  resize: none;
+}
+
+.elementos-pedir-cita-form {
+  margin-bottom: 15px;
+}
+
+.elementos-pedir-cita-form:last-child {
+  margin-bottom: 0;
+}
+
+#contenedor-problema,
+#contenedor-pedir-cita-button,
+#abrir-calendario-button {
+  grid-column: span 2;
+}
+  
