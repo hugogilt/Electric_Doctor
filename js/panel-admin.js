@@ -8,6 +8,7 @@ const prevMonthButton = document.getElementById('prevMonth');
 const nextMonthButton = document.getElementById('nextMonth');
 const openCalendarButton = document.getElementById('citas');
 const openInvoicesButton = document.getElementById('facturas')
+const abrirListadoCitasButton = document.getElementById('listado-citas')
 const calendarModal = document.getElementById('calendarModal');
 const closeCalendarModal = document.getElementById('closeCalendarModal');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
@@ -31,7 +32,7 @@ const modeloInput = document.getElementById('marca');
 const anioInput = document.getElementById('anio');
 const problemaInput = document.getElementById('problema');
 
-const contenedorProblema = document.getElementById('contenedor-problema');
+const contenedorProblema = document.querySelector('#contenedor-problema');
 const aceptarButton = document.createElement('button');
 aceptarButton.type = 'submit';
 aceptarButton.id = 'aceptar';
@@ -40,6 +41,10 @@ aceptarButton.textContent = 'Aceptar';
 const inputsForm = document.querySelectorAll('input');
 
 const userTextSpan = document.querySelector('#user-text');
+const modalCancelarCita = document.querySelector('#modal-cancelar-cita');
+const mantenerCitaButton = document.querySelector('#cancelar-cancelar-cita');
+const cancelarCitaButton = document.querySelector('#confirmar-cancelar-cita');
+
 
 
 
@@ -255,7 +260,7 @@ function isComplete(day) {
   return completeDays.includes(dateToCheck);
 };
 
-const selectDate = (day) => {
+function selectDate(day){
   selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   timeSlotsElement.innerHTML = ''; // Limpiar slots anteriores
   updateTimeSlots(selectedDate); // Actualizar los slots de tiempo
@@ -779,8 +784,16 @@ aceptarButton.addEventListener('click', async () => {
 
 
 
-openInvoicesButton.addEventListener('click', async function () {
-  await obtenerCitas();
+abrirListadoCitasButton.addEventListener('click', async function () {
+  const atributoSeleccionado = document.getElementById("filtro-atributo").value;
+  const valorInput = document.getElementById("filtro-valor");
+
+  if (!atributoSeleccionado) {
+    valorInput.disabled = true;
+    valorInput.value = ""; // Limpiar el valor del input al abrir el modal
+  }
+  openListadoCitasModal(await obtenerCitas());
+
 })
 
 
@@ -813,6 +826,7 @@ async function obtenerDatosCita(fechaHora) {
 }
 
 
+// Llamar a la función para obtener las citas
 async function obtenerCitas() {
   try {
       const response = await fetch('/php/obtener_citas.php', {
@@ -825,31 +839,50 @@ async function obtenerCitas() {
       const data = await response.json();
 
       if (data.error) {
-          console.error(data.error);
-          alert(`Error: ${data.error}`);
+          // console.error(data.error);
+          // alert(`Error: ${data.error}`);
+          showAlert('Ha ocurrido un error al obtener las citas', 'negative')
       } else if (data.citas) {
           console.log('Citas obtenidas:', data.citas);
-
-          data.citas.forEach(cita => {
-              console.log(`Cita ID: ${cita.ID_Cita}`);
-              console.log(`Modelo: ${cita.Modelo_Vehiculo}`);
-              console.log(`Año: ${cita.Ano_Matriculacion}`);
-              console.log(`Fecha y hora: ${cita.Fecha_Hora}`);
-              console.log(`Motivo: ${cita.Motivo}`);
-              console.log(`Estado: ${cita.Estado}`);
-              console.log(`Nombre: ${cita.Nombre}`);
-              console.log(`Apellidos: ${cita.Apellidos}`);
-              console.log(`Teléfono: ${cita.Telefono}`);
-              console.log(`Correo: ${cita.Correo_Electronico}`);
-          });
+          return data.citas;
       }
   } catch (error) {
-      console.error('Error al obtener las citas:', error);
-      alert('Ocurrió un error al obtener las citas.');
+      // console.error('Error al obtener las citas:', error);
+      // alert('Ocurrió un error al obtener las citas.');
+      showAlert('Ha ocurrido un error al obtener las citas', 'negative')
+
   }
 }
 
-// Llamar a la función para obtener las citas
+
+async function cancelarCita(idCita) {
+  try {
+      // Realizar la solicitud AJAX para cancelar la cita
+      const response = await fetch('/php/cancelar_cita.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id_cita: idCita })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+          alert(data.message); // Mensaje de éxito
+          // Aquí puedes realizar alguna acción adicional, como actualizar la lista de citas
+      } else {
+          alert(data.message); // Mensaje de error
+      }
+  } catch (error) {
+      console.error('Error al cancelar la cita:', error);
+      alert('Ocurrió un error al cancelar la cita.');
+  }
+}
+
+
+
+
 
 async function check_user_logged() {
   try {
@@ -871,3 +904,297 @@ async function check_user_logged() {
     return false; // Opcional, puedes decidir cómo manejar los errores aquí
   }
 }
+
+// Función para abrir el modal con los datos
+let citasOriginales = []; // Guardará el array inicial de citas
+
+function openListadoCitasModal(arrayDeObjetos) {
+  const modal = document.getElementById("modal-facturas");
+  const modalBody = document.getElementById("modal-facturas-body");
+
+  // Guardar las citas originales para el filtro
+  citasOriginales = arrayDeObjetos;
+
+  // Limpiar el contenido previo
+  while (modalBody.firstChild) {
+    modalBody.removeChild(modalBody.firstChild);
+  }
+
+  // Crear cajones dinámicamente
+  arrayDeObjetos.forEach((objeto) => {
+    modalBody.appendChild(crearCajon(objeto));
+  });
+
+  // Mostrar el modal
+  modal.style.display = "flex";
+}
+
+//TOFIX: IMPLEMENTAR
+function mostrarCitas() {
+  const cajonesLista = document.getElementById("cajones-lista");
+  
+  // Eliminar todos los elementos hijos de cajonesLista (sin usar innerHTML)
+  while (cajonesLista.firstChild) {
+    cajonesLista.removeChild(cajonesLista.firstChild);
+  }
+
+  citas.forEach(cita => {
+    const cajon = crearCajon(cita); // Crear el cajón con la cita
+    cajonesLista.appendChild(cajon); // Añadirlo al modal
+  });
+}
+
+///////
+
+function crearCajon(cita) {
+  // Crear el contenedor principal para cada cita
+  const cajon = document.createElement("div");
+  cajon.classList.add("modal-facturas-cajon");
+
+  // Crear el título del cajón (puede ser el nombre completo o cualquier otra información)
+  const tituloCajon = document.createElement("h3");
+  tituloCajon.classList.add("modal-facturas-titulo");
+  tituloCajon.textContent = `Cita #${cita.ID_Cita}`;
+
+  // Crear el contenido de la cita
+  const contenidoCita = document.createElement("div");
+  contenidoCita.classList.add("modal-facturas-cajon-contenido");
+
+  const nombreCompleto = document.createElement("p");
+  nombreCompleto.textContent = `Nombre Completo: ${cita.Nombre} ${cita.Apellidos}`;
+
+  const modelo = document.createElement("p");
+  modelo.textContent = `Modelo Vehículo: ${cita.Modelo_Vehiculo}`;
+
+  const anoMatriculacion = document.createElement("p");
+  anoMatriculacion.textContent = `Año de Matriculación: ${cita.Ano_Matriculacion}`;
+
+  const telefono = document.createElement("p");
+  telefono.textContent = `Teléfono: ${cita.Telefono}`;
+
+  const correo = document.createElement("p");
+  correo.textContent = `Correo Electrónico: ${cita.Correo_Electronico}`;
+
+  const motivo = document.createElement("p");
+  motivo.textContent = `Motivo: ${cita.Motivo}`;
+
+  const fechaHora = document.createElement("p");
+  fechaHora.textContent = `Fecha y Hora: ${cita.Fecha_Hora}`;
+
+  const estado = document.createElement("p");
+  estado.textContent = `Estado: ${cita.Estado}`;
+
+  // Agregar los párrafos de información al contenedor de contenido
+  contenidoCita.appendChild(nombreCompleto);
+  contenidoCita.appendChild(modelo);
+  contenidoCita.appendChild(anoMatriculacion);
+  contenidoCita.appendChild(telefono);
+  contenidoCita.appendChild(correo);
+  contenidoCita.appendChild(motivo);
+  contenidoCita.appendChild(fechaHora);
+  contenidoCita.appendChild(estado);
+
+  // Crear los botones de Cancelar y Modificar
+  const botonesContainer = document.createElement("div");
+  botonesContainer.classList.add("modal-facturas-botones");
+
+  const botonCancelar = document.createElement("button");
+  botonCancelar.classList.add("modal-facturas-boton");
+  botonCancelar.textContent = "Cancelar";
+  botonCancelar.addEventListener("click", () => showCancelarCitaModal(cita.ID_Cita));
+
+  const botonModificar = document.createElement("button");
+  botonModificar.classList.add("modal-facturas-boton");
+  botonModificar.textContent = "Modificar";
+  botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora)); // Función para modificar
+
+  // Agregar los botones al contenedor de botones
+  botonesContainer.appendChild(botonModificar);
+  botonesContainer.appendChild(botonCancelar);
+
+  // Agregar el título, el contenido de la cita y los botones al cajón
+  cajon.appendChild(tituloCajon);
+  cajon.appendChild(contenidoCita);
+  cajon.appendChild(botonesContainer);
+
+  return cajon;
+}
+
+let idCitaAEliminar;
+// Función para cancelar una cita (puedes modificar la lógica según lo necesites)
+function showCancelarCitaModal(idCita) {
+  modalCancelarCita.style.display = 'flex';
+  idCitaAEliminar = idCita;
+}
+
+cancelarCitaButton.addEventListener('click', function () {
+   cancelarCita(idCitaAEliminar);
+});
+
+
+mantenerCitaButton.addEventListener('click', function () {
+  modalCancelarCita.style.display = 'none';
+});
+
+// Función para modificar una cita (puedes modificar la lógica según lo necesites)
+async function modificarCita(fechaHora) {
+  const [, , day, hour] = fechaHora.split('-');
+  formModal.style.zIndex = '13';
+  await updateCalendar();
+  selectDate(day);
+  const slots = document.querySelectorAll('.time-slots button');
+  for (let slot of slots) {
+    if (slot.textContent == hour) {
+      selectTime(slot);
+    }
+  }
+  // debugger;
+  //TOFIX: Si no haces debugger no se añade
+  contenedorProblema.appendChild(aceptarButton);
+
+}
+
+
+
+// Filtrar citas por atributo y valor
+function filtrarCitas() {
+  const atributo = document.getElementById("filtro-atributo").value;
+  const valorInput = document.getElementById("filtro-valor");
+  const estadoSeleccionado = document.getElementById("filtro-estado").value;
+
+  // Deshabilitar el input si no se selecciona un atributo válido
+  if (!atributo) {
+    valorInput.disabled = true;
+    valorInput.value = ""; // Limpiar el valor del input
+  } else {
+    valorInput.disabled = false;
+  }
+
+  const valor = valorInput.value.toLowerCase();
+  const modalBody = document.getElementById("modal-facturas-body");
+
+  // Filtrar citas
+  const citasFiltradas = citasOriginales.filter((cita) => {
+    let cumpleFiltroPrincipal = true;
+    let cumpleFiltroEstado = true;
+
+    // Aplicar filtro principal
+    if (atributo) {
+      if (atributo === "NombreCompleto") {
+        const nombreCompleto = `${cita.Nombre} ${cita.Apellidos}`.toLowerCase();
+        cumpleFiltroPrincipal = nombreCompleto.includes(valor);
+      } else {
+        const campo = cita[atributo]?.toString().toLowerCase();
+        cumpleFiltroPrincipal = campo && campo.includes(valor);
+      }
+    }
+
+    // Aplicar filtro por estado
+    if (estadoSeleccionado) {
+      cumpleFiltroEstado = cita.Estado.toLowerCase() === estadoSeleccionado;
+    }
+
+    // Solo incluir citas que cumplan ambos filtros
+    return cumpleFiltroPrincipal && cumpleFiltroEstado;
+  });
+
+  // Limpiar el contenido del modal
+  while (modalBody.firstChild) {
+    modalBody.removeChild(modalBody.firstChild);
+  }
+
+  // Si no hay resultados, mostrar el mensaje
+  if (citasFiltradas.length === 0) {
+    const mensaje = document.createElement("p");
+    mensaje.className = "modal-facturas-no-resultados";
+    mensaje.textContent = "No se han encontrado resultados.";
+    modalBody.appendChild(mensaje);
+    return;
+  }
+
+  // Renderizar citas filtradas
+  citasFiltradas.forEach((cita) => {
+    modalBody.appendChild(crearCajon(cita));
+  });
+}
+
+
+
+
+
+// Cerrar modal al hacer clic fuera del contenido
+function closeModalOnOutsideClick(event) {
+  const modalContent = document.querySelector(".modal-facturas-content");
+  if (!modalContent.contains(event.target)) {
+    closeModal();
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal-facturas");
+  modal.style.display = "none";
+}
+
+
+
+// ALERT MESSAGES
+function showAlert(message, type) {
+  // Crear contenedor si no existe
+  let alertContainer = document.getElementById('alert-container');
+  if (!alertContainer) {
+    alertContainer = document.createElement('div');
+    alertContainer.id = 'alert-container';
+    document.body.appendChild(alertContainer);
+  }
+
+  // Eliminar mensajes anteriores si existen
+  while (alertContainer.firstChild) {
+    alertContainer.firstChild.remove();
+  }
+
+  // Crear el nuevo mensaje
+  const alertBox = document.createElement('div');
+  alertBox.className = `alert-box ${type === 'positive' ? 'alert-positive' : 'alert-negative'}`;
+
+  // Crear el ícono
+  const icon = document.createElement('i');
+  icon.className = 'fas fa-info-circle';
+  icon.style.marginRight = '10px'; // Separar un poco del texto
+
+  // Crear el texto del mensaje
+  const textNode = document.createTextNode(message);
+
+  // Crear la imagen
+  const image = document.createElement('img');
+  image.src = 'images/doctor.png';  // Ruta de la imagen
+  image.alt = 'Doctor';
+  image.style.width = '30px';  // Puedes ajustar el tamaño de la imagen
+  image.style.marginLeft = '10px';  // Espacio entre el mensaje y la imagen
+
+  // Añadir el ícono, el texto y la imagen al mensaje
+  alertBox.appendChild(icon);
+  alertBox.appendChild(textNode);
+  alertBox.appendChild(image);
+
+  // Agregar el nuevo mensaje al contenedor
+  alertContainer.appendChild(alertBox);
+
+  // Mostrar confeti si es positivo
+  if (type === 'positive') {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.3 }
+    });
+  }
+
+  // Eliminar mensaje después de que la animación termine
+  setTimeout(() => {
+    alertBox.remove();
+  }, 5000);
+}
+
+
+
+
+

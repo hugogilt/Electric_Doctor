@@ -368,7 +368,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
           // Añadir el texto "Panel Admin" al <li>
           panelAdminLink.textContent = "Panel Admin";
-          panelAdminLink.href = './php/panel-admin.php';
+          panelAdminLink.href = './php/panel_admin.php';
 
           panelAdminLi.appendChild(panelAdminLink);
 

@@ -74,21 +74,21 @@ try {
                         <div id="titulo-citas">
                             <h2 id="h2-citas">Calendario Citas</h2>
                         </div>
-                        <img width="100%" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
+                        <img width="50%" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
                         </section>
 
                         <section class="option" id="facturas">
                         <div id="titulo-citas">
-                            <h2 id="h2-citas">Calendario Citas</h2>
+                            <h2 id="h2-citas">Facturas</h2>
                         </div>
-                        <img width="100px" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
+                        <img width="50%" src="/images/panel-admin/factura.png" alt="Abrir Calendario">
                         </section>
 
-                        <section class="option" id="citas">
+                        <section class="option" id="listado-citas">
                         <div id="titulo-citas">
-                            <h2 id="h2-citas">Calendario Citas</h2>
+                            <h2 id="h2-citas">Listado Citas</h2>
                         </div>
-                        <img width="100px" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
+                        <img width="50%" src="/images/panel-admin/listado.png" alt="Abrir Calendario">
                         </section>
 
                         <section class="option" id="citas">
@@ -130,36 +130,83 @@ try {
 
                         <!-- Modal formulario -->
                         <div id="modal-formulario" class="modal">
-                        <div class="modal-formulario-content">
-                            <span class="close" id="cerrar-modal-formulario">&times;</span>
-                            <h2>Electric Doctor</h2>
-                            <form id="pedir-cita-form">
-                            <div class="elementos-pedir-cita">
-                                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                            <div class="modal-formulario-content">
+                                <span class="close" id="cerrar-modal-formulario">&times;</span>
+                                <h2>Electric Doctor</h2>
+                                <form id="pedir-cita-form">
+                                <div class="elementos-pedir-cita">
+                                    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                                </div>
+                                <div class="elementos-pedir-cita">
+                                    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+                                </div>
+                                <div class="elementos-pedir-cita">
+                                    <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Teléfono (9 dígitos)"
+                                    title="El número debe tener 9 dígitos" required>
+                                </div>
+                                <div class="elementos-pedir-cita">
+                                    <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
+                                </div>
+                                <div class="elementos-pedir-cita">
+                                    <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
+                                </div>
+                                <div class="elementos-pedir-cita">
+                                    <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024" required>
+                                </div>
+                                <div id="contenedor-problema" class="grupo-formulario">
+                                    <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
+                                    required></textarea>
+                                </div>
+                                </form>
                             </div>
-                            <div class="elementos-pedir-cita">
-                                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
-                            </div>
-                            <div class="elementos-pedir-cita">
-                                <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Teléfono (9 dígitos)"
-                                title="El número debe tener 9 dígitos" required>
-                            </div>
-                            <div class="elementos-pedir-cita">
-                                <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
-                            </div>
-                            <div class="elementos-pedir-cita">
-                                <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
-                            </div>
-                            <div class="elementos-pedir-cita">
-                                <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024" required>
-                            </div>
-                            <div id="contenedor-problema" class="grupo-formulario">
-                                <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
-                                required></textarea>
-                            </div>
-                            </form>
                         </div>
+
+                        <!-- MODAL CITAS -->
+                        <div id="modal-facturas" class="modal-facturas" onclick="closeModalOnOutsideClick(event)">
+                          <div class="modal-facturas-content">
+                            <span class="modal-facturas-close" onclick="closeModal()">&times;</span>
+                            <div id="modal-facturas-filter">
+                              <label for="filtro-atributo">Filtrar por:</label>
+                              <select id="filtro-atributo" onchange="filtrarCitas()">
+                                <option value="">Seleccionar</option>
+                                <option value="NombreCompleto">Nombre completo</option>
+                                <option value="Telefono">Teléfono</option>
+                                <option value="Correo_Electronico">Correo Electrónico</option>
+                                <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
+                                <option value="Ano_Matriculacion">Año de Matriculación</option>
+                              </select>
+
+                              <input
+                                type="text"
+                                id="filtro-valor"
+                                placeholder="Escribe el valor..."
+                                oninput="filtrarCitas()"
+                              />
+
+                              <!-- Filtro independiente para el estado -->
+                              <label for="filtro-estado">Estado:</label>
+                              <select id="filtro-estado" onchange="filtrarCitas()">
+                                <option value="">Cualquiera</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="completada">Completada</option>
+                              </select>
+                            </div>
+                            <div id="modal-facturas-body">
+                              <!-- Los cajones dinámicos se generarán aquí -->
+                            </div>
+                          </div>
                         </div>
+
+
+                        <!-- Modal de confirmación de cancelar cita -->
+                        <div id="modal-cancelar-cita" class="modal-cancelar-cita">
+                          <div class="modal-cancelar-cita-content">
+                            <p>¿Está seguro de que desea cancelar la cita?</p>
+                            <button id="confirmar-cancelar-cita" class="confirmar-cancelar-cita">Sí, cancelar cita</button>
+                            <button id="cancelar-cancelar-cita" class="cancelar-cancelar-cita">No, mantener cita</button>
+                          </div>
+                        </div>
+
                     </main>
                     <script src="../js/panel-admin.js"></script>
                     </body>
