@@ -743,11 +743,12 @@ textarea {
 }
 
 #modal-citas .pendiente {
-  background-color: red;
+  background-color: rgba(204, 0, 0, 0.5);
 }
 
 #modal-citas .completada {
-  background-color: green;
+  background-color: rgba(34, 139, 34, 0.5)
+
 }
 
 

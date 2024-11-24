@@ -883,6 +883,38 @@ async function cancelarCita(idCita) {
 }
 
 
+// Función para cambiar el estado de la cita
+async function cambiarEstadoCita(idCita) {
+  try {
+      // Realizar la solicitud AJAX para cambiar el estado de la cita
+      const response = await fetch('/php/cambiar_estado_cita.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id_cita: idCita })
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+          // alert(data.message); // Mensaje de éxito
+          showAlert(data.message, 'positive');
+      } else {
+          // alert(data.message); // Mensaje de error
+          showAlert(data.message, 'negative');
+      }
+  } catch (error) {
+      // console.error('Error al cambiar el estado de la cita:', error);
+      showAlert('Ocurrió un error al cambiar el estado de la cita.', 'negative');
+  }
+}
+
+
+
+
+
+
 
 
 
@@ -1017,6 +1049,7 @@ function crearCajon(cita) {
     const botonCompletada = document.createElement("button");
     botonCompletada.classList.add("modal-citas-boton");
     botonCompletada.textContent = "Cita completada";
+    botonCompletada.style.float = 'right';
     botonCompletada.addEventListener("click", () => marcarCitaCompletada(cita.ID_Cita));
     botonesContainer.appendChild(botonCompletada); // Añadir el botón "Cita completada"
   }
@@ -1025,6 +1058,7 @@ function crearCajon(cita) {
     const botonPendiente = document.createElement("button");
     botonPendiente.classList.add("modal-citas-boton");
     botonPendiente.textContent = "Cita pendiente";
+    botonPendiente.style.float = 'right';
     botonPendiente.addEventListener("click", () => marcarCitaPendiente(cita.ID_Cita));
     botonesContainer.appendChild(botonPendiente); // Añadir el botón "Cita pendiente"
   }
@@ -1042,26 +1076,16 @@ function crearCajon(cita) {
 }
 
 // Función para marcar una cita como completada
-function marcarCitaCompletada(citaId) {
-  // Aquí puedes añadir el código para cambiar el estado de la cita a "Completada" en el backend
-  const cita = citasOriginales.find(c => c.ID_Cita === citaId);
-  if (cita) {
-    cita.Estado = "Completada";
-  }
-
-  // Después de cambiar el estado, puedes volver a renderizar las citas filtradas
+async function marcarCitaCompletada(citaId) {
+  await cambiarEstadoCita(citaId);
+  mostrarCitas(await obtenerCitas());
   filtrarCitas();
 }
 
 // Función para marcar una cita como pendiente
-function marcarCitaPendiente(citaId) {
-  // Aquí puedes añadir el código para cambiar el estado de la cita a "Pendiente" en el backend
-  const cita = citasOriginales.find(c => c.ID_Cita === citaId);
-  if (cita) {
-    cita.Estado = "Pendiente";
-  }
-
-  // Después de cambiar el estado, puedes volver a renderizar las citas filtradas
+async function marcarCitaPendiente(citaId) {
+  await cambiarEstadoCita(citaId);
+  mostrarCitas(await obtenerCitas());
   filtrarCitas();
 }
 
