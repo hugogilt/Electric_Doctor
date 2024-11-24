@@ -916,6 +916,8 @@ async function openListadoCitasModal() {
 
   // Mostrar el modal
   modal.style.display = "flex";
+  let citas = await obtenerCitas();
+  actualizarContadorResultados(citas.length);
 }
 
 
@@ -936,6 +938,7 @@ function mostrarCitas(arrayDeObjetos) {
     arrayDeObjetos.forEach((objeto) => {
       modalCitasBody.appendChild(crearCajon(objeto));
     });
+
 }
 
 
@@ -1160,6 +1163,8 @@ function filtrarCitas() {
     mensaje.className = "modal-citas-no-resultados";
     mensaje.textContent = "No se han encontrado resultados.";
     modalCitasBody.appendChild(mensaje);
+    // Actualizar el contador de resultados
+    actualizarContadorResultados(0);
     return;
   }
 
@@ -1167,7 +1172,17 @@ function filtrarCitas() {
   citasFiltradas.forEach((cita) => {
     modalCitasBody.appendChild(crearCajon(cita));
   });
+
+  // Actualizar el contador de resultados
+  actualizarContadorResultados(citasFiltradas.length);
 }
+
+// Función para actualizar el contador de resultados
+function actualizarContadorResultados(cantidad) {
+  const contador = document.getElementById("contador-citas");
+  contador.textContent = `Mostrando ${cantidad} resultados`;
+}
+
 
 
 
@@ -1194,6 +1209,7 @@ const recargarCitasButton = document.getElementById("recargar-citas");
 recargarCitasButton.addEventListener('click', async function () {
     // Obtener nuevamente las citas y mostrarlas
     mostrarCitas(await obtenerCitas());
+    filtrarCitas();
 });
 
 
