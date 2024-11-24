@@ -942,9 +942,17 @@ function mostrarCitas(arrayDeObjetos) {
 function crearCajon(cita) {
   // Crear el contenedor principal para cada cita
   const cajon = document.createElement("div");
+  
+  // Añadir la clase correspondiente según el estado de la cita
+  if (cita.Estado === 'Pendiente') {
+    cajon.classList.add("pendiente");
+  } else if (cita.Estado === 'Completada') {
+    cajon.classList.add("completada");
+  }
+
   cajon.classList.add("modal-citas-cajon");
 
-  // Crear el título del cajón (puede ser el nombre completo o cualquier otra información)
+  // Crear el título del cajón
   const tituloCajon = document.createElement("h3");
   tituloCajon.classList.add("modal-citas-titulo");
   tituloCajon.textContent = `Cita #${cita.ID_Cita}`;
@@ -999,7 +1007,24 @@ function crearCajon(cita) {
   const botonModificar = document.createElement("button");
   botonModificar.classList.add("modal-citas-boton");
   botonModificar.textContent = "Modificar";
-  botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora)); // Función para modificar
+  botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora));
+
+  // Botón "Cita completada" solo si el estado es 'Pendiente'
+  if (cita.Estado === 'Pendiente') {
+    const botonCompletada = document.createElement("button");
+    botonCompletada.classList.add("modal-citas-boton");
+    botonCompletada.textContent = "Cita completada";
+    botonCompletada.addEventListener("click", () => marcarCitaCompletada(cita.ID_Cita));
+    botonesContainer.appendChild(botonCompletada); // Añadir el botón "Cita completada"
+  }
+  // Botón "Cita pendiente" solo si el estado es 'Completada'
+  else if (cita.Estado === 'Completada') {
+    const botonPendiente = document.createElement("button");
+    botonPendiente.classList.add("modal-citas-boton");
+    botonPendiente.textContent = "Cita pendiente";
+    botonPendiente.addEventListener("click", () => marcarCitaPendiente(cita.ID_Cita));
+    botonesContainer.appendChild(botonPendiente); // Añadir el botón "Cita pendiente"
+  }
 
   // Agregar los botones al contenedor de botones
   botonesContainer.appendChild(botonModificar);
@@ -1012,6 +1037,32 @@ function crearCajon(cita) {
 
   return cajon;
 }
+
+// Función para marcar una cita como completada
+function marcarCitaCompletada(citaId) {
+  // Aquí puedes añadir el código para cambiar el estado de la cita a "Completada" en el backend
+  const cita = citasOriginales.find(c => c.ID_Cita === citaId);
+  if (cita) {
+    cita.Estado = "Completada";
+  }
+
+  // Después de cambiar el estado, puedes volver a renderizar las citas filtradas
+  filtrarCitas();
+}
+
+// Función para marcar una cita como pendiente
+function marcarCitaPendiente(citaId) {
+  // Aquí puedes añadir el código para cambiar el estado de la cita a "Pendiente" en el backend
+  const cita = citasOriginales.find(c => c.ID_Cita === citaId);
+  if (cita) {
+    cita.Estado = "Pendiente";
+  }
+
+  // Después de cambiar el estado, puedes volver a renderizar las citas filtradas
+  filtrarCitas();
+}
+
+
 
 let idCitaAEliminar;
 // Función para cancelar una cita (puedes modificar la lógica según lo necesites)
@@ -1177,7 +1228,7 @@ function showAlert(message, type) {
 
   // Crear la imagen
   const image = document.createElement('img');
-  image.src = 'images/doctor.png';  // Ruta de la imagen
+  image.src = '../images/doctor.png';  // Ruta de la imagen
   image.alt = 'Doctor';
   image.style.width = '30px';  // Puedes ajustar el tamaño de la imagen
   image.style.marginLeft = '10px';  // Espacio entre el mensaje y la imagen

@@ -742,6 +742,15 @@ textarea {
   margin-top: 0.4em;
 }
 
+#modal-citas .pendiente {
+  background-color: red;
+}
+
+#modal-citas .completada {
+  background-color: green;
+}
+
+
 
 /* MODAL CANCELAR CITA */
 .modal-cancelar-cita {

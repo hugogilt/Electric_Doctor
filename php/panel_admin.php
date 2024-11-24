@@ -211,6 +211,9 @@ try {
 
                               <!-- Botón de recargar -->
                               <button id="recargar-citas" class="modal-citas-boton">Recargar</button>
+                              <!-- <div id="resultado-citas">
+                                <p id="contador-citas">Mostrando 0 resultados</p>
+                              </div> -->
                             </div>
                             <div id="modal-citas-body">
                               <!-- Los cajones dinámicos se generarán aquí -->
