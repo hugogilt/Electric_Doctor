@@ -168,37 +168,56 @@ try {
                             <div id="modal-citas-filter">
                               <label for="filtro-atributo">Filtrar por:</label>
                               <select id="filtro-atributo" onchange="filtrarCitas()">
-                                  <option value="">Seleccionar</option>
-                                  <option value="NombreCompleto">Nombre completo</option>
-                                  <option value="Telefono">Teléfono</option>
-                                  <option value="Correo_Electronico">Correo Electrónico</option>
-                                  <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
-                                  <option value="Ano_Matriculacion">Año de Matriculación</option>
+                                <option value="">Seleccionar</option>
+                                <option value="NombreCompleto">Nombre completo</option>
+                                <option value="Telefono">Teléfono</option>
+                                <option value="Correo_Electronico">Correo Electrónico</option>
+                                <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
+                                <option value="Ano_Matriculacion">Año de Matriculación</option>
                               </select>
 
                               <input
-                                  type="text"
-                                  id="filtro-valor"
-                                  placeholder="Escribe el valor..."
-                                  oninput="filtrarCitas()"
+                                type="text"
+                                id="filtro-valor"
+                                placeholder="Escribe el valor..."
+                                oninput="filtrarCitas()"
                               />
 
                               <!-- Filtro independiente para el estado -->
                               <label for="filtro-estado">Estado:</label>
                               <select id="filtro-estado" onchange="filtrarCitas()">
-                                  <option value="">Cualquiera</option>
-                                  <option value="pendiente">Pendiente</option>
-                                  <option value="completada">Completada</option>
+                                <option value="">Cualquiera</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="completada">Completada</option>
+                              </select>
+
+                              <!-- Filtro por mes -->
+                              <label for="filtro-mes">Mes:</label>
+                              <select id="filtro-mes" onchange="filtrarCitas()">
+                                <option value="">Cualquiera</option>
+                                <option value="01">Enero</option>
+                                <option value="02">Febrero</option>
+                                <option value="03">Marzo</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Mayo</option>
+                                <option value="06">Junio</option>
+                                <option value="07">Julio</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
                               </select>
 
                               <!-- Botón de recargar -->
                               <button id="recargar-citas" class="modal-citas-boton">Recargar</button>
-                          </div>
-                          <div id="modal-citas-body">
-                            <!-- Los cajones dinámicos se generarán aquí -->
+                            </div>
+                            <div id="modal-citas-body">
+                              <!-- Los cajones dinámicos se generarán aquí -->
+                            </div>
                           </div>
                         </div>
-                      </div>
+
 
 
                         <!-- Modal de confirmación de cancelar cita -->

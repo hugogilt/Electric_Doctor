@@ -1056,6 +1056,7 @@ function filtrarCitas() {
   const atributo = document.getElementById("filtro-atributo").value;
   const valorInput = document.getElementById("filtro-valor");
   const estadoSeleccionado = document.getElementById("filtro-estado").value;
+  const mesSeleccionado = document.getElementById("filtro-mes").value;
 
   // Deshabilitar el input si no se selecciona un atributo válido
   if (!atributo) {
@@ -1071,6 +1072,7 @@ function filtrarCitas() {
   const citasFiltradas = citasOriginales.filter((cita) => {
     let cumpleFiltroPrincipal = true;
     let cumpleFiltroEstado = true;
+    let cumpleFiltroMes = true;
 
     // Aplicar filtro principal
     if (atributo) {
@@ -1088,8 +1090,14 @@ function filtrarCitas() {
       cumpleFiltroEstado = cita.Estado.toLowerCase() === estadoSeleccionado;
     }
 
-    // Solo incluir citas que cumplan ambos filtros
-    return cumpleFiltroPrincipal && cumpleFiltroEstado;
+    // Aplicar filtro por mes
+    if (mesSeleccionado) {
+      const mesCita = cita.Fecha_Hora.split("-")[1]; // El mes está en la posición 1 del formato YYYY-MM-DD-HH:MM
+      cumpleFiltroMes = mesCita === mesSeleccionado;
+    }
+
+    // Solo incluir citas que cumplan todos los filtros
+    return cumpleFiltroPrincipal && cumpleFiltroEstado && cumpleFiltroMes;
   });
 
   // Limpiar el contenido del modal
@@ -1109,6 +1117,7 @@ function filtrarCitas() {
     modalCitasBody.appendChild(crearCajon(cita));
   });
 }
+
 
 
 
