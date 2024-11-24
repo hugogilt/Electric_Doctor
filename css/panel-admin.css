@@ -629,7 +629,7 @@ textarea {
 
 
 /* MODAL CITAS */
-.modal-facturas {
+.modal-citas {
   position: fixed;
   top: 0;
   left: 0;
@@ -642,7 +642,7 @@ textarea {
   z-index: 12;
 }
 
-.modal-facturas-content {
+.modal-citas-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -653,7 +653,7 @@ textarea {
   color: black;
 }
 
-.modal-facturas-close {
+.modal-citas-close {
   position: absolute;
   top: 10px;
   right: 20px;
@@ -661,7 +661,7 @@ textarea {
   cursor: pointer;
 }
 
-.modal-facturas-cajon {
+.modal-citas-cajon {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin: 10px 0;
@@ -669,27 +669,27 @@ textarea {
   background-color: #f9f9f9;
 }
 
-.modal-facturas-cajon h3 {
+.modal-citas-cajon h3 {
   margin: 0 0 10px 0;
   font-size: 18px;
   color: #333;
 }
 
-.modal-facturas-cajon p {
+.modal-citas-cajon p {
   margin: 5px 0;
   font-size: 14px;
   color: #555;
 }
 
-#modal-facturas-filter {
+#modal-citas-filter {
   margin-bottom: 15px;
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-#modal-facturas-filter select,
-#modal-facturas-filter input {
+#modal-citas-filter select,
+#modal-citas-filter input {
   padding: 5px;
   font-size: 14px;
   border: 1px solid #ddd;
@@ -697,11 +697,11 @@ textarea {
   width: 100%;
 }
 
-#modal-facturas-filter input {
+#modal-citas-filter input {
   flex-grow: 1;
 }
 
-.modal-facturas-no-resultados {
+.modal-citas-no-resultados {
   font-weight: bold;
   text-align: center;
   font-size: 1em;
@@ -710,7 +710,7 @@ textarea {
 }
 
 
-#modal-facturas-filter label {
+#modal-citas-filter label {
   display: inline-block;
   margin-right: 5px;
   font-weight: bold;
@@ -722,7 +722,7 @@ textarea {
   cursor: not-allowed;
 }
 
-.modal-facturas-boton {
+.modal-citas-boton {
   background-color: #007bff;
   color: white;
   border: none;
@@ -734,11 +734,11 @@ textarea {
   transition: background-color 0.3s;
 }
 
-.modal-facturas-boton:hover {
+.modal-citas-boton:hover {
   background-color: #0056b3;
 }
 
-.modal-facturas-botones {
+.modal-citas-botones {
   margin-top: 0.4em;
 }
 

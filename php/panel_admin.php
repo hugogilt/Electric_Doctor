@@ -162,40 +162,43 @@ try {
                         </div>
 
                         <!-- MODAL CITAS -->
-                        <div id="modal-facturas" class="modal-facturas" onclick="closeModalOnOutsideClick(event)">
-                          <div class="modal-facturas-content">
-                            <span class="modal-facturas-close" onclick="closeModal()">&times;</span>
-                            <div id="modal-facturas-filter">
+                        <div id="modal-citas" class="modal-citas" onclick="closeModalOnOutsideClick(event)">
+                          <div class="modal-citas-content">
+                            <span class="modal-citas-close" onclick="closeModal()">&times;</span>
+                            <div id="modal-citas-filter">
                               <label for="filtro-atributo">Filtrar por:</label>
                               <select id="filtro-atributo" onchange="filtrarCitas()">
-                                <option value="">Seleccionar</option>
-                                <option value="NombreCompleto">Nombre completo</option>
-                                <option value="Telefono">Teléfono</option>
-                                <option value="Correo_Electronico">Correo Electrónico</option>
-                                <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
-                                <option value="Ano_Matriculacion">Año de Matriculación</option>
+                                  <option value="">Seleccionar</option>
+                                  <option value="NombreCompleto">Nombre completo</option>
+                                  <option value="Telefono">Teléfono</option>
+                                  <option value="Correo_Electronico">Correo Electrónico</option>
+                                  <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
+                                  <option value="Ano_Matriculacion">Año de Matriculación</option>
                               </select>
 
                               <input
-                                type="text"
-                                id="filtro-valor"
-                                placeholder="Escribe el valor..."
-                                oninput="filtrarCitas()"
+                                  type="text"
+                                  id="filtro-valor"
+                                  placeholder="Escribe el valor..."
+                                  oninput="filtrarCitas()"
                               />
 
                               <!-- Filtro independiente para el estado -->
                               <label for="filtro-estado">Estado:</label>
                               <select id="filtro-estado" onchange="filtrarCitas()">
-                                <option value="">Cualquiera</option>
-                                <option value="pendiente">Pendiente</option>
-                                <option value="completada">Completada</option>
+                                  <option value="">Cualquiera</option>
+                                  <option value="pendiente">Pendiente</option>
+                                  <option value="completada">Completada</option>
                               </select>
-                            </div>
-                            <div id="modal-facturas-body">
-                              <!-- Los cajones dinámicos se generarán aquí -->
-                            </div>
+
+                              <!-- Botón de recargar -->
+                              <button id="recargar-citas" class="modal-citas-boton">Recargar</button>
+                          </div>
+                          <div id="modal-citas-body">
+                            <!-- Los cajones dinámicos se generarán aquí -->
                           </div>
                         </div>
+                      </div>
 
 
                         <!-- Modal de confirmación de cancelar cita -->

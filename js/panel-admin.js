@@ -783,6 +783,8 @@ aceptarButton.addEventListener('click', async () => {
 
 
 
+//Modal Citas
+const modalCitasBody = document.getElementById("modal-citas-body");
 
 abrirListadoCitasButton.addEventListener('click', async function () {
   const atributoSeleccionado = document.getElementById("filtro-atributo").value;
@@ -792,7 +794,7 @@ abrirListadoCitasButton.addEventListener('click', async function () {
     valorInput.disabled = true;
     valorInput.value = ""; // Limpiar el valor del input al abrir el modal
   }
-  openListadoCitasModal(await obtenerCitas());
+  openListadoCitasModal();
 
 })
 
@@ -843,7 +845,6 @@ async function obtenerCitas() {
           // alert(`Error: ${data.error}`);
           showAlert('Ha ocurrido un error al obtener las citas', 'negative')
       } else if (data.citas) {
-          console.log('Citas obtenidas:', data.citas);
           return data.citas;
       }
   } catch (error) {
@@ -869,14 +870,15 @@ async function cancelarCita(idCita) {
       const data = await response.json();
 
       if (data.success) {
-          alert(data.message); // Mensaje de éxito
-          // Aquí puedes realizar alguna acción adicional, como actualizar la lista de citas
+          // alert(data.message); // Mensaje de éxito
+          showAlert('Cita eliminada con éxito.', 'positive');
       } else {
-          alert(data.message); // Mensaje de error
+          // alert(data.message); // Mensaje de error
+          showAlert('Ocurrió un error al cancelar la cita.', 'negative');
       }
   } catch (error) {
-      console.error('Error al cancelar la cita:', error);
-      alert('Ocurrió un error al cancelar la cita.');
+      // console.error('Error al cancelar la cita:', error);
+      showAlert('Ocurrió un error al cancelar la cita.', 'negative');
   }
 }
 
@@ -908,57 +910,48 @@ async function check_user_logged() {
 // Función para abrir el modal con los datos
 let citasOriginales = []; // Guardará el array inicial de citas
 
-function openListadoCitasModal(arrayDeObjetos) {
-  const modal = document.getElementById("modal-facturas");
-  const modalBody = document.getElementById("modal-facturas-body");
-
-  // Guardar las citas originales para el filtro
-  citasOriginales = arrayDeObjetos;
-
-  // Limpiar el contenido previo
-  while (modalBody.firstChild) {
-    modalBody.removeChild(modalBody.firstChild);
-  }
-
-  // Crear cajones dinámicamente
-  arrayDeObjetos.forEach((objeto) => {
-    modalBody.appendChild(crearCajon(objeto));
-  });
+async function openListadoCitasModal() {
+  const modal = document.getElementById("modal-citas");
+  mostrarCitas(await obtenerCitas());
 
   // Mostrar el modal
   modal.style.display = "flex";
 }
 
-//TOFIX: IMPLEMENTAR
-function mostrarCitas() {
-  const cajonesLista = document.getElementById("cajones-lista");
-  
-  // Eliminar todos los elementos hijos de cajonesLista (sin usar innerHTML)
-  while (cajonesLista.firstChild) {
-    cajonesLista.removeChild(cajonesLista.firstChild);
-  }
 
-  citas.forEach(cita => {
-    const cajon = crearCajon(cita); // Crear el cajón con la cita
-    cajonesLista.appendChild(cajon); // Añadirlo al modal
-  });
+function limpiarListadoCitas() {
+  while (modalCitasBody.firstChild) {
+    modalCitasBody.removeChild(modalCitasBody.firstChild);
+  }
 }
 
-///////
+function mostrarCitas(arrayDeObjetos) {
+    // Guardar las citas originales para el filtro
+    citasOriginales = arrayDeObjetos;
+
+    // Limpiar el contenido previo
+    limpiarListadoCitas();
+  
+    // Crear cajones dinámicamente
+    arrayDeObjetos.forEach((objeto) => {
+      modalCitasBody.appendChild(crearCajon(objeto));
+    });
+}
+
 
 function crearCajon(cita) {
   // Crear el contenedor principal para cada cita
   const cajon = document.createElement("div");
-  cajon.classList.add("modal-facturas-cajon");
+  cajon.classList.add("modal-citas-cajon");
 
   // Crear el título del cajón (puede ser el nombre completo o cualquier otra información)
   const tituloCajon = document.createElement("h3");
-  tituloCajon.classList.add("modal-facturas-titulo");
+  tituloCajon.classList.add("modal-citas-titulo");
   tituloCajon.textContent = `Cita #${cita.ID_Cita}`;
 
   // Crear el contenido de la cita
   const contenidoCita = document.createElement("div");
-  contenidoCita.classList.add("modal-facturas-cajon-contenido");
+  contenidoCita.classList.add("modal-citas-cajon-contenido");
 
   const nombreCompleto = document.createElement("p");
   nombreCompleto.textContent = `Nombre Completo: ${cita.Nombre} ${cita.Apellidos}`;
@@ -996,15 +989,15 @@ function crearCajon(cita) {
 
   // Crear los botones de Cancelar y Modificar
   const botonesContainer = document.createElement("div");
-  botonesContainer.classList.add("modal-facturas-botones");
+  botonesContainer.classList.add("modal-citas-botones");
 
   const botonCancelar = document.createElement("button");
-  botonCancelar.classList.add("modal-facturas-boton");
+  botonCancelar.classList.add("modal-citas-boton");
   botonCancelar.textContent = "Cancelar";
   botonCancelar.addEventListener("click", () => showCancelarCitaModal(cita.ID_Cita));
 
   const botonModificar = document.createElement("button");
-  botonModificar.classList.add("modal-facturas-boton");
+  botonModificar.classList.add("modal-citas-boton");
   botonModificar.textContent = "Modificar";
   botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora)); // Función para modificar
 
@@ -1027,8 +1020,10 @@ function showCancelarCitaModal(idCita) {
   idCitaAEliminar = idCita;
 }
 
-cancelarCitaButton.addEventListener('click', function () {
+cancelarCitaButton.addEventListener('click', async function () {
    cancelarCita(idCitaAEliminar);
+   modalCancelarCita.style.removeProperty('display');
+   mostrarCitas(await obtenerCitas());
 });
 
 
@@ -1071,7 +1066,6 @@ function filtrarCitas() {
   }
 
   const valor = valorInput.value.toLowerCase();
-  const modalBody = document.getElementById("modal-facturas-body");
 
   // Filtrar citas
   const citasFiltradas = citasOriginales.filter((cita) => {
@@ -1099,22 +1093,20 @@ function filtrarCitas() {
   });
 
   // Limpiar el contenido del modal
-  while (modalBody.firstChild) {
-    modalBody.removeChild(modalBody.firstChild);
-  }
+  limpiarListadoCitas();
 
   // Si no hay resultados, mostrar el mensaje
   if (citasFiltradas.length === 0) {
     const mensaje = document.createElement("p");
-    mensaje.className = "modal-facturas-no-resultados";
+    mensaje.className = "modal-citas-no-resultados";
     mensaje.textContent = "No se han encontrado resultados.";
-    modalBody.appendChild(mensaje);
+    modalCitasBody.appendChild(mensaje);
     return;
   }
 
   // Renderizar citas filtradas
   citasFiltradas.forEach((cita) => {
-    modalBody.appendChild(crearCajon(cita));
+    modalCitasBody.appendChild(crearCajon(cita));
   });
 }
 
@@ -1124,16 +1116,26 @@ function filtrarCitas() {
 
 // Cerrar modal al hacer clic fuera del contenido
 function closeModalOnOutsideClick(event) {
-  const modalContent = document.querySelector(".modal-facturas-content");
+  const modalContent = document.querySelector(".modal-citas-content");
   if (!modalContent.contains(event.target)) {
     closeModal();
   }
 }
 
 function closeModal() {
-  const modal = document.getElementById("modal-facturas");
+  const modal = document.getElementById("modal-citas");
   modal.style.display = "none";
 }
+
+// Botón de recarga
+const recargarCitasButton = document.getElementById("recargar-citas");
+
+// Agregar un eventListener al botón para recargar el listado de citas
+recargarCitasButton.addEventListener('click', async function () {
+    // Obtener nuevamente las citas y mostrarlas
+    mostrarCitas(await obtenerCitas());
+});
+
 
 
 
