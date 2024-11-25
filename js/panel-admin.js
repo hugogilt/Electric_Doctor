@@ -260,7 +260,7 @@ function isComplete(day) {
   return completeDays.includes(dateToCheck);
 };
 
-function selectDate(day){
+function selectDate(day) {
   selectedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   timeSlotsElement.innerHTML = ''; // Limpiar slots anteriores
   updateTimeSlots(selectedDate); // Actualizar los slots de tiempo
@@ -555,7 +555,7 @@ async function selectTime(slot, key = false) {
     problemaInput.value = '';
   }
   else if (slot.classList.contains('reserved')) {
-    const datosCita = await obtenerDatosCita(selectedDate+'-'+slot.textContent);
+    const datosCita = await obtenerDatosCita(selectedDate + '-' + slot.textContent);
     formModal.style.display = 'flex';
     nombreInput.value = datosCita.Nombre;
     apellidosInput.value = datosCita.Apellidos;
@@ -564,7 +564,7 @@ async function selectTime(slot, key = false) {
     modeloInput.value = datosCita.Modelo_Vehiculo;
     anioInput.value = datosCita.Ano_Matriculacion;
     problemaInput.value = datosCita.Motivo;
-    
+
     if (document.getElementById('aceptar') && !key) {
       aceptarButton.remove();
     }
@@ -802,28 +802,28 @@ abrirListadoCitasButton.addEventListener('click', async function () {
 //Obtener datos cita
 async function obtenerDatosCita(fechaHora) {
   try {
-      // Realizar la solicitud al servidor
-      const response = await fetch('/php/obtener_datos_cita.php', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ Fecha_Hora: fechaHora })
-      });
+    // Realizar la solicitud al servidor
+    const response = await fetch('/php/obtener_datos_cita.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ Fecha_Hora: fechaHora })
+    });
 
-      // Convertir la respuesta a JSON
-      const data = await response.json();
+    // Convertir la respuesta a JSON
+    const data = await response.json();
 
-      if (data.error) {
-          console.error(data.error);
-          alert(`Error: ${data.error}`);
-      } else {
-          // Devolver los datos obtenidos
-          return data;
-      }
+    if (data.error) {
+      console.error(data.error);
+      alert(`Error: ${data.error}`);
+    } else {
+      // Devolver los datos obtenidos
+      return data;
+    }
   } catch (error) {
-      console.error('Error al obtener los datos de la cita:', error);
-      alert('Ocurrió un error al obtener los datos.');
+    console.error('Error al obtener los datos de la cita:', error);
+    alert('Ocurrió un error al obtener los datos.');
   }
 }
 
@@ -831,26 +831,26 @@ async function obtenerDatosCita(fechaHora) {
 // Llamar a la función para obtener las citas
 async function obtenerCitas() {
   try {
-      const response = await fetch('/php/obtener_citas.php', {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      });
-
-      const data = await response.json();
-
-      if (data.error) {
-          // console.error(data.error);
-          // alert(`Error: ${data.error}`);
-          showAlert('Ha ocurrido un error al obtener las citas', 'negative')
-      } else if (data.citas) {
-          return data.citas;
+    const response = await fetch('/php/obtener_citas.php', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
       }
-  } catch (error) {
-      // console.error('Error al obtener las citas:', error);
-      // alert('Ocurrió un error al obtener las citas.');
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+      // console.error(data.error);
+      // alert(`Error: ${data.error}`);
       showAlert('Ha ocurrido un error al obtener las citas', 'negative')
+    } else if (data.citas) {
+      return data.citas;
+    }
+  } catch (error) {
+    // console.error('Error al obtener las citas:', error);
+    // alert('Ocurrió un error al obtener las citas.');
+    showAlert('Ha ocurrido un error al obtener las citas', 'negative')
 
   }
 }
@@ -858,27 +858,27 @@ async function obtenerCitas() {
 
 async function cancelarCita(idCita) {
   try {
-      // Realizar la solicitud AJAX para cancelar la cita
-      const response = await fetch('/php/cancelar_cita.php', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ id_cita: idCita })
-      });
+    // Realizar la solicitud AJAX para cancelar la cita
+    const response = await fetch('/php/cancelar_cita.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_cita: idCita })
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.success) {
-          // alert(data.message); // Mensaje de éxito
-          showAlert('Cita eliminada con éxito.', 'positive');
-      } else {
-          // alert(data.message); // Mensaje de error
-          showAlert('Ocurrió un error al cancelar la cita.', 'negative');
-      }
-  } catch (error) {
-      // console.error('Error al cancelar la cita:', error);
+    if (data.success) {
+      // alert(data.message); // Mensaje de éxito
+      showAlert('Cita eliminada con éxito.', 'positive');
+    } else {
+      // alert(data.message); // Mensaje de error
       showAlert('Ocurrió un error al cancelar la cita.', 'negative');
+    }
+  } catch (error) {
+    // console.error('Error al cancelar la cita:', error);
+    showAlert('Ocurrió un error al cancelar la cita.', 'negative');
   }
 }
 
@@ -886,27 +886,27 @@ async function cancelarCita(idCita) {
 // Función para cambiar el estado de la cita
 async function cambiarEstadoCita(idCita) {
   try {
-      // Realizar la solicitud AJAX para cambiar el estado de la cita
-      const response = await fetch('/php/cambiar_estado_cita.php', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ id_cita: idCita })
-      });
+    // Realizar la solicitud AJAX para cambiar el estado de la cita
+    const response = await fetch('/php/cambiar_estado_cita.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_cita: idCita })
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.status === 'success') {
-          // alert(data.message); // Mensaje de éxito
-          showAlert(data.message, 'positive');
-      } else {
-          // alert(data.message); // Mensaje de error
-          showAlert(data.message, 'negative');
-      }
+    if (data.status === 'success') {
+      // alert(data.message); // Mensaje de éxito
+      showAlert(data.message, 'positive');
+    } else {
+      // alert(data.message); // Mensaje de error
+      showAlert(data.message, 'negative');
+    }
   } catch (error) {
-      // console.error('Error al cambiar el estado de la cita:', error);
-      showAlert('Ocurrió un error al cambiar el estado de la cita.', 'negative');
+    // console.error('Error al cambiar el estado de la cita:', error);
+    showAlert('Ocurrió un error al cambiar el estado de la cita.', 'negative');
   }
 }
 
@@ -961,16 +961,16 @@ function limpiarListadoCitas() {
 }
 
 function mostrarCitas(arrayDeObjetos) {
-    // Guardar las citas originales para el filtro
-    citasOriginales = arrayDeObjetos;
+  // Guardar las citas originales para el filtro
+  citasOriginales = arrayDeObjetos;
 
-    // Limpiar el contenido previo
-    limpiarListadoCitas();
-  
-    // Crear cajones dinámicamente
-    arrayDeObjetos.forEach((objeto) => {
-      modalCitasBody.appendChild(crearCajon(objeto));
-    });
+  // Limpiar el contenido previo
+  limpiarListadoCitas();
+
+  // Crear cajones dinámicamente
+  arrayDeObjetos.forEach((objeto) => {
+    modalCitasBody.appendChild(crearCajon(objeto));
+  });
 
 }
 
@@ -978,7 +978,7 @@ function mostrarCitas(arrayDeObjetos) {
 function crearCajon(cita) {
   // Crear el contenedor principal para cada cita
   const cajon = document.createElement("div");
-  
+
   // Añadir la clase correspondiente según el estado de la cita
   if (cita.Estado === 'Pendiente') {
     cajon.classList.add("pendiente");
@@ -1034,16 +1034,12 @@ function crearCajon(cita) {
   // Crear los botones de Cancelar y Modificar
   const botonesContainer = document.createElement("div");
   botonesContainer.classList.add("modal-citas-botones");
-
-  const botonCancelar = document.createElement("button");
-  botonCancelar.classList.add("modal-citas-boton");
-  botonCancelar.textContent = "Cancelar";
-  botonCancelar.addEventListener("click", () => showCancelarCitaModal(cita.ID_Cita));
-
   const botonModificar = document.createElement("button");
-  botonModificar.classList.add("modal-citas-boton");
-  botonModificar.textContent = "Modificar";
-  botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora));
+
+    botonModificar.classList.add("modal-citas-boton");
+    botonModificar.textContent = "Modificar";
+    botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora));
+
 
   // Botón "Cita completada" solo si el estado es 'Pendiente'
   if (cita.Estado === 'Pendiente') {
@@ -1053,6 +1049,16 @@ function crearCajon(cita) {
     botonCompletada.style.float = 'right';
     botonCompletada.addEventListener("click", () => marcarCitaCompletada(cita.ID_Cita));
     botonesContainer.appendChild(botonCompletada); // Añadir el botón "Cita completada"
+    const botonCancelar = document.createElement("button");
+    botonCancelar.classList.add("modal-citas-boton");
+    botonCancelar.textContent = "Cancelar";
+    botonCancelar.addEventListener("click", () => showCancelarCitaModal(cita.ID_Cita));
+
+    
+
+    // Agregar los botones al contenedor de botones
+    botonesContainer.appendChild(botonModificar);
+    botonesContainer.appendChild(botonCancelar);
   }
   // Botón "Cita pendiente" solo si el estado es 'Completada'
   else if (cita.Estado === 'Completada') {
@@ -1062,11 +1068,10 @@ function crearCajon(cita) {
     botonPendiente.style.float = 'right';
     botonPendiente.addEventListener("click", () => marcarCitaPendiente(cita.ID_Cita));
     botonesContainer.appendChild(botonPendiente); // Añadir el botón "Cita pendiente"
+    botonesContainer.appendChild(botonModificar);
   }
 
-  // Agregar los botones al contenedor de botones
-  botonesContainer.appendChild(botonModificar);
-  botonesContainer.appendChild(botonCancelar);
+
 
   // Agregar el título, el contenido de la cita y los botones al cajón
   cajon.appendChild(tituloCajon);
@@ -1100,11 +1105,11 @@ function showCancelarCitaModal(idCita) {
 }
 
 cancelarCitaButton.addEventListener('click', async function () {
-   cancelarCita(idCitaAEliminar);
-   modalCancelarCita.style.removeProperty('display');
-   let citas = await obtenerCitas();
-   mostrarCitas(citas);
-   filtrarCitas();
+  cancelarCita(idCitaAEliminar);
+  modalCancelarCita.style.removeProperty('display');
+  let citas = await obtenerCitas();
+  mostrarCitas(citas);
+  filtrarCitas();
 });
 
 
@@ -1239,9 +1244,9 @@ const recargarCitasButton = document.getElementById("recargar-citas");
 
 // Agregar un eventListener al botón para recargar el listado de citas
 recargarCitasButton.addEventListener('click', async function () {
-    // Obtener nuevamente las citas y mostrarlas
-    mostrarCitas(await obtenerCitas());
-    filtrarCitas();
+  // Obtener nuevamente las citas y mostrarlas
+  mostrarCitas(await obtenerCitas());
+  filtrarCitas();
 });
 
 

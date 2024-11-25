@@ -158,7 +158,6 @@ try {
                                     <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
                                     required></textarea>
                                 </div>
-                                <!-- <button id="aceptar" type="submit">Aceptar</button> -->
                                 </form>
                             </div>
                         </div>
