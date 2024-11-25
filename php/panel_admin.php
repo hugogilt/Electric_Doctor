@@ -158,6 +158,7 @@ try {
                                     <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
                                     required></textarea>
                                 </div>
+                                <!-- <button id="aceptar" type="submit">Aceptar</button> -->
                                 </form>
                             </div>
                         </div>
@@ -211,7 +212,7 @@ try {
                               </select>
 
                               <!-- Botón de recargar -->
-                              <button id="recargar-citas" class="modal-citas-boton">Recargar</button>
+                              <img width="30px" alt="Recargar" src="../images/panel-admin/recargar.png" id="recargar-citas"></img>
                               <div id="resultado-citas">
                                 <p id="contador-citas">Mostrando 0 resultados</p>
                               </div>

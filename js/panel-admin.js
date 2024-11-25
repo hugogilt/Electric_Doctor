@@ -535,7 +535,7 @@ const updateTimeSlots = (selectedDate) => {
 
 
 
-async function selectTime(slot) {
+async function selectTime(slot, key = false) {
   const slots = document.querySelectorAll('.time-slots button');
   if (document.querySelector('#horaNoDisponibleAlerta')) {
     hourNotAvailableWarning.remove();
@@ -565,7 +565,7 @@ async function selectTime(slot) {
     anioInput.value = datosCita.Ano_Matriculacion;
     problemaInput.value = datosCita.Motivo;
     
-    if (document.getElementById('aceptar')) {
+    if (document.getElementById('aceptar') && !key) {
       aceptarButton.remove();
     }
   } else {
@@ -1102,7 +1102,9 @@ function showCancelarCitaModal(idCita) {
 cancelarCitaButton.addEventListener('click', async function () {
    cancelarCita(idCitaAEliminar);
    modalCancelarCita.style.removeProperty('display');
-   mostrarCitas(await obtenerCitas());
+   let citas = await obtenerCitas();
+   mostrarCitas(citas);
+   filtrarCitas();
 });
 
 
@@ -1119,13 +1121,10 @@ async function modificarCita(fechaHora) {
   const slots = document.querySelectorAll('.time-slots button');
   for (let slot of slots) {
     if (slot.textContent == hour) {
-      selectTime(slot);
+      selectTime(slot, true);
     }
   }
-  // debugger;
-  //TOFIX: Si no haces debugger no se añade
   contenedorProblema.appendChild(aceptarButton);
-
 }
 
 
