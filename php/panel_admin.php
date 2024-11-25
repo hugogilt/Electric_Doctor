@@ -72,9 +72,16 @@ try {
                         <div id="options">
                         <section class="option" id="citas">
                         <div id="titulo-citas">
-                            <h2 id="h2-citas">Calendario Citas</h2>
+                            <h2 id="h2-citas">Calendario</h2>
                         </div>
                         <img width="50%" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
+                        </section>
+
+                        <section class="option" id="Usuarios">
+                        <div id="titulo-citas">
+                            <h2 id="h2-citas">Usuarios</h2>
+                        </div>
+                        <img width="50%" src="/images/panel-admin/user_interface.png" alt="Abrir Calendario">
                         </section>
 
                         <section class="option" id="facturas">
@@ -86,17 +93,11 @@ try {
 
                         <section class="option" id="listado-citas">
                         <div id="titulo-citas">
-                            <h2 id="h2-citas">Listado Citas</h2>
+                            <h2 id="h2-citas">Listado</h2>
                         </div>
                         <img width="50%" src="/images/panel-admin/listado.png" alt="Abrir Calendario">
                         </section>
 
-                        <section class="option" id="citas">
-                        <div id="titulo-citas">
-                            <h2 id="h2-citas">Calendario Citas</h2>
-                        </div>
-                        <img width="100px" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
-                        </section>
 
                         </div>
 

@@ -949,6 +949,7 @@ async function openListadoCitasModal() {
   // Mostrar el modal
   modal.style.display = "flex";
   let citas = await obtenerCitas();
+  filtrarCitas(); //Para que las ordene
   actualizarContadorResultados(citas.length);
 }
 
@@ -1181,7 +1182,7 @@ function filtrarCitas() {
   // Limpiar el contenido del modal
   limpiarListadoCitas();
 
-  // Si no hay resultados, mostrar el mensaje
+  // Si no hay resultados y se han aplicado filtros, mostrar el mensaje
   if (citasFiltradas.length === 0) {
     const mensaje = document.createElement("p");
     mensaje.className = "modal-citas-no-resultados";
@@ -1191,6 +1192,8 @@ function filtrarCitas() {
     actualizarContadorResultados(0);
     return;
   }
+  // Ordenar citas por ID_Cita de mayor a menor
+  citasFiltradas.sort((a, b) => b.ID_Cita - a.ID_Cita);
 
   // Renderizar citas filtradas
   citasFiltradas.forEach((cita) => {
@@ -1199,6 +1202,11 @@ function filtrarCitas() {
 
   // Actualizar el contador de resultados
   actualizarContadorResultados(citasFiltradas.length);
+
+  // Si no se han aplicado filtros, mostrar el número total de citas
+  if (!atributo && !estadoSeleccionado && !mesSeleccionado && !valor) {
+    actualizarContadorResultados(citasOriginales.length);
+  }
 }
 
 // Función para actualizar el contador de resultados
@@ -1206,6 +1214,7 @@ function actualizarContadorResultados(cantidad) {
   const contador = document.getElementById("contador-citas");
   contador.textContent = `Mostrando ${cantidad} resultados`;
 }
+
 
 
 
