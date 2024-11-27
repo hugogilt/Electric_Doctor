@@ -1,146 +1,152 @@
 * {
-    box-sizing: border-box;
-  }
-  
-  html {
-    scroll-behavior: smooth;
-  }
-  
-  body {
-    margin: 0;
-    height: 100vh;
-    background-image: url(../images/background-body.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-    color: white;
-    font-size: 1.5em;
-    font-family: 'Comfortaa', sans-serif;
-  }
-  
-  button {
-    font-family: 'Comfortaa', sans-serif;
-  }
-  
-  #title {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    text-align: center;
-    margin-right: 76px;
-  }
-  
-  #title img {
-    width: 60px;
-    margin-right: 1em;
-  }
-  
-  h1 {
-    font-size: 2.5em;
-  }
-  
-  
-  h1,
-  h2,
-  h3 {
-    font-family: 'Raleway', sans-serif;
-  }
-  
-  header {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    background-color: rgb(0, 0, 0, 0.5);
-    height: auto;
-    padding: 2em 0;
-    margin-bottom: 2em;
-  }
-  
-  header h1 {
-    margin: 0;
-  }
-  
-  nav {
-    display: flex;
-    margin-top: 1em;
-    align-items: center;
-    text-align: center;
-  }
-  
-  nav a {
-    text-decoration: none;
-    color: inherit;
-    font-size: 0.7em;
-    margin: 0 1em;
-    position: relative;
-    color: white;
-  }
-  
-  nav a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    background: #fff;
-    width: 100%;
-    transform: scaleX(0);
-    /* Inicialmente no visible */
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
-  
-  nav a:hover::after {
-    transform: scaleX(1);
-    /* Expande el subrayado al hacer hover */
-  }
-  
-  
-  /* NAV HAMBURGUESA */
-  #hamburger {
-    display: none;
-    /* Ocultar por defecto */
-    font-size: 2em;
-    background: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-  
-  /* Estilo para mostrar el menú cuando está activo */
-  /*FIXME: HAY QUE POSICIONARLO BIEN*/
-  nav.active {
-    display: inline-block;
-    font-size: 1.5em;
-    background-color: initial;
-    text-align: center;
-    margin-top: 0;
-  }
-  
-  nav.active a {
-    width: 100%;
-    text-align: center;
-    margin: 0.5 0.7em;
-  }
-  
-  #user {
-    width: 40px;
-    top: 1em;
-    right: 1em;
-    top: 15px;
-  }
-  
-  #user-text {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 0.7em;
-    display: flex;
-    align-items: center;
-  }
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background-image: url(../images/background-body.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  color: white;
+  font-size: 1.5em;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+button {
+  font-family: 'Comfortaa', sans-serif;
+}
+
+#title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+  margin-right: 76px;
+}
+
+#title img {
+  width: 60px;
+  margin-right: 1em;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+
+h1,
+h2,
+h3 {
+  font-family: 'Raleway', sans-serif;
+}
+
+main > h2 {
+  text-align: center;
+  margin: 0 0 1em;
+  font-size: 2em;
+}
+
+header {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background-color: rgb(0, 0, 0, 0.5);
+  height: auto;
+  padding: 2em 0;
+  margin-bottom: 2em;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  margin-top: 1em;
+  align-items: center;
+  text-align: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.7em;
+  margin: 0 1em;
+  position: relative;
+  color: white;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  background: #fff;
+  width: 100%;
+  transform: scaleX(0);
+  /* Inicialmente no visible */
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+nav a:hover::after {
+  transform: scaleX(1);
+  /* Expande el subrayado al hacer hover */
+}
+
+
+/* NAV HAMBURGUESA */
+#hamburger {
+  display: none;
+  /* Ocultar por defecto */
+  font-size: 2em;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Estilo para mostrar el menú cuando está activo */
+/*FIXME: HAY QUE POSICIONARLO BIEN*/
+nav.active {
+  display: inline-block;
+  font-size: 1.5em;
+  background-color: initial;
+  text-align: center;
+  margin-top: 0;
+}
+
+nav.active a {
+  width: 100%;
+  text-align: center;
+  margin: 0.5 0.7em;
+}
+
+#user {
+  width: 40px;
+  top: 1em;
+  right: 1em;
+  top: 15px;
+}
+
+#user-text {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.7em;
+  display: flex;
+  align-items: center;
+}
 
 
 
@@ -148,383 +154,382 @@
 
 /* Contenedor del mensaje */
 #alert-container {
-    position: fixed;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    /* Los mensajes siguen siendo en columna */
-    gap: 10px;
-    align-items: center;
-    /* Asegura que los mensajes se centren horizontalmente */
-  }
-  
-  /* Estilo base de los mensajes */
-  .alert-box {
-    display: flex;
-    /* Usamos flexbox para alinear icono, texto e imagen */
-    align-items: center;
-    /* Centrar los elementos verticalmente */
-    padding: 15px 20px;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    animation: bounceIn 0.6s ease-out, fadeOut 0.5s ease-in 4.5s forwards;
-  }
-  
-  /* Mensaje positivo */
-  .alert-positive {
-    background-color: #4caf50;
-    /* Verde */
-    color: white;
-    border: 1px solid #3e8e41;
-  }
-  
-  /* Mensaje negativo */
-  .alert-negative {
-    background-color: #f44336;
-    /* Rojo */
-    color: white;
-    border: 1px solid #d32f2f;
-  }
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  /* Los mensajes siguen siendo en columna */
+  gap: 10px;
+  align-items: center;
+  /* Asegura que los mensajes se centren horizontalmente */
+}
 
-  /* CALENDARIO */
+/* Estilo base de los mensajes */
+.alert-box {
+  display: flex;
+  /* Usamos flexbox para alinear icono, texto e imagen */
+  align-items: center;
+  /* Centrar los elementos verticalmente */
+  padding: 15px 20px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: bounceIn 0.6s ease-out, fadeOut 0.5s ease-in 4.5s forwards;
+}
+
+/* Mensaje positivo */
+.alert-positive {
+  background-color: #4caf50;
+  /* Verde */
+  color: white;
+  border: 1px solid #3e8e41;
+}
+
+/* Mensaje negativo */
+.alert-negative {
+  background-color: #f44336;
+  /* Rojo */
+  color: white;
+  border: 1px solid #d32f2f;
+}
+
+/* CALENDARIO */
 #abrir-calendario-button {
-    padding: 10px 20px;
-    background-color: #3362a4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin: auto;
-    width: 70%;
-    /* PARA EL SALTITO: */
-    display: inline-block;
-    transition: transform 0.2s;
-  }
-  
-  /* SALTO */
-  .saltando {
-    transform: translateY(-10px);
-    /* Salto hacia arriba */
-  }
-  
-  #calendarModal {
-    display: none;
-    /* Ocultar el modal por defecto */
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: black;
-    box-sizing: border-box;
-    align-items: center;
-  }
-  
-  #calendarModal * {
-    box-sizing: content-box;
-  }
-  
-  #calendarModal .modal-content {
-    background-color: #fefefe;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    min-height: 420px;
-    height: auto;
-  }
-  
-  #calendarModal .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    margin-top: -0.4em;
-  }
-  
-  #calendarModal .close:hover,
-  #calendarModal .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  /* Estilos del calendario */
-  .calendar {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1em;
-    background-color: white;
-  }
-  
-  .calendar h2,
-  .calendar h3 {
-    text-align: center;
-    margin: 0.2em 0;
-  }
-  
-  #monthYear {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    margin-top: 10px;
-  }
-  
-  .day {
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .dates {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    margin-top: 10px;
-    gap: 2px;
-  }
-  
-  .date {
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .available {
-    background-color: lightgreen;
-  }
-  
-  .semi-complete-day {
-    background: linear-gradient(90deg, lightgreen, rgb(241, 183, 74));
-  }
-  
-  .date.not-available,
-  button.not-available {
-    background: lightgray;
-  }
-  
-  .reserved {
-    background: lightgray;
-  }
-  
-  .reserved, .complete-day {
-    background: rgb(241, 183, 74);
-  }
-  
-  
-  .selected {
-    background: #3362a4;
-    color: white;
-  }
-  
-  
-  
-  .time-slots {
-    margin-top: 1em;
-    display: grid;
-    /* Utiliza un grid para organizar los botones */
-    grid-template-columns: repeat(4, 1fr);
-    /* 4 columnas */
-    gap: 10px;
-    /* Espacio entre los botones */
-  }
-  
-  .time-slots button {
-    padding: 10px;
-    /* Espaciado interno para botones */
-    border: none;
-    /* Sin borde */
-    border-radius: 5px;
-    /* Esquinas redondeadas */
-    color: black;
-    /* Color de texto por defecto */
-    cursor: pointer;
-    /* Cambia el cursor al pasar el ratón */
-  }
-  
-  
-  .time-slots button.selected {
-    background-color: #3362a4;
-    /* Color para horas seleccionadas */
-    color: white;
-    /* Color de texto para horas seleccionadas */
-  }
-  
-  .available button {
-    background-color: lightgreen;
-    /* Color para slots disponibles */
-  }
-  
-  .not-available button {
-    background-color: lightgray;
-    /* Color para slots no disponibles */
-  }
-  
-  #diaNoDisponibleAlerta,
-  #horaNoDisponibleAlerta {
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    font-size: 1.3em;
-    margin: 0;
-  }
-  
-  #horaNoDisponibleAlerta {
-    margin: 1em auto 0;
-  
-  }
-  
-  .transition {
-    transition: color 0.2s ease;
-  }
-  
-  .calendar .date.selected-not-available,
-  button.selected-not-available {
-    background: #f44336;
-    /* Color para horas seleccionadas */
-    color: white;
-    /* Color de texto para horas seleccionadas */
-  }
-  
-  #aceptar {
-    margin: 1em auto 0;
-    background-color: #3362a4;
-    display: block;
-    padding: 0.5em;
-    width: 7em;
-    height: 3em;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    box-sizing: border-box;
-  }
-  
-  #selectedDay {
-    font-weight: bold;
-    margin: 1em 0 0;
-    text-align: center;
-  }
+  padding: 10px 20px;
+  background-color: #3362a4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin: auto;
+  width: 70%;
+  /* PARA EL SALTITO: */
+  display: inline-block;
+  transition: transform 0.2s;
+}
 
-  /* MENU DESPLEGABLE USUARIO */
+/* SALTO */
+.saltando {
+  transform: translateY(-10px);
+  /* Salto hacia arriba */
+}
+
+#calendarModal {
+  display: none;
+  /* Ocultar el modal por defecto */
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: black;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+#calendarModal * {
+  box-sizing: content-box;
+}
+
+#calendarModal .modal-content {
+  background-color: #fefefe;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  min-height: 420px;
+  height: auto;
+}
+
+#calendarModal .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: -0.4em;
+}
+
+#calendarModal .close:hover,
+#calendarModal .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilos del calendario */
+.calendar {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1em;
+  background-color: white;
+}
+
+.calendar h2,
+.calendar h3 {
+  text-align: center;
+  margin: 0.2em 0;
+}
+
+#monthYear {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 10px;
+}
+
+.day {
+  font-weight: bold;
+  text-align: center;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 10px;
+  gap: 2px;
+}
+
+.date {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.available {
+  background-color: lightgreen;
+}
+
+.semi-complete-day {
+  background: linear-gradient(90deg, lightgreen, rgb(241, 183, 74));
+}
+
+.date.not-available,
+button.not-available {
+  background: lightgray;
+}
+
+.reserved {
+  background: lightgray;
+}
+
+.reserved,
+.complete-day {
+  background: rgb(241, 183, 74);
+}
+
+
+.selected {
+  background: #3362a4;
+  color: white;
+}
+
+
+
+.time-slots {
+  margin-top: 1em;
+  display: grid;
+  /* Utiliza un grid para organizar los botones */
+  grid-template-columns: repeat(4, 1fr);
+  /* 4 columnas */
+  gap: 10px;
+  /* Espacio entre los botones */
+}
+
+.time-slots button {
+  padding: 10px;
+  /* Espaciado interno para botones */
+  border: none;
+  /* Sin borde */
+  border-radius: 5px;
+  /* Esquinas redondeadas */
+  color: black;
+  /* Color de texto por defecto */
+  cursor: pointer;
+  /* Cambia el cursor al pasar el ratón */
+}
+
+
+.time-slots button.selected {
+  background-color: #3362a4;
+  /* Color para horas seleccionadas */
+  color: white;
+  /* Color de texto para horas seleccionadas */
+}
+
+.available button {
+  background-color: lightgreen;
+  /* Color para slots disponibles */
+}
+
+.not-available button {
+  background-color: lightgray;
+  /* Color para slots no disponibles */
+}
+
+#diaNoDisponibleAlerta,
+#horaNoDisponibleAlerta {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.3em;
+  margin: 0;
+}
+
+#horaNoDisponibleAlerta {
+  margin: 1em auto 0;
+
+}
+
+.transition {
+  transition: color 0.2s ease;
+}
+
+.calendar .date.selected-not-available,
+button.selected-not-available {
+  background: #f44336;
+  /* Color para horas seleccionadas */
+  color: white;
+  /* Color de texto para horas seleccionadas */
+}
+
+#aceptar {
+  margin: 1em auto 0;
+  background-color: #3362a4;
+  display: block;
+  padding: 0.5em;
+  width: 7em;
+  height: 3em;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+#selectedDay {
+  font-weight: bold;
+  margin: 1em 0 0;
+  text-align: center;
+}
+
+/* MENU DESPLEGABLE USUARIO */
 
 
 
 .user-menu {
-    display: none;
-    position: absolute;
-    background-color: black;
-    border: 1px solid #ccc;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 2em;
-    width: 10em;
-    z-index: 9;
-  }
-  
-  .user-menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .user-menu ul li {
-    padding: 8px 10px;
-    cursor: pointer;
-  }
-  
-  .user-menu ul li:hover {
-    text-decoration: underline;
-  }
-  
-  #logout {
-    color: red;
-  }
+  display: none;
+  position: absolute;
+  background-color: black;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+  width: 10em;
+  z-index: 9;
+}
+
+.user-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-menu ul li {
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.user-menu ul li:hover {
+  text-decoration: underline;
+}
+
+#logout {
+  color: red;
+}
 
 
-  /* GRID MAIN */
 
-  main {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-  }
+main {
+  padding: 20px;
+}
 
+/* GRID OPTIONS */
 
-  #options {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Divide el grid en 4 columnas de igual tamaño */
-    gap: 20px; /* Espacio entre las columnas */
-    width: 100%; /* Asegura que ocupe todo el ancho disponible */
-  }
+#options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+}
 
-  .option {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+.option {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
 
-  /* MODAL FORMULARIO */
+/* MODAL FORMULARIO */
 
-  #modal-formulario {
-    display: none;
-    position: fixed;
-    z-index: 11;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-  }
-  
-  .modal-formulario-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 685px;
-    position: relative;
-    border-radius: 12px;
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+#modal-formulario {
+  display: none;
+  position: fixed;
+  z-index: 11;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+}
 
-  /* FORMULARIO */
+.modal-formulario-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 100%;
+  max-width: 685px;
+  position: relative;
+  border-radius: 12px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* FORMULARIO */
 
 #titulo-citas {
   text-align: center;
@@ -549,7 +554,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   max-width: 600px;
-  width: 100%;
+  margin: 0 auto;
+  width: 85%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
@@ -557,6 +563,7 @@
   font-size: 0.7em;
   box-sizing: content-box;
   border: 1px solid #02014E;
+  margin-bottom: 0.5em;
 }
 
 input[type="text"],
@@ -625,7 +632,7 @@ textarea {
 #abrir-calendario-button {
   grid-column: span 2;
 }
-  
+
 
 
 /* MODAL CITAS */
@@ -636,7 +643,8 @@ textarea {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  display: none; /* Por defecto oculto */
+  display: none;
+  /* Por defecto oculto */
   justify-content: center;
   align-items: center;
   z-index: 12;
@@ -644,13 +652,23 @@ textarea {
 
 .modal-citas-content {
   background-color: #fff;
-  padding: 20px;
+  padding: 2em 20px 20px;
   border-radius: 10px;
+  min-height: 50%;
   width: 90%;
   max-height: 90%;
-  overflow-y: auto;
   position: relative;
   color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+#modal-citas-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .modal-citas-close {
@@ -667,6 +685,8 @@ textarea {
   margin: 10px 0;
   padding: 15px;
   background-color: #f9f9f9;
+  width: 100%;
+  align-self: start;
 }
 
 .modal-citas-cajon h3 {
@@ -686,6 +706,7 @@ textarea {
   display: flex;
   gap: 10px;
   align-items: center;
+  font-size: 0.7em;
 }
 
 #modal-citas-filter select,
@@ -695,6 +716,13 @@ textarea {
   border: 1px solid #ddd;
   border-radius: 5px;
   width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  text-align: center;
+}
+
+#modal-citas-filter select {
+  white-space: normal;
 }
 
 #modal-citas-filter input {
@@ -705,15 +733,15 @@ textarea {
   font-weight: bold;
   text-align: center;
   font-size: 1em;
-  margin: 0;
+  margin: auto;
   color: rgb(242, 139, 130);
 }
 
 
 #modal-citas-filter label {
   display: inline-block;
-  margin-right: 5px;
   font-weight: bold;
+  text-align: end;
 }
 
 #filtro-valor:disabled {
@@ -748,7 +776,6 @@ textarea {
 
 #modal-citas .completada {
   background-color: rgba(34, 139, 34, 0.5)
-
 }
 
 
@@ -789,5 +816,135 @@ textarea {
 .cancelar-cancelar-cita {
   background-color: gray;
   color: white;
+}
+
+
+#citas img {
+  margin-right: -4%;
+}
+
+#facturas img {
+  margin-right: -7%;
+}
+
+#resultado-citas, #resultado-citas > p{
+  display: inline;
+} 
+
+#recargar-citas {
+  position: relative;
+  top: 6px;
+}
+
+
+@media (max-width: 1000px) {
+
+  #modal-citas-filter {
+    display: grid;
+    grid-template-columns: 15% 1fr 15% 1fr;
+    /* 2 columnas */
+    grid-template-rows: 1fr 1fr;
+    /* 6 filas */
+    gap: 10px;
+    /* Espaciado entre elementos */
+    align-items: center;
+    justify-items: end;
+  }
+
+  .modal-citas-content {
+    padding: 1.5em 20px 20px;
+  }
+  
+  /* Elementos en su posición */
+  label[for="filtro-atributo"] {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  #filtro-atributo {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  
+  #filtro-valor {
+    grid-column: 3 / span 2;
+    grid-row: 1;
+  }
+  
+  label[for="filtro-estado"] {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  #filtro-estado {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  
+  label[for="filtro-mes"] {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  
+  
+  #filtro-mes {
+    grid-column: 4;
+    grid-row: 2;
+  }
+  
+  #recargar-citas {
+    grid-column: 1 / span 4;
+    /* Ocupa ambas columnas */
+    grid-row: 3;
+    justify-self: center;
+    /* Centra horizontalmente */
+  }
+  
+  #resultado-citas {
+    grid-column: 1 / span 4;
+    /* Ocupa ambas columnas */
+    grid-row: 4;
+    justify-self: center;
+    text-align: center;
+  }
+
+  #resultado-citas > p {
+    display: block;
+  }
+
+  p#contador-citas {
+    margin-bottom: 0;
+  }
+
+  #recargar-citas {
+    display: block;
+    margin: 0 auto 0.8em;
+  }
+  }
+
+
+@media (max-width: 800px) {
+  #options {
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 0.7em;
+  }
+
+  #modal-citas-filter, p#contador-citas {
+    font-size: 0.5em;
+  }
+
+  p#contador-citas {
+    font-size: 0.6em;
+    margin-bottom: 0;
+  }
+
+  #modal-citas {
+    font-size: 1.2em;
+  }
+
+  #calendarModal .modal-content {
+    font-size: 0.55em;
+  }
+
 }
 

@@ -46,14 +46,6 @@ try {
                         <img src="/images/logo.png" alt="Logo">
                         <h1>Electric Doctor</h1>
                         </div>
-                        <button id="hamburger" aria-label="Toggle navigation">&#9776;</button>
-                        <nav>
-                        <a href="./servicios.html">Servicios</a>
-                        <a href="#">Contáctanos</a>
-                        <a href="#">Nosotros</a>
-                        <a href="https://maps.app.goo.gl/h5aN8X4GmK59tT3H9">Dónde&nbsp;estamos</a>
-                        <a href="#">Nuestras&nbsp;instalaciones</a>
-                        </nav>
                         <span id="user-text"><img id="user" src="/images/user.png" alt="User"></span>
                         <!-- Menú desplegable -->
                         <div id="user-menu" class="user-menu">
@@ -69,6 +61,7 @@ try {
 
                     </header>
                     <main>
+                        <h2>Admin Panel</h2>
                         <div id="options">
                         <section class="option" id="citas">
                         <div id="titulo-citas">
@@ -210,11 +203,11 @@ try {
                                 <option value="12">Diciembre</option>
                               </select>
 
-                              <!-- Botón de recargar -->
-                              <img width="30px" alt="Recargar" src="../images/panel-admin/recargar.png" id="recargar-citas"></img>
-                              <div id="resultado-citas">
+                            </div>
+                            <div id="resultado-citas">
                                 <p id="contador-citas">Mostrando 0 resultados</p>
-                              </div>
+                                <!-- Botón de recargar -->
+                                <img width="30px" alt="Recargar" src="../images/panel-admin/recargar.png" id="recargar-citas"></img>
                             </div>
                             <div id="modal-citas-body">
                               <!-- Los cajones dinámicos se generarán aquí -->

@@ -766,7 +766,7 @@ button.selected-not-available {
   /* Color de texto para horas seleccionadas */
 }
 
-#aceptar {
+#aceptar, #aceptar-modal {
   margin: 1em auto 0;
   background-color: #3362a4;
   display: block;
@@ -920,6 +920,466 @@ div>.eapps-widget-toolbar {
   background-color: #45a049;
 }
 
+
+
+/* MODAL CITAS */
+.modal-citas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+  /* Por defecto oculto */
+  justify-content: center;
+  align-items: center;
+  z-index: 12;
+}
+
+.modal-citas-content {
+  background-color: #fff;
+  padding: 2em 20px 20px;
+  border-radius: 10px;
+  min-height: 50%;
+  width: 90%;
+  max-height: 90%;
+  position: relative;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+#modal-citas-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.modal-citas-close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-citas-cajon {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  width: 100%;
+  align-self: start;
+}
+
+.modal-citas-cajon h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.modal-citas-cajon p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+#modal-citas-filter {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.7em;
+}
+
+#modal-citas-filter select,
+#modal-citas-filter input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  text-align: center;
+}
+
+#modal-citas-filter select {
+  white-space: normal;
+}
+
+#modal-citas-filter input {
+  flex-grow: 1;
+}
+
+.modal-citas-no-resultados {
+  font-weight: bold;
+  text-align: center;
+  font-size: 1em;
+  margin: auto;
+  color: rgb(242, 139, 130);
+}
+
+
+#modal-citas-filter label {
+  display: inline-block;
+  font-weight: bold;
+  text-align: end;
+}
+
+#filtro-valor:disabled {
+  background-color: #f5f5f5;
+  color: #a9a9a9;
+  cursor: not-allowed;
+}
+
+.modal-citas-boton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.modal-citas-boton:hover {
+  background-color: #0056b3;
+}
+
+.modal-citas-botones {
+  margin-top: 0.4em;
+}
+
+#modal-citas .pendiente {
+  background-color: rgba(204, 0, 0, 0.5);
+}
+
+#modal-citas .completada {
+  background-color: rgba(34, 139, 34, 0.5)
+}
+
+
+
+/* MODAL CANCELAR CITA */
+.modal-cancelar-cita {
+  display: none;
+  position: fixed;
+  z-index: 13;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-cancelar-cita-content {
+  background-color: black;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  border: 1px solid white;
+}
+
+.modal-cancelar-cita button {
+  margin: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.confirmar-cancelar-cita {
+  background-color: gray;
+  color: white;
+}
+
+.cancelar-cancelar-cita {
+  background-color: gray;
+  color: white;
+}
+
+#citas img {
+  margin-right: -4%;
+}
+
+#facturas img {
+  margin-right: -7%;
+}
+
+#resultado-citas, #resultado-citas > p{
+  display: inline;
+} 
+
+#recargar-citas {
+  position: relative;
+  top: 6px;
+}
+
+
+@media (max-width: 1000px) {
+
+  #modal-citas-filter {
+    display: grid;
+    grid-template-columns: 15% 1fr 15% 1fr;
+    /* 2 columnas */
+    grid-template-rows: 1fr 1fr;
+    /* 6 filas */
+    gap: 10px;
+    /* Espaciado entre elementos */
+    align-items: center;
+    justify-items: end;
+  }
+
+  .modal-citas-content {
+    padding: 1.5em 20px 20px;
+  }
+  
+  /* Elementos en su posición */
+  label[for="filtro-atributo"] {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  #filtro-atributo {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  
+  #filtro-valor {
+    grid-column: 3 / span 2;
+    grid-row: 1;
+  }
+  
+  label[for="filtro-estado"] {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  #filtro-estado {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  
+  label[for="filtro-mes"] {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  
+  
+  #filtro-mes {
+    grid-column: 4;
+    grid-row: 2;
+  }
+  
+  #recargar-citas {
+    grid-column: 1 / span 4;
+    /* Ocupa ambas columnas */
+    grid-row: 3;
+    justify-self: center;
+    /* Centra horizontalmente */
+  }
+  
+  #resultado-citas {
+    grid-column: 1 / span 4;
+    /* Ocupa ambas columnas */
+    grid-row: 4;
+    justify-self: center;
+    text-align: center;
+  }
+
+  #resultado-citas > p {
+    display: block;
+  }
+
+  p#contador-citas {
+    margin-bottom: 0;
+  }
+
+  #recargar-citas {
+    display: block;
+    margin: 0 auto 0.8em;
+  }
+  }
+
+
+@media (max-width: 800px) {
+  #options {
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 0.7em;
+  }
+
+  #modal-citas-filter, p#contador-citas {
+    font-size: 0.5em;
+  }
+
+  p#contador-citas {
+    font-size: 0.6em;
+    margin-bottom: 0;
+  }
+
+  #modal-citas {
+    font-size: 1.2em;
+  }
+
+  #calendarModal .modal-content {
+    font-size: 0.55em;
+  }
+
+}
+/* ----------------------------- */
+/* MODAL FORMULARIO */
+
+#modal-formulario {
+  display: none;
+  position: fixed;
+  z-index: 11;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+}
+
+.modal-formulario-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 100%;
+  max-width: 685px;
+  position: relative;
+  border-radius: 12px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* FORMULARIO MODIFICAR CITA */
+
+#titulo-citas {
+  text-align: center;
+}
+
+.modal-formulario-content h2 {
+  color: #02014E;
+  text-align: center;
+  font-size: 2em;
+  margin: 0.3em 0;
+}
+
+#h2-citas>span {
+  font-size: 1.2em;
+  position: relative;
+  bottom: -3px;
+}
+
+#pedir-cita-form-modal {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 85%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  justify-content: center;
+  font-size: 0.7em;
+  box-sizing: content-box;
+  border: 1px solid #02014E;
+  margin-bottom: 0.5em;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+input[type="text"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="email"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+  color: #999;
+}
+
+input.disabled {
+  background-color: #f0f0f0;
+  color: #777;
+  cursor: not-allowed;
+}
+
+#pedir-cita-button {
+  grid-column: span 2;
+  width: 100%;
+  padding: 12px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  transition: background-color 0.3s;
+}
+
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+textarea {
+  resize: none;
+}
+
+.elementos-pedir-cita-form {
+  margin-bottom: 15px;
+}
+
+.elementos-pedir-cita-form:last-child {
+  margin-bottom: 0;
+}
+
+#contenedor-problema,
+#contenedor-pedir-cita-button,
+#abrir-calendario-button {
+  grid-column: span 2;
+}
+
+/* ----------------------- */
 
 
 

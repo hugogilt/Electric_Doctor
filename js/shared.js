@@ -138,6 +138,466 @@ window.onresize = function () {
 }
 
 
+
+// LISTADO-CITAS
+const nombreInput = document.getElementById('nombre-modal');
+const apellidosInput = document.getElementById('apellidos-modal');
+const telefonoInput = document.getElementById('telefono-modal');
+const correoInput = document.getElementById('correo-modal');
+const modeloInput = document.getElementById('marca-modal');
+const anioInput = document.getElementById('anio-modal');
+const problemaInput = document.getElementById('problema-modal');
+const abrirListadoCitasButton = document.getElementById('listado-citas-boton');
+const modalCancelarCita = document.querySelector('#modal-cancelar-cita');
+const mantenerCitaButton = document.querySelector('#cancelar-cancelar-cita');
+const cancelarCitaButton = document.querySelector('#confirmar-cancelar-cita');
+const formModal = document.getElementById("modal-formulario");
+const closeFormModal = document.getElementById("cerrar-modal-formulario");
+closeCalendarModal.addEventListener('click', function () {
+  formModal.style.display = 'none';
+})
+const contenedorProblema = document.querySelector('#contenedor-problema');
+const aceptarButtonModal = document.createElement('button');
+aceptarButtonModal.type = 'submit';
+aceptarButtonModal.id = 'aceptar-modal';
+aceptarButtonModal.textContent = 'Aceptar';
+
+
+//Modal Citas
+const modalCitasBody = document.getElementById("modal-citas-body");
+
+abrirListadoCitasButton.addEventListener('click', async function () {
+  const atributoSeleccionado = document.getElementById("filtro-atributo").value;
+  const valorInput = document.getElementById("filtro-valor");
+
+  if (!atributoSeleccionado) {
+    valorInput.disabled = true;
+    valorInput.value = ""; // Limpiar el valor del input al abrir el modal
+  }
+  openListadoCitasModal();
+
+})
+
+
+//Obtener datos cita
+async function obtenerDatosCita(fechaHora) {
+  try {
+    // Realizar la solicitud al servidor
+    const response = await fetch('/php/obtener_datos_cita.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ Fecha_Hora: fechaHora })
+    });
+
+    // Convertir la respuesta a JSON
+    const data = await response.json();
+
+    if (data.error) {
+      console.error(data.error);
+      alert(`Error: ${data.error}`);
+    } else {
+      // Devolver los datos obtenidos
+      return data;
+    }
+  } catch (error) {
+    console.error('Error al obtener los datos de la cita:', error);
+    alert('Ocurrió un error al obtener los datos.');
+  }
+}
+
+
+// Llamar a la función para obtener las citas
+async function obtenerCitas() {
+  try {
+    const response = await fetch('/php/obtener_citas.php', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    if (data.error && !data.error === 'No se encontraron citas.') {
+      showAlert('Ha ocurrido un error al obtener las citas', 'negative')
+    } else if (data.citas) {
+      return data.citas;
+    }
+    else {
+      return data.error
+    }
+  } catch (error) {
+    // console.error('Error al obtener las citas:', error);
+    // alert('Ocurrió un error al obtener las citas.');
+    showAlert('Ha ocurrido un error al obtener las citas', 'negative')
+
+  }
+}
+
+
+async function cancelarCita(idCita) {
+  try {
+    // Realizar la solicitud AJAX para cancelar la cita
+    const response = await fetch('/php/cancelar_cita.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_cita: idCita })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // alert(data.message); // Mensaje de éxito
+      showAlert('Cita eliminada con éxito.', 'positive');
+    } else {
+      // alert(data.message); // Mensaje de error
+      showAlert('Ocurrió un error al cancelar la cita.', 'negative');
+    }
+  } catch (error) {
+    // console.error('Error al cancelar la cita:', error);
+    showAlert('Ocurrió un error al cancelar la cita.', 'negative');
+  }
+}
+
+
+// Función para cambiar el estado de la cita
+async function cambiarEstadoCita(idCita) {
+  try {
+    // Realizar la solicitud AJAX para cambiar el estado de la cita
+    const response = await fetch('/php/cambiar_estado_cita.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_cita: idCita })
+    });
+
+    const data = await response.json();
+
+    if (data.status === 'success') {
+      // alert(data.message); // Mensaje de éxito
+      showAlert(data.message, 'positive');
+    } else {
+      // alert(data.message); // Mensaje de error
+      showAlert(data.message, 'negative');
+    }
+  } catch (error) {
+    // console.error('Error al cambiar el estado de la cita:', error);
+    showAlert('Ocurrió un error al cambiar el estado de la cita.', 'negative');
+  }
+}
+
+// Función para abrir el modal con los datos
+let citasOriginales = []; // Guardará el array inicial de citas
+
+async function openListadoCitasModal() {
+  const modal = document.getElementById("modal-citas");
+  mostrarCitas(await obtenerCitas());
+
+  // Mostrar el modal
+  modal.style.display = "flex";
+  let citas = await obtenerCitas();
+  filtrarCitas(); //Para que las ordene
+  if (typeof citas === 'object' && citas.length > 0) { 
+    actualizarContadorResultados(citas.length);
+  }
+}
+
+
+function limpiarListadoCitas() {
+  while (modalCitasBody.firstChild) {
+    modalCitasBody.removeChild(modalCitasBody.firstChild);
+  }
+}
+
+function mostrarCitas(arrayDeObjetos) {
+
+  // Limpiar el contenido previo
+  limpiarListadoCitas();
+
+if (typeof arrayDeObjetos === 'object' && arrayDeObjetos.length > 0) {
+  // Guardar las citas originales para el filtro
+  citasOriginales = arrayDeObjetos;
+
+
+  // Crear cajones dinámicamente
+  arrayDeObjetos.forEach((objeto) => {
+    modalCitasBody.appendChild(crearCajon(objeto));
+  });
+} else {
+  citasOriginales = [];
+}
+
+}
+
+
+function crearCajon(cita) {
+  // Crear el contenedor principal para cada cita
+  const cajon = document.createElement("div");
+
+  // Añadir la clase correspondiente según el estado de la cita
+  if (cita.Estado === 'Pendiente') {
+    cajon.classList.add("pendiente");
+  } else if (cita.Estado === 'Completada') {
+    cajon.classList.add("completada");
+  }
+
+  cajon.classList.add("modal-citas-cajon");
+
+  // Crear el título del cajón
+  const tituloCajon = document.createElement("h3");
+  tituloCajon.classList.add("modal-citas-titulo");
+  tituloCajon.textContent = `Cita #${cita.ID_Cita}`;
+
+  // Crear el contenido de la cita
+  const contenidoCita = document.createElement("div");
+  contenidoCita.classList.add("modal-citas-cajon-contenido");
+
+  const nombreCompleto = document.createElement("p");
+  nombreCompleto.textContent = `Nombre Completo: ${cita.Nombre} ${cita.Apellidos}`;
+
+  const modelo = document.createElement("p");
+  modelo.textContent = `Modelo Vehículo: ${cita.Modelo_Vehiculo}`;
+
+  const anoMatriculacion = document.createElement("p");
+  anoMatriculacion.textContent = `Año de Matriculación: ${cita.Ano_Matriculacion}`;
+
+  const telefono = document.createElement("p");
+  telefono.textContent = `Teléfono: ${cita.Telefono}`;
+
+  const correo = document.createElement("p");
+  correo.textContent = `Correo Electrónico: ${cita.Correo_Electronico}`;
+
+  const motivo = document.createElement("p");
+  motivo.textContent = `Motivo: ${cita.Motivo}`;
+
+  const fechaHora = document.createElement("p");
+  fechaHora.textContent = `Fecha y Hora: ${cita.Fecha_Hora}`;
+
+  const estado = document.createElement("p");
+  estado.textContent = `Estado: ${cita.Estado}`;
+
+  // Agregar los párrafos de información al contenedor de contenido
+  contenidoCita.appendChild(nombreCompleto);
+  contenidoCita.appendChild(modelo);
+  contenidoCita.appendChild(anoMatriculacion);
+  contenidoCita.appendChild(telefono);
+  contenidoCita.appendChild(correo);
+  contenidoCita.appendChild(motivo);
+  contenidoCita.appendChild(fechaHora);
+  contenidoCita.appendChild(estado);
+
+  // Crear los botones de Cancelar y Modificar
+  const botonesContainer = document.createElement("div");
+  botonesContainer.classList.add("modal-citas-botones");
+  const botonModificar = document.createElement("button");
+
+    botonModificar.classList.add("modal-citas-boton");
+    botonModificar.textContent = "Modificar";
+    botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora));
+
+
+  // Botón "Cita completada" solo si el estado es 'Pendiente'
+  if (cita.Estado === 'Pendiente') {
+    const botonCancelar = document.createElement("button");
+    botonCancelar.classList.add("modal-citas-boton");
+    botonCancelar.textContent = "Cancelar";
+    botonCancelar.addEventListener("click", () => showCancelarCitaModal(cita.ID_Cita));
+
+    
+
+    // Agregar los botones al contenedor de botones
+    botonesContainer.appendChild(botonModificar);
+    botonesContainer.appendChild(botonCancelar);
+  }
+  // Botón "Cita pendiente" solo si el estado es 'Completada'
+  else if (cita.Estado === 'Completada') {
+    const botonPendiente = document.createElement("button");
+    botonPendiente.classList.add("modal-citas-boton");
+    botonPendiente.textContent = "Cita pendiente";
+    botonPendiente.style.float = 'right';
+    botonPendiente.addEventListener("click", () => marcarCitaPendiente(cita.ID_Cita));
+    botonesContainer.appendChild(botonPendiente); // Añadir el botón "Cita pendiente"
+    botonesContainer.appendChild(botonModificar);
+  }
+
+
+
+  // Agregar el título, el contenido de la cita y los botones al cajón
+  cajon.appendChild(tituloCajon);
+  cajon.appendChild(contenidoCita);
+  cajon.appendChild(botonesContainer);
+
+  return cajon;
+}
+
+
+// Función para marcar una cita como pendiente
+async function marcarCitaPendiente(citaId) {
+  await cambiarEstadoCita(citaId);
+  mostrarCitas(await obtenerCitas());
+  filtrarCitas();
+}
+
+
+
+let idCitaAEliminar;
+// Función para cancelar una cita
+function showCancelarCitaModal(idCita) {
+  modalCancelarCita.style.display = 'flex';
+  idCitaAEliminar = idCita;
+}
+
+cancelarCitaButton.addEventListener('click', async function () {
+  cancelarCita(idCitaAEliminar);
+  modalCancelarCita.style.removeProperty('display');
+  let citas = await obtenerCitas();
+  mostrarCitas(citas);
+  filtrarCitas();
+});
+
+
+mantenerCitaButton.addEventListener('click', function () {
+  modalCancelarCita.style.display = 'none';
+});
+
+// Función para modificar una cita 
+async function modificarCita(fechaHora) {
+  const [, , day, hour] = fechaHora.split('-');
+  formModal.style.zIndex = '13';
+  await updateCalendar();
+  selectDate(day);
+  const slots = document.querySelectorAll('.time-slots button');
+  for (let slot of slots) {
+    if (slot.textContent == hour) {
+      selectTime(slot, true);
+    }
+  }
+  contenedorProblema.appendChild(aceptarButtonModal);
+}
+
+
+
+// Filtrar citas por atributo y valor
+function filtrarCitas() {
+  const atributo = document.getElementById("filtro-atributo").value;
+  const valorInput = document.getElementById("filtro-valor");
+  const estadoSeleccionado = document.getElementById("filtro-estado").value;
+  const mesSeleccionado = document.getElementById("filtro-mes").value;
+
+  // Deshabilitar el input si no se selecciona un atributo válido
+  if (!atributo) {
+    valorInput.disabled = true;
+    valorInput.value = ""; // Limpiar el valor del input
+  } else {
+    valorInput.disabled = false;
+  }
+
+  const valor = valorInput.value.toLowerCase();
+
+  // Filtrar citas
+  const citasFiltradas = citasOriginales.filter((cita) => {
+    let cumpleFiltroPrincipal = true;
+    let cumpleFiltroEstado = true;
+    let cumpleFiltroMes = true;
+
+    // Aplicar filtro principal
+    if (atributo) {
+      if (atributo === "NombreCompleto") {
+        const nombreCompleto = `${cita.Nombre} ${cita.Apellidos}`.toLowerCase();
+        cumpleFiltroPrincipal = nombreCompleto.includes(valor);
+      } else {
+        const campo = cita[atributo]?.toString().toLowerCase();
+        cumpleFiltroPrincipal = campo && campo.includes(valor);
+      }
+    }
+
+    // Aplicar filtro por estado
+    if (estadoSeleccionado) {
+      cumpleFiltroEstado = cita.Estado.toLowerCase() === estadoSeleccionado;
+    }
+
+    // Aplicar filtro por mes
+    if (mesSeleccionado) {
+      const mesCita = cita.Fecha_Hora.split("-")[1]; // El mes está en la posición 1 del formato YYYY-MM-DD-HH:MM
+      cumpleFiltroMes = mesCita === mesSeleccionado;
+    }
+
+    // Solo incluir citas que cumplan todos los filtros
+    return cumpleFiltroPrincipal && cumpleFiltroEstado && cumpleFiltroMes;
+  });
+
+  // Limpiar el contenido del modal
+  limpiarListadoCitas();
+
+  // Si no hay resultados y se han aplicado filtros, mostrar el mensaje
+  if (citasFiltradas.length === 0) {
+    const mensaje = document.createElement("p");
+    mensaje.className = "modal-citas-no-resultados";
+    mensaje.textContent = "No se han encontrado resultados.";
+    modalCitasBody.appendChild(mensaje);
+    // Actualizar el contador de resultados
+    actualizarContadorResultados(0);
+    return;
+  }
+  // Ordenar citas por ID_Cita de mayor a menor
+  citasFiltradas.sort((a, b) => b.ID_Cita - a.ID_Cita);
+
+  // Renderizar citas filtradas
+  citasFiltradas.forEach((cita) => {
+    modalCitasBody.appendChild(crearCajon(cita));
+  });
+
+  // Actualizar el contador de resultados
+  actualizarContadorResultados(citasFiltradas.length);
+
+  // Si no se han aplicado filtros, mostrar el número total de citas
+  if (!atributo && !estadoSeleccionado && !mesSeleccionado && !valor) {
+    actualizarContadorResultados(citasOriginales.length);
+  }
+}
+
+// Función para actualizar el contador de resultados
+function actualizarContadorResultados(cantidad) {
+  const contador = document.getElementById("contador-citas");
+  contador.textContent = `Mostrando ${cantidad} resultados`;
+}
+
+
+
+
+
+
+
+
+// Cerrar modal al hacer clic fuera del contenido
+function closeModalOnOutsideClick(event) {
+  const modalContent = document.querySelector(".modal-citas-content");
+  if (!modalContent.contains(event.target)) {
+    closeModal();
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal-citas");
+  modal.style.display = "none";
+}
+
+// Botón de recarga
+const recargarCitasButton = document.getElementById("recargar-citas");
+
+// Agregar un eventListener al botón para recargar el listado de citas
+recargarCitasButton.addEventListener('click', async function () {
+  // Obtener nuevamente las citas y mostrarlas
+  mostrarCitas(await obtenerCitas());
+  filtrarCitas();
+});
+
+
+
 // MODAL LOGIN / REGISTER
 
 function openLoginForm() {
@@ -369,6 +829,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
           // Añadir el texto "Panel Admin" al <li>
           panelAdminLink.textContent = "Panel Admin";
           panelAdminLink.href = './php/panel_admin.php';
+          panelAdminLink.target = '_blank';
 
           panelAdminLi.appendChild(panelAdminLink);
 
@@ -895,7 +1356,7 @@ const updateTimeSlots = (selectedDate) => {
 
 
 
-const selectTime = (slot) => {
+async function selectTime(slot, key = false) {
   const slots = document.querySelectorAll('.time-slots button');
   if (document.querySelector('#horaNoDisponibleAlerta')) {
     hourNotAvailableWarning.remove();
@@ -913,8 +1374,18 @@ const selectTime = (slot) => {
     aceptarButton.textContent = 'Aceptar'
     timeSlotsElement.after(aceptarButton);
     chosenHour = slot;
-  }
-  else {
+  } 
+  else if (slot.classList.contains('reserved') && key) {
+    const datosCita = await obtenerDatosCita(selectedDate + '-' + slot.textContent);
+    formModal.style.display = 'flex';
+    nombreInput.value = datosCita.Nombre;
+    apellidosInput.value = datosCita.Apellidos;
+    telefonoInput.value = datosCita.Telefono;
+    correoInput.value = datosCita.Correo_Electronico;
+    modeloInput.value = datosCita.Modelo_Vehiculo;
+    anioInput.value = datosCita.Ano_Matriculacion;
+    problemaInput.value = datosCita.Motivo;
+  } else {
     slot.classList.add('selected-not-available');
     hourNotAvailableWarning = document.createElement('p');
     hourNotAvailableWarning.textContent = ('Esta hora no está disponible');
@@ -927,6 +1398,10 @@ const selectTime = (slot) => {
   }
 
 };
+
+
+
+
 
 
 // Funciones para abrir y cerrar el modal
@@ -1406,75 +1881,3 @@ sendVerificationEmailBtn.onclick = async function () {
 
 
 
-
-
-
-
-
-//Obtener datos cita
-async function obtenerDatosCita(fechaHora) {
-  try {
-      // Realizar la solicitud al servidor
-      const response = await fetch('/php/obtener_datos_cita.php', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ Fecha_Hora: fechaHora })
-      });
-
-      // Convertir la respuesta a JSON
-      const data = await response.json();
-
-      if (data.error) {
-          console.error(data.error);
-          alert(`Error: ${data.error}`);
-      } else {
-          // Devolver los datos obtenidos
-          return data;
-      }
-  } catch (error) {
-      console.error('Error al obtener los datos de la cita:', error);
-      alert('Ocurrió un error al obtener los datos.');
-  }
-}
-
-
-async function obtenerCitas() {
-  try {
-      const response = await fetch('/php/obtener_citas.php', {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      });
-
-      const data = await response.json();
-
-      if (data.error) {
-          console.error(data.error);
-          alert(`Error: ${data.error}`);
-      } else if (data.citas) {
-          console.log('Citas obtenidas:', data.citas);
-
-          data.citas.forEach(cita => {
-              console.log(`Cita ID: ${cita.ID_Cita}`);
-              console.log(`Modelo: ${cita.Modelo_Vehiculo}`);
-              console.log(`Año: ${cita.Ano_Matriculacion}`);
-              console.log(`Fecha y hora: ${cita.Fecha_Hora}`);
-              console.log(`Motivo: ${cita.Motivo}`);
-              console.log(`Estado: ${cita.Estado}`);
-              console.log(`Nombre: ${cita.Nombre}`);
-              console.log(`Apellidos: ${cita.Apellidos}`);
-              console.log(`Teléfono: ${cita.Telefono}`);
-              console.log(`Correo: ${cita.Correo_Electronico}`);
-          });
-      }
-  } catch (error) {
-      console.error('Error al obtener las citas:', error);
-      alert('Ocurrió un error al obtener las citas.');
-  }
-}
-
-// Llamar a la función
-obtenerCitas(); //TOFIX: La llamaré al entrar a mis citas, no al principio del código

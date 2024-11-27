@@ -37,7 +37,109 @@
     <div id="user-menu" class="user-menu">
       <ul>
         <li>Perfil</li>
-        <li>Citas</li>
+        <li id="listado-citas-boton">Citas</li>
+
+        <!-- MODAL CITAS -->
+        <div id="modal-citas" class="modal-citas" onclick="closeModalOnOutsideClick(event)">
+          <div class="modal-citas-content">
+            <span class="modal-citas-close" onclick="closeModal()">&times;</span>
+            <div id="modal-citas-filter">
+              <label for="filtro-atributo">Filtrar por:</label>
+              <select id="filtro-atributo" onchange="filtrarCitas()">
+                <option value="">Seleccionar</option>
+                <option value="NombreCompleto">Nombre completo</option>
+                <option value="Telefono">Teléfono</option>
+                <option value="Correo_Electronico">Correo Electrónico</option>
+                <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
+                <option value="Ano_Matriculacion">Año de Matriculación</option>
+              </select>
+
+              <input type="text" id="filtro-valor" placeholder="Escribe el valor..." oninput="filtrarCitas()" />
+
+              <!-- Filtro independiente para el estado -->
+              <label for="filtro-estado">Estado:</label>
+              <select id="filtro-estado" onchange="filtrarCitas()">
+                <option value="">Cualquiera</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="completada">Completada</option>
+              </select>
+
+              <!-- Filtro por mes -->
+              <label for="filtro-mes">Mes:</label>
+              <select id="filtro-mes" onchange="filtrarCitas()">
+                <option value="">Cualquiera</option>
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+              </select>
+
+
+            </div>
+            <div id="resultado-citas">
+              <p id="contador-citas">Mostrando 0 resultados</p>
+              <!-- Botón de recargar -->
+              <img width="30px" alt="Recargar" src="../images/panel-admin/recargar.png" id="recargar-citas"></img>
+            </div>
+
+            <div id="modal-citas-body">
+              <!-- Los cajones dinámicos se generarán aquí -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de confirmación de cancelar cita -->
+        <div id="modal-cancelar-cita" class="modal-cancelar-cita">
+          <div class="modal-cancelar-cita-content">
+            <p>¿Está seguro de que desea cancelar la cita?</p>
+            <button id="confirmar-cancelar-cita" class="confirmar-cancelar-cita">Sí, cancelar cita</button>
+            <button id="cancelar-cancelar-cita" class="cancelar-cancelar-cita">No, mantener cita</button>
+          </div>
+        </div>
+
+        <!-- Modal formulario -->
+        <div id="modal-formulario" class="modal">
+          <div class="modal-formulario-content">
+            <span class="close" id="cerrar-modal-formulario">&times;</span>
+            <h2>Electric Doctor</h2>
+            <form id="pedir-cita-form-modal">
+              <div class="elementos-pedir-cita">
+                <input type="text" id="nombre-modal" name="nombre" placeholder="Nombre" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="text" id="apellidos-modal" name="apellidos" placeholder="Apellidos" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="tel" id="telefono-modal" name="telefono" pattern="[0-9]{9}"
+                  placeholder="Teléfono (9 dígitos)" title="El número debe tener 9 dígitos" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="email" id="correo-modal" name="correo" placeholder="Correo Electrónico" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="text" id="marca-modal" name="marca" placeholder="Marca y Modelo del Vehículo" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="number" id="anio-modal" name="anio" placeholder="Año de Matriculación" min="1900"
+                  max="2024" required>
+              </div>
+              <div id="contenedor-problema" class="grupo-formulario">
+                <textarea id="problema-modal" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
+                  required></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
         <li>Facturas</li>
         <li id="logout">Cerrar Sesión</li>
       </ul>
