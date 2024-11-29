@@ -1596,7 +1596,6 @@ async function aceptarPidiendoCita() {
             const marca = document.getElementById('marca').value;
             const anio = document.getElementById('anio').value;
             const problema = document.getElementById('problema').value;
-            const fechaHora = chosenDate; // Este valor debe ser el valor de la fecha seleccionada
 
             // Crear el objeto JSON con los datos
             const datosCita = {
@@ -1607,7 +1606,7 @@ async function aceptarPidiendoCita() {
               marca: marca,
               anio: anio,
               problema: problema,
-              fechaHora: fechaHora,
+              fechaHora: chosenDate,
               dataRespuesta: dataRespuesta
             };
 

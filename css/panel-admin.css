@@ -411,7 +411,7 @@ button.selected-not-available {
   /* Color de texto para horas seleccionadas */
 }
 
-#aceptar {
+#aceptar, #aceptar-modificando-fecha {
   margin: 1em auto 0;
   background-color: #3362a4;
   display: block;

@@ -1,5 +1,7 @@
 <?php
-ini_set('display_errors', 1);
+session_start();
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
 // Incluir el archivo de conexión
@@ -30,7 +32,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fechaHora = $data->fechaHora;
         $dataRespuesta = $data->dataRespuesta;
 
-        // Primero, comprobar si ya existe una cita con la misma fecha y hora
+        // Asegurarse de que la variable de sesión esté configurada
+        if (isset($_SESSION['correo'])) {
+        $correoSesion = $_SESSION['correo'];
+
+        // Consulta preparada para obtener solo el rol del usuario
+        $sql = "SELECT Rol FROM Usuarios WHERE Correo_Electronico = :correoSesion";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':correoSesion', $correoSesion, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // Obtener solo el campo 'Rol'
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        // Comprobar si ya existe una cita con la misma fecha y hora
         try {
             $sql_check_cita = "SELECT COUNT(*) FROM Citas WHERE Fecha_Hora = :fecha_cita";
             $stmt_check_cita = $conexion->prepare($sql_check_cita);
@@ -55,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $verificado = $stmt_check_verificado->fetchColumn();
 
-                    if ($verificado == 1) {
+                    if ($verificado == 1 || ($userData && $userData['Rol'] === 'admin')) {
                         // Si el usuario está verificado, registrar la cita
                         $sql_cita = "INSERT INTO Citas (ID_Usuario, Modelo_Vehiculo, Ano_Matriculacion, Motivo, Fecha_Hora) 
                                      VALUES (:id_usuario, :marca_vehiculo, :anio_matriculacion, :problema, :fecha_cita)";
@@ -96,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $id_cliente = $cliente['ID_Cliente'];
                             $verificado_cliente = $cliente['Verificado'];
 
-                            if ($verificado_cliente == 1) {
+                            if ($verificado_cliente == 1 || ($userData && $userData['Rol'] === 'admin')) {
                                 // Si el cliente está verificado, registrar la cita
                                 $sql_cita = "INSERT INTO Citas (ID_Cliente, Modelo_Vehiculo, Ano_Matriculacion, Motivo, Fecha_Hora) 
                                              VALUES (:id_cliente, :marca_vehiculo, :anio_matriculacion, :problema, :fecha_cita)";
@@ -144,6 +159,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             // Datos del cliente guardados correctamente
                             $response['status'] = 'not-verified-client';
                             $response['correo'] = $correo;
+
+                            //Si eres admin, después de crear al cliente, también crea la cita
+                            if ($userData && $userData['Rol'] === 'admin') {
+                                // Si el cliente está verificado, registrar la cita
+                                $sql_cita = "INSERT INTO Citas (ID_Cliente, Modelo_Vehiculo, Ano_Matriculacion, Motivo, Fecha_Hora) 
+                                             VALUES (:id_cliente, :marca_vehiculo, :anio_matriculacion, :problema, :fecha_cita)";
+                                
+                                // Preparar la declaración
+                                $stmt_cita = $conexion->prepare($sql_cita);
+
+                                // Vincular los parámetros con los valores
+                                $stmt_cita->bindParam(':id_cliente', $id_cliente);
+                                $stmt_cita->bindParam(':marca_vehiculo', $marca);
+                                $stmt_cita->bindParam(':anio_matriculacion', $anio);
+                                $stmt_cita->bindParam(':problema', $problema);
+                                $stmt_cita->bindParam(':fecha_cita', $fechaHora);
+
+                                // Ejecutar la consulta para insertar en Citas
+                                $stmt_cita->execute();
+
+                                // Si la inserción fue exitosa
+                                $response['status'] = 'success';
+                                $response['message'] = 'Cita registrada exitosamente!';
+                            }
 
                             }
                     } catch (PDOException $e) {
