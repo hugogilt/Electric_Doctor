@@ -1111,6 +1111,9 @@ function crearCajon(cita) {
     botonPendiente.style.float = 'right';
     botonPendiente.addEventListener("click", () => marcarCitaPendiente(cita.ID_Cita));
     botonesContainer.appendChild(botonPendiente); // Añadir el botón "Cita pendiente"
+    botonModificar.classList.add('disabledButton');
+    botonModificar.disabled = true;
+
     botonesContainer.appendChild(botonModificar);
   }
 

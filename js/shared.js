@@ -1984,6 +1984,30 @@ sendVerificationEmailBtn.onclick = async function () {
   } catch (error) {
     showAlert('Ocurrió un error en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
   }
+
+
+  //TOFIX: No va
+  sendVerificationEmailBtn.addEventListener('click', () => {
+    let timer = 10;
+    if (!document.querySelector('#time-out-message')) {
+      const timeOutMessage = document.createElement('p');
+      timeOutMessage.id = 'time-out-message';
+      timeOutMessage.textContent = "Botón presionado. Espere un minuto.";
+      this.insertAdjacentElement('afterned', timeOutMessage);
+    }
+    this.disabled = true;
+    this.classList.add('disabledButton');
+
+    // Rehabilitar el botón después de 1 minuto
+    setTimeout(() => {
+        this.disabled = false;
+        timeOutMessage.remove();
+    }, timer*1000);
+
+    setTimeout(() => {
+      timeOutMessage.textContent = "Botón presionado. Espere " + timer + ' segundos.';
+    }, 1000);
+});
 };
 
 

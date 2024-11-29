@@ -800,6 +800,11 @@ textarea {
   background-color: rgba(34, 139, 34, 0.5)
 }
 
+#modal-citas .disabledButton {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
 
 
 /* MODAL CANCELAR CITA */
