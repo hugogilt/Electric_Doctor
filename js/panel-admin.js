@@ -19,6 +19,7 @@ let nonAvailableSlots = [];
 let reservedSlots = [];
 let selectedDate;
 const formModal = document.getElementById("modal-formulario");
+const formModalContent = document.querySelector(".modal-formulario-content");
 const closeFormModalButton = document.getElementById("cerrar-modal-formulario");
 closeCalendarModal.addEventListener('click', function () {
   calendarModal.style.display = 'none';
@@ -34,7 +35,11 @@ function closeFormModal() {
 }
 
 closeFormModalButton.addEventListener('click', closeFormModal);
-formModal.addEventListener('click', closeFormModal);
+formModal.addEventListener('click', function (e) {
+  if (!formModalContent.contains(e.target)) {
+  closeFormModal();
+  }
+});
 
 const nombreInput = document.getElementById('nombre');
 const apellidosInput = document.getElementById('apellidos');
@@ -57,6 +62,7 @@ const modalCancelarCita = document.querySelector('#modal-cancelar-cita');
 const mantenerCitaButton = document.querySelector('#cancelar-cancelar-cita');
 const cancelarCitaButton = document.querySelector('#confirmar-cancelar-cita');
 let citaElegida;
+const modificarFechaButton = document.querySelector('#modificar-fecha-button');
 
 
 
@@ -561,7 +567,7 @@ async function selectTime(slot, key = false) {
     slot.classList.add('selected');
     chosenHour = slot;
     formModal.style.display = 'flex';
-    contenedorProblema.appendChild(aceptarButton);
+    modificarFechaButton.parentElement.insertAdjacentElement('afterend', aceptarButton);
     for (let inputForm of inputsForm) {
       inputForm.value = '';
     }
@@ -665,6 +671,8 @@ formModal.addEventListener('submit', async (e) => {
     console.error('Error al enviar los datos:', error);
     showAlert('Ocurrió un error al modificar la cita.', 'negative');
   }
+  closeFormModal();
+  recargarCitas();
 });
 
 
@@ -1030,7 +1038,7 @@ async function modificarCita(fechaHora, idCita) {
       selectTime(slot, true);
     }
   }
-  contenedorProblema.appendChild(aceptarButton);
+  modificarFechaButton.parentElement.insertAdjacentElement('afterend', aceptarButton);
   citaElegida = idCita;
   [nombreInput, apellidosInput, telefonoInput, correoInput].forEach(input => {
     input.disabled = true;
@@ -1149,11 +1157,13 @@ function closeModal() {
 const recargarCitasButton = document.getElementById("recargar-citas");
 
 // Agregar un eventListener al botón para recargar el listado de citas
-recargarCitasButton.addEventListener('click', async function () {
-  // Obtener nuevamente las citas y mostrarlas
-  mostrarCitas(await obtenerCitas());
-  filtrarCitas();
-});
+recargarCitasButton.addEventListener('click', recargarCitas);
+
+async function recargarCitas() {
+   // Obtener nuevamente las citas y mostrarlas
+   mostrarCitas(await obtenerCitas());
+   filtrarCitas();
+}
 
 
 

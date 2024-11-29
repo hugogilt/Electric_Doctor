@@ -128,30 +128,34 @@ try {
                                 <span class="close" id="cerrar-modal-formulario">&times;</span>
                                 <h2>Electric Doctor</h2>
                                 <form id="pedir-cita-form">
-                                <div class="elementos-pedir-cita">
-                                    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-                                </div>
-                                <div class="elementos-pedir-cita">
-                                    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
-                                </div>
-                                <div class="elementos-pedir-cita">
-                                    <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Teléfono (9 dígitos)"
-                                    title="El número debe tener 9 dígitos" required>
-                                </div>
-                                <div class="elementos-pedir-cita">
-                                    <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
-                                </div>
-                                <div class="elementos-pedir-cita">
-                                    <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
-                                </div>
-                                <div class="elementos-pedir-cita">
-                                    <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024" required>
-                                </div>
-                                <div id="contenedor-problema" class="grupo-formulario">
-                                    <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
-                                    required></textarea>
-                                </div>
+                                    <div class="elementos-pedir-cita">
+                                        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                                    </div>
+                                    <div class="elementos-pedir-cita">
+                                        <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+                                    </div>
+                                    <div class="elementos-pedir-cita">
+                                        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Teléfono (9 dígitos)"
+                                            title="El número debe tener 9 dígitos" required>
+                                    </div>
+                                    <div class="elementos-pedir-cita">
+                                        <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
+                                    </div>
+                                    <div class="elementos-pedir-cita">
+                                        <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
+                                    </div>
+                                    <div class="elementos-pedir-cita">
+                                        <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024" required>
+                                    </div>
+                                    <div id="contenedor-problema" class="grupo-formulario">
+                                        <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5" required></textarea>
+                                    </div>
+                                    <!-- Botón para modificar la fecha -->
+                                    <div id="contenedor-fecha-button">
+                                        <button id="modificar-fecha-button" type="button">Fecha:</button>
+                                    </div>
                                 </form>
+
                             </div>
                         </div>
 

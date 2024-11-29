@@ -423,6 +423,7 @@ button.selected-not-available {
   border-radius: 5px;
   cursor: pointer;
   box-sizing: border-box;
+  grid-column: span 2;
 }
 
 #selectedDay {
@@ -632,6 +633,27 @@ textarea {
 #abrir-calendario-button {
   grid-column: span 2;
 }
+
+#modificar-fecha-button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1em;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#modificar-fecha-button:hover {
+  background-color: #f0f0f0;
+}
+
+#contenedor-fecha-button {
+  grid-column: span 2; /* Hace que el botón ocupe ambas columnas */
+}
+
 
 
 

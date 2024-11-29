@@ -105,6 +105,22 @@ pedirCitaButton.onclick = function () {
     openCalendarButton.classList.remove("saltando");
   }, 100); // Debe coincidir con la duración de la transición
 };
+const monthNames = {
+  1: 'enero',
+  2: 'febrero',
+  3: 'marzo',
+  4: 'abril',
+  5: 'mayo',
+  6: 'junio',
+  7: 'julio',
+  8: 'agosto',
+  9: 'septiembre',
+  10: 'octubre',
+  11: 'noviembre',
+  12: 'diciembre'
+};
+
+
 let ejecutado = false;
 const reviewsScript = document.querySelector('#reviews-script');
 const reviewsContainer = document.querySelector('#reviews-container');
@@ -152,15 +168,41 @@ const modalCancelarCita = document.querySelector('#modal-cancelar-cita');
 const mantenerCitaButton = document.querySelector('#cancelar-cancelar-cita');
 const cancelarCitaButton = document.querySelector('#confirmar-cancelar-cita');
 const formModal = document.getElementById("modal-formulario");
-const closeFormModal = document.getElementById("cerrar-modal-formulario");
+const formModalContent = document.querySelector(".modal-formulario-content");
+const closeFormModalButton = document.getElementById("cerrar-modal-formulario");
 closeCalendarModal.addEventListener('click', function () {
+  calendarModal.style.display = 'none';
+  editingDate = false;
+});
+
+let editingDate = false;
+
+function closeFormModal() {
   formModal.style.display = 'none';
-})
+  [nombreInput, apellidosInput, telefonoInput, correoInput].forEach(input => {
+    input.disabled = false;
+    input.classList.remove('disabled');
+  });
+  aceptarButton.removeEventListener('click', aceptarModificandoCita);
+  aceptarButton.addEventListener('click', aceptarPidiendoCita);
+}
+
+closeFormModalButton.addEventListener('click', closeFormModal);
+formModal.addEventListener('click', function (e) {
+  if (!formModalContent.contains(e.target) && !editingDate) {
+    closeFormModal();
+  }
+});
+
+let citaElegida, modificandoAño, modificandoDia, modificandoHora, modificandoMes, chosenDate;
+
+
 const contenedorProblema = document.querySelector('#contenedor-problema');
 const aceptarButtonModal = document.createElement('button');
 aceptarButtonModal.type = 'submit';
 aceptarButtonModal.id = 'aceptar-modal';
 aceptarButtonModal.textContent = 'Aceptar';
+const modificarFechaButton = document.querySelector('#modificar-fecha-button');
 
 
 //Modal Citas
@@ -301,7 +343,7 @@ async function openListadoCitasModal() {
   modal.style.display = "flex";
   let citas = await obtenerCitas();
   filtrarCitas(); //Para que las ordene
-  if (typeof citas === 'object' && citas.length > 0) { 
+  if (typeof citas === 'object' && citas.length > 0) {
     actualizarContadorResultados(citas.length);
   }
 }
@@ -318,18 +360,18 @@ function mostrarCitas(arrayDeObjetos) {
   // Limpiar el contenido previo
   limpiarListadoCitas();
 
-if (typeof arrayDeObjetos === 'object' && arrayDeObjetos.length > 0) {
-  // Guardar las citas originales para el filtro
-  citasOriginales = arrayDeObjetos;
+  if (typeof arrayDeObjetos === 'object' && arrayDeObjetos.length > 0) {
+    // Guardar las citas originales para el filtro
+    citasOriginales = arrayDeObjetos;
 
 
-  // Crear cajones dinámicamente
-  arrayDeObjetos.forEach((objeto) => {
-    modalCitasBody.appendChild(crearCajon(objeto));
-  });
-} else {
-  citasOriginales = [];
-}
+    // Crear cajones dinámicamente
+    arrayDeObjetos.forEach((objeto) => {
+      modalCitasBody.appendChild(crearCajon(objeto));
+    });
+  } else {
+    citasOriginales = [];
+  }
 
 }
 
@@ -395,9 +437,9 @@ function crearCajon(cita) {
   botonesContainer.classList.add("modal-citas-botones");
   const botonModificar = document.createElement("button");
 
-    botonModificar.classList.add("modal-citas-boton");
-    botonModificar.textContent = "Modificar";
-    botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora));
+  botonModificar.classList.add("modal-citas-boton");
+  botonModificar.textContent = "Modificar";
+  botonModificar.addEventListener("click", () => modificarCita(cita.Fecha_Hora, cita.ID_Cita));
 
 
   // Botón "Cita completada" solo si el estado es 'Pendiente'
@@ -407,7 +449,7 @@ function crearCajon(cita) {
     botonCancelar.textContent = "Cancelar";
     botonCancelar.addEventListener("click", () => showCancelarCitaModal(cita.ID_Cita));
 
-    
+
 
     // Agregar los botones al contenedor de botones
     botonesContainer.appendChild(botonModificar);
@@ -465,18 +507,30 @@ mantenerCitaButton.addEventListener('click', function () {
 });
 
 // Función para modificar una cita 
-async function modificarCita(fechaHora) {
-  const [, , day, hour] = fechaHora.split('-');
+async function modificarCita(fechaHora, idCita) {
+  chosenDate = fechaHora;
+  [modificandoAño, modificandoMes, modificandoDia, modificandoHora] = fechaHora.split('-');
+  const monthName = monthNames[parseInt(modificandoMes)];
+  const modificandoDateString = `Fecha: ${modificandoDia} de ${monthName} de ${fechaHora.split('-')[0]} a las ${modificandoHora}h`;
+  modificarFechaButton.textContent = modificandoDateString;
   formModal.style.zIndex = '13';
+  // Hacer que el calendario se abra en el mes de la cita
+  currentDate.setMonth(modificandoMes - 1);
+  currentDate.setFullYear(modificandoAño);
   await updateCalendar();
-  selectDate(day);
+  selectDate(modificandoDia);
   const slots = document.querySelectorAll('.time-slots button');
   for (let slot of slots) {
-    if (slot.textContent == hour) {
+    if (slot.textContent == modificandoHora) {
       selectTime(slot, true);
     }
   }
-  contenedorProblema.appendChild(aceptarButtonModal);
+  modificarFechaButton.parentElement.insertAdjacentElement('afterend', aceptarButtonModal);
+  citaElegida = idCita;
+  [nombreInput, apellidosInput, telefonoInput, correoInput].forEach(input => {
+    input.disabled = true;
+    input.classList.add('disabled');
+  });
 }
 
 
@@ -590,11 +644,13 @@ function closeModal() {
 const recargarCitasButton = document.getElementById("recargar-citas");
 
 // Agregar un eventListener al botón para recargar el listado de citas
-recargarCitasButton.addEventListener('click', async function () {
+recargarCitasButton.addEventListener('click', recargarCitas);
+
+async function recargarCitas() {
   // Obtener nuevamente las citas y mostrarlas
   mostrarCitas(await obtenerCitas());
   filtrarCitas();
-});
+}
 
 
 
@@ -652,7 +708,7 @@ userButton.addEventListener("click", async (e) => {
     positionUserMenu();
     userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block'; // Alternar el menú
     document.addEventListener('click', (e) => {
-      if (!userTextSpan.contains(e.target) && !userMenu.contains(e.target)) {
+      if (!userTextSpan.contains(e.target) && !userMenu.contains(e.target) && !editingDate) {
         userMenu.style.display = 'none';
         window.removeEventListener('resize', () => {
           if (userMenu.style.display === 'block') {
@@ -727,7 +783,7 @@ registerForm.addEventListener("submit", async function (event) {
   event.preventDefault(); // Prevenir el envío del formulario tradicional
   passwordErrorMessageRegister.textContent = '';
   confirmPasswordErrorMessageRegister.textContent = '';
-  
+
   // Obtener los valores del formulario
   const nombre = document.getElementById("registerName").value;
   const apellidos = document.getElementById("registerSurname").value;
@@ -777,7 +833,7 @@ registerForm.addEventListener("submit", async function (event) {
 
       const data2 = await response2.text();
     } else {
-       //TOFIX: No estoy comprobando realmente que este sea el problema
+      //TOFIX: No estoy comprobando realmente que este sea el problema
       showAlert('Este correo ya está asociado a una cuenta, por favor, inicie sesión.', 'negative'); // Mostrar mensaje de error del registro
     }
   } catch (error) {
@@ -1374,7 +1430,7 @@ async function selectTime(slot, key = false) {
     aceptarButton.textContent = 'Aceptar'
     timeSlotsElement.after(aceptarButton);
     chosenHour = slot;
-  } 
+  }
   else if (slot.classList.contains('reserved') && key) {
     const datosCita = await obtenerDatosCita(selectedDate + '-' + slot.textContent);
     formModal.style.display = 'flex';
@@ -1405,19 +1461,18 @@ async function selectTime(slot, key = false) {
 
 
 // Funciones para abrir y cerrar el modal
-openCalendarButton.addEventListener('click', () => {
+openCalendarButton.addEventListener('click', openCalendar);
+
+async function openCalendar() {
   calendarModal.style.display = 'flex';
   updateCalendar();
-});
-
-closeCalendarModal.addEventListener('click', () => {
-  calendarModal.style.display = 'none';
-});
+}
 
 // Cerrar el modal si se hace clic fuera de él
 window.addEventListener('click', (event) => {
   if (event.target === calendarModal) {
     calendarModal.style.display = 'none';
+    editingDate = false;
   }
 });
 
@@ -1431,7 +1486,9 @@ nextMonthButton.addEventListener('click', () => {
   updateCalendar();
 });
 
-aceptarButton.addEventListener('click', async () => {
+aceptarButton.addEventListener('click', aceptarPidiendoCita);
+
+async function aceptarPidiendoCita() {
   //COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
   await obtenerFechasNoDisponibles();
   addCompleteDays(year.textContent, currentDate.getMonth());
@@ -1566,7 +1623,7 @@ aceptarButton.addEventListener('click', async () => {
             const data = await response.json();
             if (data.status === 'success') {
               showAlert(data.message, 'positive');
-            }else if (data.status === 'not-verified-user' || data.status === 'not-verified-client') {
+            } else if (data.status === 'not-verified-user' || data.status === 'not-verified-client') {
               verificationModal.style.display = 'flex';
               correoFormulario = data.correo;
               if (data.status === 'not-verified-user') {
@@ -1589,7 +1646,59 @@ aceptarButton.addEventListener('click', async () => {
   } else {
     showAlert('Por favor, selecciona una fecha y una hora antes de aceptar.', 'negative');
   }
-});
+}
+
+async function aceptarModificandoCita() {
+  //COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
+  await obtenerFechasNoDisponibles();
+  addCompleteDays(year.textContent, currentDate.getMonth());
+  addNotAvailableDays(year.textContent, currentDate.getMonth());
+  let twoPointsPos = chosenHour.textContent.indexOf(":");
+  let hour = chosenHour.textContent.slice(0, twoPointsPos);
+  let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
+  if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
+    showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+
+    if (completeDays.includes(selectedDate) || notAvailableDays.includes(selectedDate)) {
+      chosenDay.classList.remove('available');
+      chosenDay.classList.remove('semi-complete-day');
+      updateCalendar();
+      chosenDay.classList.add('selected-not-available');
+      selectDate(chosenDay.textContent);
+      chosenDay.click();
+      return;
+    } else {
+      selectDate(chosenDay.textContent);
+      let selectedSlot = Array.from(document.querySelectorAll('.time-slots button')).find(element => element.textContent.trim() === chosenHour.textContent);
+      selectedSlot.classList.remove('available');
+      selectedSlot.classList.add('selected-not-available');
+      selectedSlot.click();
+      return;
+    }
+
+  }
+
+  if (chosenDay && chosenHour) {
+
+    // Convertir el número del mes en el nombre del mes
+    let chosenMonthName = monthNames[chosenMonth] || 'mes inválido';
+
+    // Crear la fecha elegida como un string
+    const chosenDateString = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonthName} de ${chosenYear} a las ${chosenHour.textContent}h`;
+
+    // Seleccionar el botón de elegir fecha usando la constante existente
+    if (modificarFechaButton) {
+      // Sustituir el textContent del botón con la fecha elegida
+      modificarFechaButton.textContent = chosenDateString;
+      calendarModal.style.display = 'none';
+      editingDate = false;
+      chosenDate = `${chosenYear}-${String(chosenMonth).padStart(2, '0')}-${String(chosenDay.textContent).padStart(2, '0')}-${String(chosenHour.textContent).padStart(4, '0')}`;
+    }
+  } else {
+    showAlert('Por favor, selecciona una fecha y una hora antes de aceptar.', 'negative');
+  }
+}
+
 
 
 // ALERT MESSAGES
@@ -1823,39 +1932,39 @@ const closeModalBtn = document.getElementById('modal-verificar-correo-close');
 const sendVerificationEmailBtn = document.getElementById('modal-verificar-correo-send-email');
 
 function cogerCamposFormularioCita() {
-// Obtener los valores del formulario
-const nombre = document.getElementById("nombre").value;
-const apellidos = document.getElementById("apellidos").value;
-const telefono = document.getElementById("telefono").value;
-const marca = document.getElementById("marca").value;
-const anio = document.getElementById("anio").value;
-const problema = document.getElementById("problema").value;
+  // Obtener los valores del formulario
+  const nombre = document.getElementById("nombre").value;
+  const apellidos = document.getElementById("apellidos").value;
+  const telefono = document.getElementById("telefono").value;
+  const marca = document.getElementById("marca").value;
+  const anio = document.getElementById("anio").value;
+  const problema = document.getElementById("problema").value;
 
 
-// Crear un objeto con los datos del formulario
-//TOFIX: QUIERO HACER QUE SE RELLENE EL FORMULARIO CON ESTOS DATOS PERO NO SE COMO
-// Hasta que lo consiga, solo necesito correoFormulario y nonVerifiedType
-const formData = new FormData();
-formData.append('nombre', nombre);
-formData.append('apellidos', apellidos);
-formData.append('correo', correoFormulario);
-formData.append('telefono', telefono);
-formData.append('marca', marca);
-formData.append('anio', anio);
-formData.append('problema', problema);
-formData.append('nonVerifiedType', nonVerifiedType);
+  // Crear un objeto con los datos del formulario
+  //TOFIX: QUIERO HACER QUE SE RELLENE EL FORMULARIO CON ESTOS DATOS PERO NO SE COMO
+  // Hasta que lo consiga, solo necesito correoFormulario y nonVerifiedType
+  const formData = new FormData();
+  formData.append('nombre', nombre);
+  formData.append('apellidos', apellidos);
+  formData.append('correo', correoFormulario);
+  formData.append('telefono', telefono);
+  formData.append('marca', marca);
+  formData.append('anio', anio);
+  formData.append('problema', problema);
+  formData.append('nonVerifiedType', nonVerifiedType);
 
-return formData;
+  return formData;
 }
 
 
 // Cierra el modal cuando el usuario hace clic en la "X"
-closeModalBtn.onclick = function() {
+closeModalBtn.onclick = function () {
   verificationModal.style.display = 'none';
 }
 
 // Cierra el modal si el usuario hace clic fuera del modal
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target === verificationModal) {
     verificationModal.style.display = 'none';
   }
@@ -1879,5 +1988,63 @@ sendVerificationEmailBtn.onclick = async function () {
 };
 
 
+
+// MODIFICAR CITA
+formModal.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  // Crear el objeto de datos para enviar
+  const data = {
+    id_cita: citaElegida,
+    nombre: nombreInput.value,
+    apellidos: apellidosInput.value,
+    telefono: telefonoInput.value,
+    correo: correoInput.value,
+    modelo: modeloInput.value,
+    anio: anioInput.value,
+    problema: problemaInput.value,
+    fecha: chosenDate
+  };
+
+  try {
+    // Enviar los datos al archivo PHP usando fetch
+    const response = await fetch('/php/modificar_cita.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Comprobar si la respuesta es exitosa
+    const result = await response.json();
+
+    if (result.status === 'success') {
+      console.log('Éxito:', result.message);
+      showAlert(result.message, 'positive');
+    } else {
+      console.log('Error:', result.message);
+      showAlert(result.message, 'negative');
+    }
+  } catch (error) {
+    console.error('Error al enviar los datos:', error);
+    showAlert('Ocurrió un error al modificar la cita.', 'negative');
+  }
+  closeFormModal();
+  recargarCitas();
+});
+
+modificarFechaButton.addEventListener('click', async function () {
+  editingDate = true;
+  aceptarButton.removeEventListener('click', aceptarPidiendoCita);
+  aceptarButton.addEventListener('click', aceptarModificandoCita);
+  await openCalendar();
+  selectDate(modificandoDia);
+  const slots = document.querySelectorAll('.time-slots button');
+  for (let slot of slots) {
+    if (slot.textContent == modificandoHora) {
+      selectTime(slot);
+    }
+  }
+});
 
 
