@@ -16,7 +16,6 @@ if (isset($_POST['correo']) && isset($_POST['nonVerifiedType'])) {
     $emailUsuario = $_POST['correo']; // Valor de la variable 'correo'
     $nonVerifiedType = $_POST['nonVerifiedType']; // Valor de la variable 'nonVerifiedType'
     $token = generarToken(); // Generar el token
-    echo $nonVerifiedType;
 } else {
     echo "No se ha proporcionado un email.";
     exit;
@@ -47,7 +46,7 @@ if ($nonVerifiedType == 'user') {
         $stmt->execute();
     
         // Si la actualización fue exitosa
-        echo "Token insertado correctamente en la base de datos usuarios." . $nonVerifiedType;
+        echo "Token insertado correctamente en la base de datos usuarios."
     
     } catch (PDOException $e) {
         // Si hay un error en la actualización

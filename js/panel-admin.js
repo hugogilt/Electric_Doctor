@@ -97,6 +97,38 @@ aceptarModificandoFechaButton.setAttribute('type', 'button');
 aceptarModificandoFechaButton.addEventListener('click', aceptarModificandoFecha);
 
 
+// COMPLETAR CITA
+// Elementos del modal
+const modalCompletarCita = document.getElementById('modal-completar-cita');
+const modalCompletarCitaCerrar = document.getElementById('modal-completar-cita-cerrar');
+const modalCompletarCitaGuardar = document.getElementById('modal-completar-cita-guardar');
+const modalCompletarCitaTextarea = document.getElementById('modal-completar-cita-textarea');
+
+
+
+// Cerrar modal
+modalCompletarCitaCerrar.addEventListener('click', () => {
+    modalCompletarCita.style.display = 'none';
+});
+
+// Guardar observaciones
+modalCompletarCitaGuardar.addEventListener('click', async function() {
+    const modalCompletarCitaObservaciones = modalCompletarCitaTextarea.value.trim();
+        modalCompletarCitaTextarea.value = '';
+        modalCompletarCita.style.display = 'none';
+        await cambiarEstadoCita(citaACompletar, modalCompletarCitaObservaciones);
+        recargarCitas();
+});
+
+// Cerrar modal al hacer clic fuera de él
+modalCompletarCita.addEventListener('click', (e) => {
+    if (e.target === modalCompletarCita) {
+        modalCompletarCita.style.display = 'none';
+    }
+});
+
+
+
 
 
 
@@ -108,7 +140,8 @@ const selectedDayText = document.createElement('p');
 selectedDayText.id = 'selectedDay';
 
 datesElement.after(selectedDayText);
-let chosenDay, chosenHour, chosenYear, chosenMonth, modificandoFecha = false, pidiendoCita = false, creandoCita = false;
+let chosenDay, chosenHour, chosenYear, chosenMonth, modificandoFecha = false,
+ pidiendoCita = false, creandoCita = false, citaACompletar;
 
 let dayNotAvailableWarning;
 if (document.querySelector('#diaNoDisponibleAlerta')) {
@@ -921,7 +954,7 @@ async function cancelarCita(idCita) {
 
 
 // Función para cambiar el estado de la cita
-async function cambiarEstadoCita(idCita) {
+async function cambiarEstadoCita(idCita, observaciones = '') {
   try {
     // Realizar la solicitud AJAX para cambiar el estado de la cita
     const response = await fetch('/php/cambiar_estado_cita.php', {
@@ -929,7 +962,7 @@ async function cambiarEstadoCita(idCita) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id_cita: idCita })
+      body: JSON.stringify({ id_cita: idCita, observaciones: observaciones })
     });
 
     const data = await response.json();
@@ -946,6 +979,7 @@ async function cambiarEstadoCita(idCita) {
     showAlert('Ocurrió un error al cambiar el estado de la cita.', 'negative');
   }
 }
+
 
 
 
@@ -1090,7 +1124,11 @@ function crearCajon(cita) {
     botonCompletada.classList.add("modal-citas-boton");
     botonCompletada.textContent = "Cita completada";
     botonCompletada.style.float = 'right';
-    botonCompletada.addEventListener("click", () => marcarCitaCompletada(cita.ID_Cita));
+    botonCompletada.addEventListener('click', () => {
+      modalCompletarCita.style.display = 'block';
+      citaACompletar = cita.ID_Cita;
+    });
+    // botonCompletada.addEventListener("click", () => marcarCitaCompletada(cita.ID_Cita));
     botonesContainer.appendChild(botonCompletada); // Añadir el botón "Cita completada"
     const botonCancelar = document.createElement("button");
     botonCancelar.classList.add("modal-citas-boton");

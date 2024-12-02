@@ -898,6 +898,8 @@ div>.eapps-widget-toolbar {
 
 .modal-verificar-correo * {
   box-sizing: content-box;
+  text-align: center;
+  font-size: 0.8em;
 }
 
 /* Estilo para el contenido del modal */
@@ -934,14 +936,15 @@ div>.eapps-widget-toolbar {
   color: white;
   border: none;
   cursor: pointer;
-  margin-top: 20px;
+  display: block;
+  margin: 0 auto;
 }
 
 #modal-verificar-correo-send-email:hover {
   background-color: #45a049;
 }
 
-.disabledButton {
+#modal-verificar-correo-send-email.disabledButton {
   background-color: gray;
   cursor: not-allowed;
 }

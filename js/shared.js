@@ -1980,34 +1980,41 @@ sendVerificationEmailBtn.onclick = async function () {
     });
 
     const data = await response.text(); // Obtener la respuesta del servidor como texto
-    showAlert(data); // Mostrar la respuesta como alerta
+    showAlert('Correo de verificación enviado correctamente', 'positive');
   } catch (error) {
     showAlert('Ocurrió un error en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
   }
 
 
   //TOFIX: No va
-  sendVerificationEmailBtn.addEventListener('click', () => {
-    let timer = 10;
-    if (!document.querySelector('#time-out-message')) {
-      const timeOutMessage = document.createElement('p');
-      timeOutMessage.id = 'time-out-message';
-      timeOutMessage.textContent = "Botón presionado. Espere un minuto.";
-      this.insertAdjacentElement('afterned', timeOutMessage);
+
+  let timer = 30; // Temporizador en segundos
+  const timeOutMessage = document.createElement('p');
+  
+  // Crear el mensaje de cuenta regresiva si no existe ya
+  if (!document.querySelector('#time-out-message')) {
+    timeOutMessage.id = 'time-out-message';
+    timeOutMessage.textContent = `¿No lo ha recibido? Reenvíelo en ${timer} segundos.`;
+    sendVerificationEmailBtn.insertAdjacentElement('afterend', timeOutMessage);
+  }
+  
+  // Deshabilitar el botón y añadir la clase de deshabilitado
+  sendVerificationEmailBtn.disabled = true;
+  sendVerificationEmailBtn.classList.add('disabledButton');
+  
+  // Actualizar el mensaje cada segundo
+  const intervalId = setInterval(() => {
+    timer--;
+    if (timer > 0) {
+      timeOutMessage.textContent = `¿No lo ha recibido? Reenvíelo en ${timer} segundos.`;
+    } else {
+      clearInterval(intervalId); 
+      sendVerificationEmailBtn.disabled = false; 
+      sendVerificationEmailBtn.classList.remove('disabledButton'); 
+      timeOutMessage.remove(); 
     }
-    this.disabled = true;
-    this.classList.add('disabledButton');
-
-    // Rehabilitar el botón después de 1 minuto
-    setTimeout(() => {
-        this.disabled = false;
-        timeOutMessage.remove();
-    }, timer*1000);
-
-    setTimeout(() => {
-      timeOutMessage.textContent = "Botón presionado. Espere " + timer + ' segundos.';
-    }, 1000);
-});
+  }, 1000);
+  
 };
 
 

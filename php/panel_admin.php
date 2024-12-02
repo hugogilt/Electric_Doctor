@@ -230,6 +230,19 @@ try {
                           </div>
                         </div>
 
+
+                        <!-- Modal de completar cita -->
+                        <div id="modal-completar-cita" class="modal-completar-cita-overlay">
+                            <div class="modal-completar-cita-container">
+                                <h2 class="modal-completar-cita-header">Añadir Observaciones</h2>
+                                <textarea id="modal-completar-cita-textarea" placeholder="Escribe las observaciones aquí..."></textarea>
+                                <div class="modal-completar-cita-actions">
+                                    <button id="modal-completar-cita-guardar">Guardar</button>
+                                    <button id="modal-completar-cita-cerrar">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </main>
                     <script src="../js/panel-admin.js"></script>
                     </body>

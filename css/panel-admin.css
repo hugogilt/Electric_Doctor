@@ -863,6 +863,77 @@ textarea {
   top: 6px;
 }
 
+/* MODAL COMPLETAR CITA */
+/* Overlay del modal */
+.modal-completar-cita-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+/* Contenedor del modal */
+.modal-completar-cita-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+/* Encabezado del modal */
+.modal-completar-cita-header {
+  margin: 0 0 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* Textarea */
+#modal-completar-cita-textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+}
+
+/* Botones de acciones */
+.modal-completar-cita-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modal-completar-cita-actions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#modal-completar-cita-guardar {
+  background-color: #28a745;
+}
+
+#modal-completar-cita-cerrar {
+  background-color: #dc3545;
+}
+
+
 
 @media (max-width: 1000px) {
 
