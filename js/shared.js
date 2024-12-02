@@ -1979,14 +1979,20 @@ sendVerificationEmailBtn.onclick = async function () {
       body: cogerCamposFormularioCita()
     });
 
-    const data = await response.text(); // Obtener la respuesta del servidor como texto
-    showAlert('Correo de verificación enviado correctamente', 'positive');
+    const data = await response.json(); 
+    debugger;
+    if (data.status === 'timeout') {
+      showAlert(data.message, 'negative');
+    } else if (data.status === 'success') {
+      showAlert('Correo de verificación enviado correctamente.', 'positive');
+    } else if (data.status === 'error') {
+      showAlert('Ha ocurrido un error al nviar el correo, por favor, inténtelo de nuevo.')
+    }
   } catch (error) {
     showAlert('Ocurrió un error en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
   }
 
 
-  //TOFIX: No va
 
   let timer = 30; // Temporizador en segundos
   const timeOutMessage = document.createElement('p');
