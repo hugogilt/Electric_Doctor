@@ -1979,8 +1979,7 @@ sendVerificationEmailBtn.onclick = async function () {
       body: cogerCamposFormularioCita()
     });
 
-    const data = await response.json(); 
-    debugger;
+    const data = await response.json();
     if (data.status === 'timeout') {
       showAlert(data.message, 'negative');
     } else if (data.status === 'success') {

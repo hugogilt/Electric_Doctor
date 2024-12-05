@@ -7,7 +7,8 @@ const timeSlotsElement = document.getElementById('timeSlots');
 const prevMonthButton = document.getElementById('prevMonth');
 const nextMonthButton = document.getElementById('nextMonth');
 const openCalendarButton = document.getElementById('citas');
-const openInvoicesButton = document.getElementById('facturas')
+const openInvoicesButton = document.getElementById('facturas');
+const openUsersButton = document.getElementById('usuarios');
 const abrirListadoCitasButton = document.getElementById('listado-citas');
 const calendarModal = document.getElementById('calendarModal');
 const closeCalendarModal = document.getElementById('closeCalendarModal');
@@ -128,7 +129,10 @@ modalCompletarCita.addEventListener('click', (e) => {
 });
 
 
+// MODAL USUARIOS
 
+const modalUsuarios = document.getElementById("modal-obtener-clientes-y-usuarios");
+const cerrarModalUsuariosBtn = document.getElementById("cerrar-modal-usuarios");
 
 
 
@@ -1469,5 +1473,401 @@ function showAlert(message, type) {
 
 
 
+// Obtener usuarios y clientes
 
+async function obtenerUsuarios() {
+  try {
+    const response = await fetch('/php/obtener_usuarios.php');
+    const data = await response.json();
+
+    if (data.status === 'success') {
+      return data.data;
+    } else {
+      showAlert('Ha ocurrido un error al obtener los usuarios', 'negative');
+    }
+  } catch (error) {
+    showAlert('Ha ocurrido un error al obtener los usuarios', 'negative');
+  }
+}
+
+async function obtenerClientes() {
+  try {
+    const response = await fetch('/php/obtener_clientes.php');
+    const data = await response.json();
+
+    if (data.status === 'success') {
+      return data.data;
+    } else {
+      showAlert('Ha ocurrido un error al obtener los clientes', 'negative');
+    }
+  } catch (error) {
+      showAlert('Ha ocurrido un error al obtener los clientes', 'negative');
+  }
+}
+
+
+// Variables para almacenar datos originales
+let usuariosData = [];
+let clientesData = [];
+
+// Cargar datos al abrir el modal
+async function cargarDatosUsuariosYClientes() {
+  try {
+    const usuarios = await obtenerUsuarios();
+    const clientes = await obtenerClientes();
+
+    // Guardamos los datos originales
+    usuariosData = usuarios;
+    clientesData = clientes;
+
+    filtrarDatos();
+
+    // Mostrar el modal
+    abrirModalUsuarios();
+  } catch (error) {
+    console.error("Error al cargar datos:", error);
+  }
+}
+
+function filtrarDatos() {
+  const tipoFiltro = document.getElementById("filtro-tipo").value;
+  const inputt = document.getElementById("filtro-usuarios-valor");
+  const valorFiltro = inputt.value.toLowerCase();
+
+  const modalGrid = document.querySelector(".modal-clientes-y-usuarios-grid");
+
+  const mensajePrevio = document.querySelector(".modal-usuarios-no-resultados");
+  if (mensajePrevio) mensajePrevio.remove();
+
+  const usuariosFiltrados = usuariosData.filter(usuario => {
+    let valorComparar;
+    if (tipoFiltro === "Nombre") {
+      valorComparar = `${usuario.Nombre} ${usuario.Apellidos}`.toLowerCase();
+    } else if (tipoFiltro === "Verificado") {
+      return usuario.Verificado == valorFiltro || valorFiltro === "";
+    } else {
+      valorComparar = usuario[tipoFiltro]?.toLowerCase();
+    }
+    return valorComparar?.startsWith(valorFiltro);
+  });
+
+  const clientesFiltrados = clientesData.filter(cliente => {
+    let valorComparar;
+    if (tipoFiltro === "Nombre") {
+      valorComparar = `${cliente.Nombre} ${cliente.Apellidos}`.toLowerCase();
+    } else if (tipoFiltro === "Verificado") {
+      return cliente.Verificado == valorFiltro || valorFiltro === "";
+    } else {
+      valorComparar = cliente[tipoFiltro]?.toLowerCase();
+    }
+    return valorComparar?.startsWith(valorFiltro);
+  });
+
+  renderUsuarios(usuariosFiltrados);
+  renderClientes(clientesFiltrados);
+
+  // Actualizar texto de resultados
+  document.getElementById("usuarios-resultados").textContent = `Mostrando ${usuariosFiltrados.length} resultados`;
+  document.getElementById("clientes-resultados").textContent = `Mostrando ${clientesFiltrados.length} resultados`;
+
+  if (usuariosFiltrados.length === 0 && clientesFiltrados.length === 0) {
+    const mensaje = document.createElement("p");
+    mensaje.className = "modal-usuarios-no-resultados";
+    mensaje.textContent = "No se han encontrado resultados.";
+    mensaje.style.gridColumn = "1 / span 3";
+    modalGrid.appendChild(mensaje);
+  }
+}
+
+
+
+
+function renderUsuarios(usuariosFiltrados) {
+  const usuariosContainer = document.getElementById("usuarios-container");
+  usuariosContainer.innerHTML = ""; // Limpiar resultados anteriores
+
+  if (usuariosFiltrados.length === 0) {
+    return; // Si no hay resultados, no hacemos nada aquí
+  }
+
+  usuariosFiltrados.forEach(usuario => {
+    const usuarioCard = document.createElement("div");
+    usuarioCard.className = "usuario-card";
+
+    // Campo: Nombre
+    const nombreCampo = document.createElement("div");
+    nombreCampo.className = "usuario-campo";
+    const nombreStrong = document.createElement("strong");
+    nombreStrong.textContent = "Nombre:";
+    const nombreP = document.createElement("p");
+    nombreP.textContent = `${usuario.Nombre} ${usuario.Apellidos}`;
+    nombreCampo.appendChild(nombreStrong);
+    nombreCampo.appendChild(nombreP);
+
+    // Campo: Teléfono
+    const telefonoCampo = document.createElement("div");
+    telefonoCampo.className = "usuario-campo";
+    const telefonoStrong = document.createElement("strong");
+    telefonoStrong.textContent = "Teléfono:";
+    const telefonoP = document.createElement("p");
+    telefonoP.textContent = usuario.Telefono;
+    telefonoCampo.appendChild(telefonoStrong);
+    telefonoCampo.appendChild(telefonoP);
+
+    // Campo: Correo
+    const correoCampo = document.createElement("div");
+    correoCampo.className = "usuario-campo";
+    const correoStrong = document.createElement("strong");
+    correoStrong.textContent = "Correo:";
+    const correoP = document.createElement("p");
+    correoP.textContent = usuario.Correo_Electronico;
+    correoCampo.appendChild(correoStrong);
+    correoCampo.appendChild(correoP);
+
+    // Campo: Verificado
+    const verificadoCampo = document.createElement("div");
+    verificadoCampo.className = "usuario-campo";
+    const verificadoStrong = document.createElement("strong");
+    verificadoStrong.textContent = "Verificado:";
+    const verificadoP = document.createElement("p");
+    verificadoP.textContent = usuario.Verificado === 1 ? "Sí" : "No";
+    verificadoCampo.appendChild(verificadoStrong);
+    verificadoCampo.appendChild(verificadoP);
+
+    // Botón Modificar
+    const modificarBoton = document.createElement("button");
+    modificarBoton.className = "boton-modificar-usuario";
+    modificarBoton.textContent = "Modificar";
+    modificarBoton.onclick = () => abrirModalModificarUsuario(usuario);
+
+    // Añadir campos y botón al usuarioCard
+    usuarioCard.appendChild(nombreCampo);
+    usuarioCard.appendChild(telefonoCampo);
+    usuarioCard.appendChild(correoCampo);
+    usuarioCard.appendChild(verificadoCampo);
+    usuarioCard.appendChild(modificarBoton);
+
+    // Añadir la tarjeta al contenedor
+    usuariosContainer.appendChild(usuarioCard);
+  });
+}
+
+
+function renderClientes(clientesFiltrados) {
+  const clientesContainer = document.getElementById("clientes-container");
+  clientesContainer.innerHTML = ""; // Limpiar resultados anteriores
+
+  if (clientesFiltrados.length === 0) {
+    return; // Si no hay resultados, no hacemos nada aquí
+  }
+
+  clientesFiltrados.forEach(cliente => {
+    const clienteCard = document.createElement("div");
+    clienteCard.className = "cliente-card";
+
+    // Campo: Nombre
+    const nombreCampo = document.createElement("div");
+    nombreCampo.className = "cliente-campo";
+    const nombreStrong = document.createElement("strong");
+    nombreStrong.textContent = "Nombre:";
+    const nombreP = document.createElement("p");
+    nombreP.textContent = `${cliente.Nombre} ${cliente.Apellidos}`;
+    nombreCampo.appendChild(nombreStrong);
+    nombreCampo.appendChild(nombreP);
+
+    // Campo: Teléfono
+    const telefonoCampo = document.createElement("div");
+    telefonoCampo.className = "cliente-campo";
+    const telefonoStrong = document.createElement("strong");
+    telefonoStrong.textContent = "Teléfono:";
+    const telefonoP = document.createElement("p");
+    telefonoP.textContent = cliente.Telefono;
+    telefonoCampo.appendChild(telefonoStrong);
+    telefonoCampo.appendChild(telefonoP);
+
+    // Campo: Correo
+    const correoCampo = document.createElement("div");
+    correoCampo.className = "cliente-campo";
+    const correoStrong = document.createElement("strong");
+    correoStrong.textContent = "Correo:";
+    const correoP = document.createElement("p");
+    correoP.textContent = cliente.Correo_Electronico;
+    correoCampo.appendChild(correoStrong);
+    correoCampo.appendChild(correoP);
+
+    // Campo: Verificado
+    const verificadoCampo = document.createElement("div");
+    verificadoCampo.className = "cliente-campo";
+    const verificadoStrong = document.createElement("strong");
+    verificadoStrong.textContent = "Verificado:";
+    const verificadoP = document.createElement("p");
+    verificadoP.textContent = cliente.Verificado === 1 ? "Sí" : "No";
+    verificadoCampo.appendChild(verificadoStrong);
+    verificadoCampo.appendChild(verificadoP);
+
+    // Añadir campos al clienteCard
+    clienteCard.appendChild(nombreCampo);
+    clienteCard.appendChild(telefonoCampo);
+    clienteCard.appendChild(correoCampo);
+    clienteCard.appendChild(verificadoCampo);
+
+    // Añadir la tarjeta al contenedor
+    clientesContainer.appendChild(clienteCard);
+  });
+}
+
+function actualizarFiltro() {
+  const filtroTipo = document.getElementById("filtro-tipo");
+  const filtroValor = document.getElementById("filtro-usuarios-valor");
+  const filtroContainer = filtroValor.parentElement; // Contenedor padre del input
+
+  // Eliminar el elemento actual del filtro
+  filtroContainer.removeChild(filtroValor);
+
+  if (filtroTipo.value === "Verificado") {
+    // Crear un nuevo select para "Sí" y "No"
+    const selectVerificado = document.createElement("select");
+    selectVerificado.id = "filtro-usuarios-valor";
+    selectVerificado.className = "filtro-usuarios-valor";
+    selectVerificado.onchange = filtrarDatos;
+
+    // Opciones del select
+    const opcionDefault = document.createElement("option");
+    opcionDefault.value = "";
+    opcionDefault.textContent = "Seleccionar";
+
+    const opcionSi = document.createElement("option");
+    opcionSi.value = "1";
+    opcionSi.textContent = "Sí";
+
+    const opcionNo = document.createElement("option");
+    opcionNo.value = "0";
+    opcionNo.textContent = "No";
+
+    // Añadir las opciones al select
+    selectVerificado.appendChild(opcionDefault);
+    selectVerificado.appendChild(opcionSi);
+    selectVerificado.appendChild(opcionNo);
+
+    // Añadir el nuevo select al contenedor
+    filtroContainer.appendChild(selectVerificado);
+  } else {
+    // Restaurar el input de texto para los demás filtros
+    const inputTexto = document.createElement("input");
+    inputTexto.type = "text";
+    inputTexto.id = "filtro-usuarios-valor";
+    inputTexto.className = "filtro-usuarios-valor";
+    inputTexto.placeholder = "Escribe para filtrar...";
+    inputTexto.oninput = filtrarDatos;
+
+    // Añadir el input al contenedor
+    filtroContainer.appendChild(inputTexto);
+  }
+}
+
+
+
+
+
+// Evento para el filtro
+document.getElementById("filtro-valor").addEventListener("input", filtrarDatos);
+document.getElementById("filtro-tipo").addEventListener("change", filtrarDatos);
+
+
+
+
+
+// Función para cerrar el modal
+function cerrarModalUsuarios() {
+  modalUsuarios.style.display = "none";
+}
+
+// Abrir el modal (puedes personalizar esta parte según cómo se abre tu modal)
+function abrirModalUsuarios() {
+  modalUsuarios.style.display = "flex";
+}
+
+// Cerrar el modal al hacer clic en "X"
+cerrarModalUsuariosBtn.addEventListener("click", cerrarModalUsuarios);
+
+// Cerrar el modal al hacer clic fuera del contenido
+modalUsuarios.addEventListener("click", (e) => {
+  if (e.target === modalUsuarios) {
+    cerrarModalUsuarios();
+  }
+});
+
+
+
+openUsersButton.addEventListener('click', cargarDatosUsuariosYClientes);
+
+// MODAL MODIFICAR USUARIOS
+
+
+// Obtener elementos del modal
+const modalModificarUsuario = document.getElementById("modal-modificar-usuario");
+const aceptarModificarUsuarioBtn = document.getElementById("boton-modificar-usuario-aceptar");
+const cerrarModificarUsuarioBtn = document.getElementById("boton-modificar-usuario-cerrar");
+let usuarioAModificar;
+
+// Mostrar el modal con datos del usuario seleccionado
+function abrirModalModificarUsuario(usuario) {
+  // Mostrar el modal
+  modalModificarUsuario.style.display = "flex";
+
+  // Autorrellenar los campos con los datos del usuario
+  document.getElementById("modificar-nombre").value = usuario.Nombre;
+  document.getElementById("modificar-apellidos").value = usuario.Apellidos;
+  document.getElementById("modificar-telefono").value = usuario.Telefono;
+  document.getElementById("modificar-correo").value = usuario.Correo_Electronico;
+  usuarioAModificar = usuario;
+  aceptarModificarUsuarioBtn.addEventListener('click', modificarUsuario);
+}
+
+
+function modificarUsuario() {
+  const nombre = document.getElementById("modificar-nombre").value;
+  const apellidos = document.getElementById("modificar-apellidos").value;
+  const telefono = document.getElementById("modificar-telefono").value;
+  const correo = document.getElementById("modificar-correo").value;
+  
+  // Enviar los datos modificados al servidor con el ID del usuario
+  fetch('/php/modificar_usuario.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: usuarioAModificar.ID_Usuario, 
+      nombre: nombre,
+      apellidos: apellidos,
+      telefono: telefono,
+      correo: correo
+    })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showAlert("Usuario modificado correctamente", "positive");
+        cargarDatosUsuariosYClientes();
+        modalModificarUsuario.style.display = "none";
+      } else {
+        showAlert("Ha ocurrido un error al modificar usuario, inténtelo de nuevo.");
+      }
+    })
+    .catch(error => {
+      showAlert("Ha ocurrido un error al modificar usuario, inténtelo de nuevo.");
+    });
+}
+
+
+// Cerrar el modal con botón cancelar
+cerrarModificarUsuarioBtn.addEventListener("click", () => (modalModificarUsuario.style.display = "none"));
+
+// Cerrar el modal al hacer clic fuera de su contenido
+modalModificarUsuario.addEventListener("click", (e) => {
+  if (e.target === modalModificarUsuario) {
+    modalModificarUsuario.style.display = "none";
+  }
+});
 

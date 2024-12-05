@@ -70,7 +70,7 @@ try {
                         <img width="50%" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
                         </section>
 
-                        <section class="option" id="Usuarios">
+                        <section class="option" id="usuarios">
                         <div id="titulo-citas">
                             <h2 id="h2-citas">Usuarios</h2>
                         </div>
@@ -235,13 +235,96 @@ try {
                         <div id="modal-completar-cita" class="modal-completar-cita-overlay">
                             <div class="modal-completar-cita-container">
                                 <h2 class="modal-completar-cita-header">Añadir Observaciones</h2>
-                                <textarea id="modal-completar-cita-textarea" placeholder="Escribe las observaciones aquí..."></textarea>
+                                <textarea id="modal-completar-cita-textarea" placeholder="Añadir observaciones..."></textarea>
                                 <div class="modal-completar-cita-actions">
                                     <button id="modal-completar-cita-guardar">Guardar</button>
                                     <button id="modal-completar-cita-cerrar">Cerrar</button>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Modal Usuarios -->
+<div id="modal-obtener-clientes-y-usuarios" class="modal-obtener-clientes-y-usuarios">
+  <div id="modal-clientes-y-usuarios-content" class="modal-clientes-y-usuarios-content">
+    <!-- Botón de cierre -->
+    <span id="cerrar-modal-usuarios" class="cerrar-modal-usuarios">×</span>
+
+    <!-- Menú de filtros -->
+    <div id="modal-clientes-y-usuarios-filtros" class="modal-clientes-y-usuarios-filtros">
+      <label for="filtro-tipo">Filtrar por:</label>
+      <select id="filtro-tipo" class="filtro-tipo" onchange="actualizarFiltro()">
+        <option value="Nombre">Nombre Completo</option>
+        <option value="Telefono">Teléfono</option>
+        <option value="Correo_Electronico">Correo Electrónico</option>
+        <option value="Verificado">Verificado</option>
+      </select>
+      <input
+        type="text"
+        id="filtro-usuarios-valor"
+        class="filtro-usuarios-valor"
+        placeholder="Escribe para filtrar..."
+        oninput="filtrarDatos()"
+      />
+    </div>
+    <!-- Contenedor de Usuarios y Clientes -->
+    <div class="modal-clientes-y-usuarios-grid">
+      <!-- Sección Usuarios -->
+      <div class="modal-clientes-y-usuarios-seccion usuarios">
+        <h2>Usuarios</h2>
+        <p id="usuarios-resultados" class="resultados-texto"></p>
+        <div id="usuarios-container" class="usuarios-container">
+          <!-- Aquí se cargarán los usuarios -->
+        </div>
+      </div>
+      <!-- Línea divisoria -->
+      <div class="modal-clientes-y-usuarios-divider"></div>
+      <!-- Sección Clientes -->
+      <div class="modal-clientes-y-usuarios-seccion clientes">
+        <h2>Clientes</h2>
+        <p id="clientes-resultados" class="resultados-texto"></p>
+        <div id="clientes-container" class="clientes-container">
+          <!-- Aquí se cargarán los clientes -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- MODAL MODIFICAR USUARIOS -->
+<div id="modal-modificar-usuario" class="modal-modificar-usuario" style="display: none;">
+  <div id="modal-modificar-usuario-content" class="modal-modificar-usuario-content">
+    <h3>Modificar Usuario</h3>
+    <form id="form-modificar-usuario" class="form-modificar-usuario">
+      <label for="modificar-nombre">Nombre:</label>
+      <input type="text" id="modificar-nombre" class="modificar-nombre" />
+
+      <label for="modificar-apellidos">Apellidos:</label>
+      <input type="text" id="modificar-apellidos" class="modificar-apellidos" />
+
+      <label for="modificar-telefono">Teléfono:</label>
+      <input type="text" id="modificar-telefono" class="modificar-telefono" />
+
+      <label for="modificar-correo">Correo Electrónico:</label>
+      <input type="text" id="modificar-correo" class="modificar-correo" />
+
+      <div class="modal-modificar-usuario-footer">
+        <button type="button" id="boton-modificar-usuario-aceptar" class="boton-modificar-usuario-aceptar">
+          Aceptar
+        </button>
+        <button type="button" id="boton-modificar-usuario-cerrar" class="boton-modificar-usuario-cerrar">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+
 
                     </main>
                     <script src="../js/panel-admin.js"></script>
