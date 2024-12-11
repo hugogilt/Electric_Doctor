@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - Electric Doctor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="icon" href="images/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/perfil.css">
+</head>
+
+<body>
+  <header>
+    <div id="title">
+      <img src="images/logo.png" alt="Logo">
+      <h1>Electric Doctor</h1>
+    </div>
+  </header>
+
+  <main>
+    <section id="perfil">
+      <h2>Mi Perfil</h2>
+      <div id="perfil-content">
+        <div id="perfil-info">
+          <img src="images/user.png" alt="Foto de usuario" id="foto-usuario">
+          <div id="datos-usuario">
+            <h3>Bienvenido, <span id="nombre-usuario"></span></h3>
+            <p id="correo-p"><strong>Correo Electrónico:</strong> <span id="correo-usuario"></span></p>
+            <p><strong>Teléfono:</strong> <span id="telefono-usuario"></span></p>
+          </div>
+        </div>
+
+        <div id="acciones">
+          <button id="editar-perfil" class="boton">Editar Perfil</button>
+          <button id="cambiar-contrasena" class="boton">Cambiar Contraseña</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL MODIFICAR USUARIOS -->
+<div id="modal-modificar-usuario" class="modal-modificar-usuario" style="display: none;">
+    <div id="modal-modificar-usuario-content" class="modal-modificar-usuario-content">
+      <h3>Modificar Usuario</h3>
+      <form id="form-modificar-usuario" class="form-modificar-usuario">
+        <label for="modificar-nombre">Nombre:</label>
+        <input type="text" id="modificar-nombre" class="modificar-nombre" />
+  
+        <label for="modificar-apellidos">Apellidos:</label>
+        <input type="text" id="modificar-apellidos" class="modificar-apellidos" />
+  
+        <label for="modificar-telefono">Teléfono:</label>
+        <input type="text" id="modificar-telefono" class="modificar-telefono" />
+  
+        <label for="modificar-correo">Correo Electrónico:</label>
+        <input type="text" id="modificar-correo" class="modificar-correo" />
+  
+        <div class="modal-modificar-usuario-footer">
+          <button type="button" id="boton-modificar-usuario-aceptar" class="boton-modificar-usuario-aceptar">
+            Aceptar
+          </button>
+          <button type="button" id="boton-modificar-usuario-cerrar" class="boton-modificar-usuario-cerrar">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- MODAL VERIFICAR CORREO  -->
+  <div id="modal-verificar-correo">
+    <div id="modal-verificar-correo-content" class="modal-verificar-correo-content">
+        <h2>Verificar dirección de correo</h2>
+        <button id="btn-enviar-verificacion"">Enviar correo de verificación</button>
+        <button id="btn-cancelar-verificacion"">Cancelar</button>
+    </div>
+</div>
+
+
+<!-- MODAL CAMBIAR CONTRASEÑA -->
+<div id="modal-cambiar-contraseña" class="modal-cambiar-contraseña-overlay">
+    <div class="modal-cambiar-contraseña-content">
+      <span id="modal-cambiar-contraseña-close" class="modal-cambiar-contraseña-close">&times;</span>
+      <h2 class="modal-cambiar-contraseña-title">Cambiar Contraseña</h2>
+      <form id="modal-cambiar-contraseña-form">
+        <label for="modal-cambiar-contraseña-actual">Contraseña actual:</label>
+        <input
+          type="password"
+          id="modal-cambiar-contraseña-actual"
+          class="modal-cambiar-contraseña-input"
+          placeholder="Ingresa tu contraseña actual"
+          required
+        />
+        <label for="modal-cambiar-contraseña-nueva">Nueva contraseña:</label>
+        <input
+          type="password"
+          id="modal-cambiar-contraseña-nueva"
+          class="modal-cambiar-contraseña-input"
+          placeholder="Ingresa tu nueva contraseña"
+          required
+        />
+        <label for="modal-cambiar-contraseña-confirmar">Confirmar nueva contraseña:</label>
+        <input
+          type="password"
+          id="modal-cambiar-contraseña-confirmar"
+          class="modal-cambiar-contraseña-input"
+          placeholder="Confirma tu nueva contraseña"
+          required
+        />
+        <button type="submit" class="modal-cambiar-contraseña-btn">Cambiar Contraseña</button>
+      </form>
+    </div>
+  </div>
+  
+
+
+  <script src="js/perfil.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+</body>
+
+</html>

@@ -24,6 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $correo = $input['correo'];
 
         try {
+            // Consultar el correo actual del usuario
+            $queryCorreo = "SELECT Correo_Electronico FROM Usuarios WHERE ID_Usuario = :id";
+            $stmtCorreo = $conexion->prepare($queryCorreo);
+            $stmtCorreo->bindParam(':id', $id);
+            $stmtCorreo->execute();
+            $correoActual = $stmtCorreo->fetchColumn();
+
+            if ($correoActual === false) {
+                echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
+                exit;
+            }
+
+            // Comprobar si el correo ha sido modificado
+            $correoModificado = $correoActual !== $correo;
+
             // Preparar la consulta SQL para actualizar el usuario
             $query = "UPDATE Usuarios 
                       SET Nombre = :nombre, Apellidos = :apellidos, Telefono = :telefono, Correo_Electronico = :correo 
@@ -36,9 +51,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':correo', $correo);
             $stmt->bindParam(':id', $id);
 
-            // Ejecutar la consulta
+            // Ejecutar la consulta de actualización principal
             if ($stmt->execute()) {
-                echo json_encode(["success" => true, "message" => "Usuario actualizado correctamente"]);
+                // Si el correo ha sido modificado, actualizar la columna Verificado a 0
+                if ($correoModificado) {
+                    $queryVerificado = "UPDATE Usuarios SET Verificado = 0 WHERE ID_Usuario = :id";
+                    $stmtVerificado = $conexion->prepare($queryVerificado);
+                    $stmtVerificado->bindParam(':id', $id);
+                    $stmtVerificado->execute();
+                }
+
+                echo json_encode([
+                    "success" => true,
+                    "message" => "Usuario actualizado correctamente",
+                    "correoModificado" => $correoModificado
+                ]);
             } else {
                 echo json_encode(["success" => false, "message" => "Error al actualizar el usuario"]);
             }

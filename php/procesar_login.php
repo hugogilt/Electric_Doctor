@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     try {
-        $sql = "SELECT nombre, contrasena, ID_Usuario FROM Usuarios WHERE correo_electronico = :correo";
+        $sql = "SELECT nombre, contrasena, ID_Usuario, Rol, Verificado FROM Usuarios WHERE correo_electronico = :correo";
         $stmt = $conexion->prepare($sql);
         $stmt->bindParam(':correo', $correo);
         $stmt->execute();
@@ -26,6 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['nombre'] = $user['nombre'];  // Guardamos el nombre del usuario
                 $_SESSION['correo'] = $correo;  // Guardamos el nombre del usuario
                 $_SESSION['id_usuario'] = $user['ID_Usuario'];
+                $_SESSION['rol'] = $user['Rol'];
+                $_SESSION['verificado'] = $user['Verificado'];
                 $_SESSION['is_logged_in'] = true;           // Marcamos como logueado
 
                 // Respuesta de éxito

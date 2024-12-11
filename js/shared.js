@@ -950,7 +950,6 @@ let fechaInput = document.createElement('input');
 const title = document.querySelector('#title');
 if (title) {
   title.addEventListener('click', function () {
-    // Redirigir a otra URL
     window.location.href = './index.html';
   });
 }
@@ -1942,7 +1941,7 @@ function cogerCamposFormularioCita() {
 
   // Crear un objeto con los datos del formulario
   //TOFIX: QUIERO HACER QUE SE RELLENE EL FORMULARIO CON ESTOS DATOS PERO NO SE COMO
-  // Hasta que lo consiga, solo necesito correoFormulario y nonVerifiedType
+  // Hasta que lo consiga, solo necesito correoFormulario y nonVerifiedType, el resto no se están usando
   const formData = new FormData();
   formData.append('nombre', nombre);
   formData.append('apellidos', apellidos);
@@ -1985,7 +1984,7 @@ sendVerificationEmailBtn.onclick = async function () {
     } else if (data.status === 'success') {
       showAlert('Correo de verificación enviado correctamente.', 'positive');
     } else if (data.status === 'error') {
-      showAlert('Ha ocurrido un error al nviar el correo, por favor, inténtelo de nuevo.')
+      showAlert('Ha ocurrido un error al enviar el correo, por favor, inténtelo de nuevo.')
     }
   } catch (error) {
     showAlert('Ocurrió un error en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');

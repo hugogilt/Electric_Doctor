@@ -191,11 +191,11 @@
 @media (max-width: 800px) {
   .card button {
     margin-top: 1em;
+    padding-top: 1em;
   }
 
   .card {
     justify-content: center;
-    padding-top: 0;
   }
 
   #cards-containers h3 {
@@ -210,14 +210,12 @@
 @media (max-width: 750px) {
   .card {
     width: 75%;
-    /* Ajustar el ancho mínimo de cada card */
+    padding-top: 0;
   }
   
   #cards-containers {
     overflow-x: hidden;
-    /* Oculta el desbordamiento horizontal */
     position: relative;
-    /* Para el posicionamiento de las cards */
   }
   
   .sliding-card {

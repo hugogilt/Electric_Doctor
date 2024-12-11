@@ -339,6 +339,11 @@ nav.active a {
   z-index: 9;
 }
 
+.user-menu a {
+  text-decoration: none;
+  color: white;
+}
+
 .user-menu ul {
   list-style-type: none;
   margin: 0;
@@ -1261,6 +1266,10 @@ div>.eapps-widget-toolbar {
     font-size: 0.55em;
   }
 
+  #title {
+    margin-top: 0.8em;
+  }
+
 }
 /* ----------------------------- */
 /* MODAL FORMULARIO */
@@ -1487,8 +1496,7 @@ textarea {
     background-color: rgba(0, 0, 0, 0.8);
     /* Fondo del menú desplegable */
     width: 100%;
-    z-index: 999;
-    /* Asegúrate de que esté por encima de otros elementos */
+    z-index: 2;
   }
 
   #hamburger {

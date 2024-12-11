@@ -1862,8 +1862,10 @@ function modificarUsuario() {
 
 
 // Cerrar el modal con botón cancelar
-cerrarModificarUsuarioBtn.addEventListener("click", () => (modalModificarUsuario.style.display = "none"));
-
+cerrarModificarUsuarioBtn.addEventListener("click", () => {
+  modalModificarUsuario.style.display = "none"
+  aceptarModificarUsuarioBtn.removeEventListener('click', modificarUsuario);
+});
 // Cerrar el modal al hacer clic fuera de su contenido
 modalModificarUsuario.addEventListener("click", (e) => {
   if (e.target === modalModificarUsuario) {
