@@ -311,7 +311,6 @@ btnEnviarVerificacion.addEventListener('click', async function () {
       timeOutMessage.remove(); 
     }
   }, 1000);
-  
 });
 
 // CAMBIAR CONTRASEÑA

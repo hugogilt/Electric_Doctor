@@ -109,23 +109,23 @@ const modalCompletarCitaTextarea = document.getElementById('modal-completar-cita
 
 // Cerrar modal
 modalCompletarCitaCerrar.addEventListener('click', () => {
-    modalCompletarCita.style.display = 'none';
+  modalCompletarCita.style.display = 'none';
 });
 
 // Guardar observaciones
-modalCompletarCitaGuardar.addEventListener('click', async function() {
-    const modalCompletarCitaObservaciones = modalCompletarCitaTextarea.value.trim();
-        modalCompletarCitaTextarea.value = '';
-        modalCompletarCita.style.display = 'none';
-        await cambiarEstadoCita(citaACompletar, modalCompletarCitaObservaciones);
-        recargarCitas();
+modalCompletarCitaGuardar.addEventListener('click', async function () {
+  const modalCompletarCitaObservaciones = modalCompletarCitaTextarea.value.trim();
+  modalCompletarCitaTextarea.value = '';
+  modalCompletarCita.style.display = 'none';
+  await cambiarEstadoCita(citaACompletar, modalCompletarCitaObservaciones);
+  recargarCitas();
 });
 
 // Cerrar modal al hacer clic fuera de él
 modalCompletarCita.addEventListener('click', (e) => {
-    if (e.target === modalCompletarCita) {
-        modalCompletarCita.style.display = 'none';
-    }
+  if (e.target === modalCompletarCita) {
+    modalCompletarCita.style.display = 'none';
+  }
 });
 
 
@@ -145,7 +145,7 @@ selectedDayText.id = 'selectedDay';
 
 datesElement.after(selectedDayText);
 let chosenDay, chosenHour, chosenYear, chosenMonth, modificandoFecha = false,
- pidiendoCita = false, creandoCita = false, citaACompletar;
+  pidiendoCita = false, creandoCita = false, citaACompletar;
 
 let dayNotAvailableWarning;
 if (document.querySelector('#diaNoDisponibleAlerta')) {
@@ -658,27 +658,27 @@ async function selectTime(slot, key = false) {
     }
   }
   else if (slot.classList.contains('reserved') && !pidiendoCita && !editingDate) {
-      const datosCita = await obtenerDatosCita(selectedDate + '-' + slot.textContent);
-      formModal.style.display = 'flex';
-      nombreInput.value = datosCita.Nombre;
-      apellidosInput.value = datosCita.Apellidos;
-      telefonoInput.value = datosCita.Telefono;
-      correoInput.value = datosCita.Correo_Electronico;
-      modeloInput.value = datosCita.Modelo_Vehiculo;
-      anioInput.value = datosCita.Ano_Matriculacion;
-      problemaInput.value = datosCita.Motivo;
+    const datosCita = await obtenerDatosCita(selectedDate + '-' + slot.textContent);
+    formModal.style.display = 'flex';
+    nombreInput.value = datosCita.Nombre;
+    apellidosInput.value = datosCita.Apellidos;
+    telefonoInput.value = datosCita.Telefono;
+    correoInput.value = datosCita.Correo_Electronico;
+    modeloInput.value = datosCita.Modelo_Vehiculo;
+    anioInput.value = datosCita.Ano_Matriculacion;
+    problemaInput.value = datosCita.Motivo;
 
-      modificandoDia = chosenDay.textContent;
-      chosenHour = slot;
-      const chosenMonthName = monthNames[parseInt(chosenMonth)];
-      const chosenDateString = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonthName} de ${chosenYear} a las ${chosenHour.textContent}h`;
-      modificarFechaButton.textContent = chosenDateString;
-      if (!key) {
-        modificarFechaButton.removeEventListener('click', openModificarFechaCalendar);
-        if (document.getElementById('aceptar')) {
-          aceptarButton.remove();
-        }
+    modificandoDia = chosenDay.textContent;
+    chosenHour = slot;
+    const chosenMonthName = monthNames[parseInt(chosenMonth)];
+    const chosenDateString = `Fecha elegida: ${chosenDay.textContent} de ${chosenMonthName} de ${chosenYear} a las ${chosenHour.textContent}h`;
+    modificarFechaButton.textContent = chosenDateString;
+    if (!key) {
+      modificarFechaButton.removeEventListener('click', openModificarFechaCalendar);
+      if (document.getElementById('aceptar')) {
+        aceptarButton.remove();
       }
+    }
 
 
   } else {
@@ -1147,6 +1147,11 @@ function crearCajon(cita) {
   }
   // Botón "Cita pendiente" solo si el estado es 'Completada'
   else if (cita.Estado === 'Completada') {
+    if (cita.Observaciones !== null) {
+      const observaciones = document.createElement("p");
+      observaciones.textContent = `Observaciones: ${cita.Observaciones}`;
+      contenidoCita.appendChild(observaciones);
+    }
     const botonPendiente = document.createElement("button");
     botonPendiente.classList.add("modal-citas-boton");
     botonPendiente.textContent = "Cita pendiente";
@@ -1501,7 +1506,7 @@ async function obtenerClientes() {
       showAlert('Ha ocurrido un error al obtener los clientes', 'negative');
     }
   } catch (error) {
-      showAlert('Ha ocurrido un error al obtener los clientes', 'negative');
+    showAlert('Ha ocurrido un error al obtener los clientes', 'negative');
   }
 }
 
@@ -1830,7 +1835,7 @@ function modificarUsuario() {
   const apellidos = document.getElementById("modificar-apellidos").value;
   const telefono = document.getElementById("modificar-telefono").value;
   const correo = document.getElementById("modificar-correo").value;
-  
+
   // Enviar los datos modificados al servidor con el ID del usuario
   fetch('/php/modificar_usuario.php', {
     method: 'POST',
@@ -1838,7 +1843,7 @@ function modificarUsuario() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      id: usuarioAModificar.ID_Usuario, 
+      id: usuarioAModificar.ID_Usuario,
       nombre: nombre,
       apellidos: apellidos,
       telefono: telefono,

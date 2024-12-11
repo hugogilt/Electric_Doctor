@@ -32,16 +32,22 @@ try {
 
         // Preparar la consulta de actualización
         $update_query = "UPDATE Citas SET Estado = :nuevo_estado";
+
+        // Si el estado es 'Completada' y hay observaciones, añadir el campo Observaciones
         if ($nuevo_estado == 'Completada' && !empty($observaciones)) {
             $update_query .= ", Observaciones = :observaciones";
+        } elseif ($nuevo_estado == 'Pendiente') {
+            // Si el nuevo estado es 'Pendiente', poner Observaciones a NULL
+            $update_query .= ", Observaciones = NULL";
         }
+
         $update_query .= " WHERE ID_Cita = :id_cita";
 
         $update_stmt = $conexion->prepare($update_query);
         $update_stmt->bindParam(':nuevo_estado', $nuevo_estado, PDO::PARAM_STR);
         $update_stmt->bindParam(':id_cita', $id_cita, PDO::PARAM_INT);
 
-        // Si hay observaciones y el estado cambia a 'Completada', vincularlas
+        // Si el nuevo estado es 'Completada' y hay observaciones, vincularlas
         if ($nuevo_estado == 'Completada' && !empty($observaciones)) {
             $update_stmt->bindParam(':observaciones', $observaciones, PDO::PARAM_STR);
         }

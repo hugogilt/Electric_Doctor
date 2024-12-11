@@ -12,7 +12,7 @@ require 'SMTP.php';
 require 'Exception.php';
 
 require '../../../config/conexion.php';
-require './configurar_phpmailer.php'; // Asegúrate de que este archivo esté configurado correctamente
+require 'configurar_phpmailer.php'; 
 
 function generarToken($longitud = 32) {
     return bin2hex(random_bytes($longitud)); // Generar un token aleatorio
@@ -66,7 +66,6 @@ try {
     $stmt->bindParam(':email', $emailUsuario, PDO::PARAM_STR);
     $stmt->execute();
 
-    // Configuración del PHPMailer (mismo que el primer código)
     $mailConfigurator = require 'configurar_phpmailer.php';
     $mail = $mailConfigurator();
     

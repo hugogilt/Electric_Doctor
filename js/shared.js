@@ -2020,7 +2020,7 @@ sendVerificationEmailBtn.onclick = async function () {
       timeOutMessage.remove(); 
     }
   }, 1000);
-  
+  verificationModal.style.display = 'none';
 };
 
 

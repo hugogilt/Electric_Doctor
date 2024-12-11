@@ -59,7 +59,8 @@ try {
                         'Ano_Matriculacion' => $cita['Ano_Matriculacion'],
                         'Fecha_Hora' => $cita['Fecha_Hora'],
                         'Motivo' => $cita['Motivo'],
-                        'Estado' => $cita['Estado']
+                        'Estado' => $cita['Estado'],
+                        'Observaciones' => $cita['Observaciones']
                     ];
 
                     // Verificar si la cita tiene un ID_Usuario asociado

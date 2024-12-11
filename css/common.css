@@ -339,9 +339,14 @@ nav.active a {
   z-index: 9;
 }
 
+
 .user-menu a {
   text-decoration: none;
   color: white;
+}
+
+#panel-admin a, #panel-admin li {
+  color: #FF6C14;
 }
 
 .user-menu ul {

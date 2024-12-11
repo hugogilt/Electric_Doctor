@@ -148,7 +148,7 @@ try {
 
         if ($response['status'] === 'success') {
             try {
-                $mailConfigurator = require('./PHPMailer-master/src/configurar_phpmailer.php'); // Obtener configuración del correo
+                $mailConfigurator = require('./PHPMailer-master/src/configurar_phpmailer.php');
                 $mail = $mailConfigurator();
                 $mail->isHTML(true);
                 $mail->addAddress($correo, $nombre);
