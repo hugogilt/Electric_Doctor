@@ -1629,8 +1629,10 @@ async function aceptarPidiendoCita() {
               } else {
                 nonVerifiedType = 'client'
               }
+            } else if (data.status === 'limit-exceeded') {
+              showAlert(data.message, 'negative')
             } else {
-              showAlert(data.message, 'negative');
+              showAlert('Ha ocurrido un error al confirmar la cita, inténtelo de nuevo.', 'negative');
             }
           }
           eventListenerAñadido = true;
