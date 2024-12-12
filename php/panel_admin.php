@@ -178,12 +178,11 @@ try {
                                 type="text"
                                 id="filtro-valor"
                                 placeholder="Escribe el valor..."
-                                oninput="filtrarCitas()"
                               />
 
                               <!-- Filtro independiente para el estado -->
                               <label for="filtro-estado">Estado:</label>
-                              <select id="filtro-estado" onchange="filtrarCitas()">
+                              <select id="filtro-estado">
                                 <option value="">Cualquiera</option>
                                 <option value="pendiente">Pendiente</option>
                                 <option value="completada">Completada</option>
@@ -191,7 +190,7 @@ try {
 
                               <!-- Filtro por mes -->
                               <label for="filtro-mes">Mes:</label>
-                              <select id="filtro-mes" onchange="filtrarCitas()">
+                              <select id="filtro-mes">
                                 <option value="">Cualquiera</option>
                                 <option value="01">Enero</option>
                                 <option value="02">Febrero</option>

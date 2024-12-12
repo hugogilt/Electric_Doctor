@@ -298,7 +298,7 @@ async function updateCalendar() {
   if (document.querySelector('#diaNoDisponibleAlerta')) dayNotAvailableWarning.remove();
   if (document.querySelector('#horaNoDisponibleAlerta')) hourNotAvailableWarning.remove();
   if (document.querySelector('#aceptar-modificando-fecha')) aceptarModificandoFechaButton.remove();
-  
+
   const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -890,15 +890,14 @@ async function obtenerDatosCita(fechaHora) {
     const data = await response.json();
 
     if (data.error) {
-      console.error(data.error);
-      alert(`Error: ${data.error}`);
+      showAlert('Ha ocurrido un error al obtener los datos de la cita', 'negative')
     } else {
       // Devolver los datos obtenidos
       return data;
     }
   } catch (error) {
-    console.error('Error al obtener los datos de la cita:', error);
-    alert('Ocurrió un error al obtener los datos.');
+    showAlert('Ha ocurrido un error al obtener los datos de la cita', 'negative')
+
   }
 }
 
@@ -1777,7 +1776,14 @@ function actualizarFiltro() {
 
 // Evento para el filtro
 document.getElementById("filtro-valor").addEventListener("input", filtrarDatos);
+document.getElementById("filtro-valor").addEventListener("input", filtrarCitas);
+document.getElementById("filtro-valor").addEventListener("input", recargarCitas);
 document.getElementById("filtro-tipo").addEventListener("change", filtrarDatos);
+document.getElementById("filtro-tipo").addEventListener("change", filtrarCitas);
+document.getElementById("filtro-tipo").addEventListener("change", recargarCitas);
+document.getElementById('filtro-mes').addEventListener('change', recargarCitas);
+document.getElementById('filtro-mes').addEventListener('change', filtrarCitas);
+
 
 
 
