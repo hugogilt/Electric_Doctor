@@ -297,7 +297,8 @@ async function updateCalendar() {
   selectedDayText.textContent = '';
   if (document.querySelector('#diaNoDisponibleAlerta')) dayNotAvailableWarning.remove();
   if (document.querySelector('#horaNoDisponibleAlerta')) hourNotAvailableWarning.remove();
-
+  if (document.querySelector('#aceptar-modificando-fecha')) aceptarModificandoFechaButton.remove();
+  
   const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 

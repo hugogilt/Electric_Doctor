@@ -158,7 +158,6 @@ header h1 {
 
 #calendarModal {
   display: none;
-  /* Ocultar el modal por defecto */
   position: fixed;
   z-index: 10;
   left: 0;
@@ -1218,9 +1217,30 @@ textarea {
   #modal-citas {
     font-size: 1.2em;
   }
+}
 
+@media (max-height: 700px) {
+  /* Estilos adicionales para ancho menor o igual a 1000px y altura menor o igual a 700px */
+  body {
+      background-color: lightblue;
+  }
   #calendarModal .modal-content {
     font-size: 0.55em;
   }
 
+  #selectedDay {
+    margin-top: 0.6em
+  }
+
+  .time-slots {
+    gap: 5px;
+  }
+
+  .time-slots button{
+    font-size: 0.7em;
+  }
+
+  .date {
+    padding: 7px;
+  }
 }
