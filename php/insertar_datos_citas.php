@@ -66,7 +66,7 @@ try {
                     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
                     $stmt->execute();
                     $count = $stmt->fetchColumn();
-                    return $count >= 2;
+                    return $count >= 3;
                 };
                 
 

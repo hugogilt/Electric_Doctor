@@ -380,13 +380,6 @@ function crearCajon(cita) {
   // Crear el contenedor principal para cada cita
   const cajon = document.createElement("div");
 
-  // Añadir la clase correspondiente según el estado de la cita
-  if (cita.Estado === 'Pendiente') {
-    cajon.classList.add("pendiente");
-  } else if (cita.Estado === 'Completada') {
-    cajon.classList.add("completada");
-  }
-
   cajon.classList.add("modal-citas-cajon");
 
   // Crear el título del cajón
@@ -444,6 +437,7 @@ function crearCajon(cita) {
 
   // Botón "Cita completada" solo si el estado es 'Pendiente'
   if (cita.Estado === 'Pendiente') {
+    cajon.classList.add("pendiente");
     const botonCancelar = document.createElement("button");
     botonCancelar.classList.add("modal-citas-boton");
     botonCancelar.textContent = "Cancelar";
@@ -457,6 +451,12 @@ function crearCajon(cita) {
   }
   // Botón "Cita pendiente" solo si el estado es 'Completada'
   else if (cita.Estado === 'Completada') {
+    cajon.classList.add("completada");
+    if (cita.Observaciones !== null) {
+      const observaciones = document.createElement("p");
+      observaciones.textContent = `Observaciones: ${cita.Observaciones}`;
+      contenidoCita.appendChild(observaciones);
+    }
     const botonPendiente = document.createElement("button");
     botonPendiente.classList.add("modal-citas-boton");
     botonPendiente.textContent = "Cita pendiente";
