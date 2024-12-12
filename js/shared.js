@@ -722,25 +722,28 @@ userButton.addEventListener("click", async (e) => {
         positionUserMenu();
       }
     });
-    // Muestra el modal al hacer clic en el botón de cerrar sesión
-    logoutButton.addEventListener('click', () => {
-      modalCerrarSesion.style.display = 'flex';
-      userMenu.style.display = 'none';
-
-    });
-
-    // Cierra el modal si el usuario decide cancelar
-    document.querySelector('#cancelar-cierre-sesion').addEventListener('click', () => {
-      modalCerrarSesion.style.display = 'none';
-    });
-
-    // Llama a la función de cerrar sesión (aquí añades tu lógica de cerrar sesión)
-    document.querySelector('#confirmar-cierre-sesion').addEventListener('click', () => {
-      cerrarSesion();
-      // Por ejemplo, puedes redirigir al usuario a una página de logout o eliminar la sesión
-    });
   }
 });
+
+//Event listeners cerrar sesión
+// Muestra el modal al hacer clic en el botón de cerrar sesión
+logoutButton.addEventListener('click', () => {
+  modalCerrarSesion.style.display = 'flex';
+  userMenu.style.display = 'none';
+
+});
+
+// Cierra el modal si el usuario decide cancelar
+document.querySelector('#cancelar-cierre-sesion').addEventListener('click', () => {
+  modalCerrarSesion.style.display = 'none';
+});
+
+// Llama a la función de cerrar sesión (aquí añades tu lógica de cerrar sesión)
+document.querySelector('#confirmar-cierre-sesion').addEventListener('click', () => {
+  cerrarSesion();
+  // Por ejemplo, puedes redirigir al usuario a una página de logout o eliminar la sesión
+});
+
 
 // Cerrar authMal hacer clic en la 'X' o fuera del contenido
 closeBtn.addEventListener("click", () => {

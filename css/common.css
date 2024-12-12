@@ -345,7 +345,7 @@ nav.active a {
   color: white;
 }
 
-#panel-admin a, #panel-admin li {
+#panel-admin a, #panel-admin {
   color: #FF6C14;
 }
 

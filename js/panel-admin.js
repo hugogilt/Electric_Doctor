@@ -361,17 +361,17 @@ function selectDate(day) {
     dayElement.classList.remove('selected-not-available');
   });
 
+  chosenDay = [...allDays].find(dayElement => Number(dayElement.textContent) === Number(day));
+  chosenYear = currentDate.getFullYear();
+  chosenMonth = currentDate.getMonth() + 1;
   if (!isNotAvailable(day) && !isComplete(day)) {
     // Añadir la clase "selected" al día clicado
-    chosenDay = [...allDays].find(dayElement => dayElement.textContent === String(day));
     if (chosenDay) {
       chosenDay.classList.add('selected');
-      chosenYear = currentDate.getFullYear();
-      chosenMonth = currentDate.getMonth() + 1;
     }
   }
   else {
-    chosenDay = [...allDays].find(dayElement => dayElement.textContent === String(day));
+    // Añadir la clase "selected-not-available" al día clicado
     if (chosenDay) {
       chosenDay.classList.add('selected-not-available');
     }
