@@ -1,7 +1,7 @@
 const nombreCompletoUsuario = document.getElementById('nombre-usuario');
 const correoUsuario = document.getElementById('correo-usuario');
 const telefonoUsuario = document.getElementById('telefono-usuario');
-let userData;
+let userData = {};
 
 const correoP = document.getElementById('correo-p');
 const verificarCorreoMessage = document.createElement('p');
@@ -40,23 +40,53 @@ async function obtenerDatosUsuario() {
     const datos = await respuesta.json();
 
     if (datos.error) {
+      window.location.href = '../index.html';
       console.error('Error del servidor:', datos.error);
     } else {
-      console.log('Datos del usuario:', datos);
-      userData = datos.data;
+      if (datos.status === 'success') {
+        // Si eres admin
+        if (Array.isArray(datos.data)) {
+          await obtenerDatosAdmin();
+        } else {
+          userData = datos.data;
+        }
+      } else {
+        window.location.href = '../index.html';
+      }
     }
   } catch (error) {
+    window.location.href = '../index.html';
     console.error('Error al obtener los datos del usuario:', error);
   }
 }
 
+async function obtenerDatosAdmin() {
+  try {
+    const response = await fetch('/php/obtener_usuario_admin.php');
+    const data = await response.json();
 
-async function asignarDatosUsusarioDOM() {
-  await obtenerDatosUsuario();
-  nombreCompletoUsuario.textContent = `${userData.Nombre} ${userData.Apellidos}`;
-  correoUsuario.textContent = userData.Correo_Electronico;
-  telefonoUsuario.textContent = userData.Telefono;
+    if (data.status === 'success') {
+      userData = data.data; 
+    } else {
+      window.location.href = '../index.html';
+      console.log('Error:', data.message);
+    }
+  } catch (error) {
+    window.location.href = '../index.html';
+    console.error('Error al realizar la solicitud:', error);
+  }
+}
 
+async function asignarDatosUsuarioDOM() {
+  await obtenerDatosUsuario();  
+
+  if (userData.Nombre) {
+    nombreCompletoUsuario.textContent = `${userData.Nombre} ${userData.Apellidos}`;
+    correoUsuario.textContent = userData.Correo_Electronico;
+    telefonoUsuario.textContent = userData.Telefono;
+  } else {
+    console.error('Los datos del usuario no están disponibles.');
+  }
 }
 
 
@@ -94,7 +124,7 @@ async function comprobarVerificado() {
 
 
 window.onload = async function() {
-  await asignarDatosUsusarioDOM();
+  await asignarDatosUsuarioDOM();
   comprobarVerificado();
 };
 
@@ -205,7 +235,7 @@ function modificarUsuario() {
     .then(data => {
       if (data.success) {
         showAlert("Datos personales modificados correctamente", "positive");
-        asignarDatosUsusarioDOM();
+        asignarDatosUsuarioDOM();
         modalModificarUsuario.style.display = "none";
         if (data.correoModificado) {
           correoP.insertAdjacentElement('afterend', verificarCorreoMessage);
