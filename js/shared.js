@@ -32,7 +32,7 @@ async function logOut() {
   }
 }
 
-async function cerrarSesion() {
+async function cerrarSesion(onLoad = false) {
   // Esperar a que logOut() finalice antes de continuar con el resto del código
   const sessionClosed = await logOut();
 
@@ -43,8 +43,10 @@ async function cerrarSesion() {
     }
     userMenu.style.display = 'none';
     modalCerrarSesion.style.display = 'none';
-    showAlert("Sesión cerrada exitosamente", 'positive');
     autorellenarFormularioCitas();
+    if (!onLoad) {
+      showAlert("Sesión cerrada exitosamente", 'positive');
+    }
   } else {
     showAlert('Error al cerrar la sesión, inténtelo de nuevo.', 'negative');
   }
@@ -68,12 +70,34 @@ async function check_user_logged() {
       return false;
     }
   } catch (error) {
-    // console.error("Error al verificar la sesión:", error);
-    return false; // Opcional, puedes decidir cómo manejar los errores aquí
+    return false;
   }
 }
 
-check_user_logged();
+async function check_user_rol() {
+  try {
+    const response = await fetch('/php/check_user_rol.php', {
+      method: 'GET'
+    });
+    const data = await response.json();
+
+    if (data.rol === 'admin') {
+      cerrarSesion(true);
+    } else if (data.rol === 'cliente') {
+      console.log('es cliente :)')
+    } else if (data.rol === 'not-rol') {
+      console.log('no hay rol')
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
+
+window.onload = () => {
+  check_user_logged();
+  check_user_rol();
+}
 
 
 
@@ -457,13 +481,6 @@ function crearCajon(cita) {
       observaciones.textContent = `Observaciones: ${cita.Observaciones}`;
       contenidoCita.appendChild(observaciones);
     }
-    const botonPendiente = document.createElement("button");
-    botonPendiente.classList.add("modal-citas-boton");
-    botonPendiente.textContent = "Cita pendiente";
-    botonPendiente.style.float = 'right';
-    botonPendiente.addEventListener("click", () => marcarCitaPendiente(cita.ID_Cita));
-    botonesContainer.appendChild(botonPendiente); // Añadir el botón "Cita pendiente"
-    botonesContainer.appendChild(botonModificar);
   }
 
 
@@ -476,13 +493,6 @@ function crearCajon(cita) {
   return cajon;
 }
 
-
-// Función para marcar una cita como pendiente
-async function marcarCitaPendiente(citaId) {
-  await cambiarEstadoCita(citaId);
-  mostrarCitas(await obtenerCitas());
-  filtrarCitas();
-}
 
 
 
@@ -741,7 +751,6 @@ document.querySelector('#cancelar-cierre-sesion').addEventListener('click', () =
 // Llama a la función de cerrar sesión (aquí añades tu lógica de cerrar sesión)
 document.querySelector('#confirmar-cierre-sesion').addEventListener('click', () => {
   cerrarSesion();
-  // Por ejemplo, puedes redirigir al usuario a una página de logout o eliminar la sesión
 });
 
 

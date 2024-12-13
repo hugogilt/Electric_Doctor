@@ -37,12 +37,6 @@ window.onresize = () => {
 
 
 
-if (title) {
-    title.addEventListener('click', function () {
-      // Redirigir a otra URL
-      window.location.href = './index.html';
-    });
-  }
 
 
 

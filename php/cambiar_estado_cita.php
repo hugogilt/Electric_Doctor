@@ -13,6 +13,11 @@ if (!isset($data['id_cita'])) {
     exit;
 }
 
+// Verificar que el usuario tiene rol de admin
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+    echo json_encode(['status' => 'error', 'message' => 'Acceso no autorizado.']);
+}
+
 // Obtener los datos de la solicitud
 $id_cita = $data['id_cita'];
 $observaciones = isset($data['observaciones']) ? trim($data['observaciones']) : '';

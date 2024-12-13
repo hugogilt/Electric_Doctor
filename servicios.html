@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Electric Doctor</title>
+  <title>Servicios - Electric Doctor</title>
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
@@ -28,17 +28,140 @@
     <nav>
       <a href="./servicios.html">Servicios</a>
       <a href="#">Contáctanos</a>
-      <a href="#">Nosotros</a>
       <a href="https://maps.app.goo.gl/h5aN8X4GmK59tT3H9">Dónde estamos</a>
-      <a href="#">Nuestras instalaciones</a>
     </nav>
     <span id="user-text"><img id="user" src="images/user.png" alt="User"></span>
     <!-- Menú desplegable -->
     <div id="user-menu" class="user-menu">
       <ul>
-        <li>Perfil</li>
-        <li>Citas</li>
-        <li>Facturas</li>
+        <li><a href="./perfil.html">Perfil</a></li>
+        <li id="listado-citas-boton">Citas</li>
+
+        <!-- MODAL CITAS -->
+        <div id="modal-citas" class="modal-citas" onclick="closeModalOnOutsideClick(event)">
+          <div class="modal-citas-content">
+            <span class="modal-citas-close" onclick="closeModal()">&times;</span>
+            <div id="modal-citas-filter">
+              <label for="filtro-atributo">Filtrar por:</label>
+              <select id="filtro-atributo" onchange="filtrarCitas()">
+                <option value="">Seleccionar</option>
+                <option value="NombreCompleto">Nombre completo</option>
+                <option value="Telefono">Teléfono</option>
+                <option value="Correo_Electronico">Correo Electrónico</option>
+                <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
+                <option value="Ano_Matriculacion">Año de Matriculación</option>
+              </select>
+
+              <input type="text" id="filtro-valor" placeholder="Escribe el valor..." oninput="filtrarCitas()" />
+
+              <!-- Filtro independiente para el estado -->
+              <label for="filtro-estado">Estado:</label>
+              <select id="filtro-estado" onchange="filtrarCitas()">
+                <option value="">Cualquiera</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="completada">Completada</option>
+              </select>
+
+              <!-- Filtro por mes -->
+              <label for="filtro-mes">Mes:</label>
+              <select id="filtro-mes" onchange="filtrarCitas()">
+                <option value="">Cualquiera</option>
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+              </select>
+
+
+            </div>
+            <div id="resultado-citas">
+              <p id="contador-citas">Mostrando 0 resultados</p>
+              <!-- Botón de recargar -->
+              <img width="30px" alt="Recargar" src="../images/panel-admin/recargar.png" id="recargar-citas"></img>
+            </div>
+
+            <div id="modal-citas-body">
+              <!-- Los cajones dinámicos se generarán aquí -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de confirmación de cancelar cita -->
+        <div id="modal-cancelar-cita" class="modal-cancelar-cita">
+          <div class="modal-cancelar-cita-content">
+            <p>¿Está seguro de que desea cancelar la cita?</p>
+            <button id="confirmar-cancelar-cita" class="confirmar-cancelar-cita">Sí, cancelar cita</button>
+            <button id="cancelar-cancelar-cita" class="cancelar-cancelar-cita">No, mantener cita</button>
+          </div>
+        </div>
+
+        <!-- MODAL FACTURAS -->
+        <div id="invoicesModal" class="modal">
+          <div class="modal-content">
+            <div id="modal-facturas-filter" class="filter-container">
+              <label for="filtro-facturas-atributo">Filtrar por:</label>
+              <select id="filtro-facturas-atributo">
+                <option value="">Seleccionar</option>
+                <option value="Nombre">Nombre Completo</option>
+                <option value="Correo_Electronico">Correo</option>
+                <option value="Telefono">Teléfono</option>
+                <option value="Monto_Total">Monto Total</option>
+              </select>
+              <input id="filtro-facturas-valor" type="text" placeholder="Introduce el valor" />
+            </div>
+            <div id="contador-facturas">Mostrando 0 resultados</div>
+            <button id="closeInvoicesModal" class="cerrar-modal-facturas">×</button>
+            <div id="invoicesContainer" class="invoices-container"></div>
+          </div>
+        </div>
+
+        <!-- Modal formulario -->
+        <div id="modal-formulario" class="modal">
+          <div class="modal-formulario-content">
+            <span class="close" id="cerrar-modal-formulario">&times;</span>
+            <h2>Electric Doctor</h2>
+            <form id="pedir-cita-form-modal">
+              <div class="elementos-pedir-cita">
+                <input type="text" id="nombre-modal" name="nombre" placeholder="Nombre" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="text" id="apellidos-modal" name="apellidos" placeholder="Apellidos" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="tel" id="telefono-modal" name="telefono" pattern="[0-9]{9}"
+                  placeholder="Teléfono (9 dígitos)" title="El número debe tener 9 dígitos" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="email" id="correo-modal" name="correo" placeholder="Correo Electrónico" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="text" id="marca-modal" name="marca" placeholder="Marca y Modelo del Vehículo" required>
+              </div>
+              <div class="elementos-pedir-cita">
+                <input type="number" id="anio-modal" name="anio" placeholder="Año de Matriculación" min="1900"
+                  max="2024" required>
+              </div>
+              <div id="contenedor-problema" class="grupo-formulario">
+                <textarea id="problema-modal" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
+                  required></textarea>
+              </div>
+              <div id="contenedor-fecha-button">
+                <button id="modificar-fecha-button" type="button">Fecha:</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <li id="open-invoices-button">Facturas</li>
         <li id="logout">Cerrar Sesión</li>
       </ul>
     </div>
@@ -63,8 +186,8 @@
               <input class="input-auth" type="password" id="loginPassword" placeholder="Contraseña" required>
               <span><i class="fas fa-eye togglePassword eye-icon"></i></span>
             </div>
-            <p class="login-error-message" id="correo-error-message"></p>
-            <p class="login-error-message" id="password-error-message"></p>
+            <p class="login-or-register-error-message" id="correo-error-message-login"></p>
+            <p class="login-or-register-error-message" id="password-error-message-login"></p>
             <button type="submit" class="modal-button">Acceder</button>
           </form>
           <p class="modal-text">¿No tienes cuenta? <a href="#" id="toRegister">¡Regístrate ya!</a></p>
@@ -89,13 +212,14 @@
                 placeholder="Repite la contraseña" required>
               <span><i class="fas fa-eye togglePassword eye-icon"></i></span>
             </div>
+            <p class="login-or-register-error-message" id="password-error-message-register"></p>
+            <p class="login-or-register-error-message" id="confirm-password-error-message-register"></p>
             <button type="submit" id="registerButton" class="modal-button">Registrarse</button>
           </form>
           <p class="modal-text">¿Ya tienes cuenta? <a href="#" id="toLogin">Inicia sesión</a></p>
         </div>
       </div>
     </div>
-
 
   </header>
   <main>
@@ -208,7 +332,7 @@
             style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
-    <!-- El Modal -->
+    <!-- Modal verificar correo -->
     <div id="modal-verificar-correo" class="modal-verificar-correo">
       <div class="modal-verificar-correo-content">
         <span id="modal-verificar-correo-close" class="modal-verificar-correo-close">&times;</span>
@@ -218,9 +342,12 @@
     </div>
     </section>
 
+
+
     <script id="reviews-script" src="https://static.elfsight.com/platform/platform.js"></script>
     <div id="reviews-container" class="elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2"></div>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="./js/shared.js"></script>
   <script src="./js/servicios.js"></script>
 </body>
