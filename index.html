@@ -103,6 +103,26 @@
           </div>
         </div>
 
+        <!-- MODAL FACTURAS -->
+        <div id="invoicesModal" class="modal">
+          <div class="modal-content">
+            <div id="modal-facturas-filter" class="filter-container">
+              <label for="filtro-facturas-atributo">Filtrar por:</label>
+              <select id="filtro-facturas-atributo">
+                <option value="">Seleccionar</option>
+                <option value="Nombre">Nombre Completo</option>
+                <option value="Correo_Electronico">Correo</option>
+                <option value="Telefono">Teléfono</option>
+                <option value="Monto_Total">Monto Total</option>
+              </select>
+              <input id="filtro-facturas-valor" type="text" placeholder="Introduce el valor" />
+            </div>
+            <div id="contador-facturas">Mostrando 0 resultados</div>
+            <button id="closeInvoicesModal" class="cerrar-modal-facturas">×</button>
+            <div id="invoicesContainer" class="invoices-container"></div>
+          </div>
+        </div>
+
         <!-- Modal formulario -->
         <div id="modal-formulario" class="modal">
           <div class="modal-formulario-content">
@@ -135,13 +155,13 @@
               </div>
               <div id="contenedor-fecha-button">
                 <button id="modificar-fecha-button" type="button">Fecha:</button>
-            </div>
+              </div>
             </form>
           </div>
         </div>
 
 
-        <li>Facturas</li>
+        <li id="open-invoices-button">Facturas</li>
         <li id="logout">Cerrar Sesión</li>
       </ul>
     </div>

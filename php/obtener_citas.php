@@ -60,12 +60,12 @@ try {
                         'Fecha_Hora' => $cita['Fecha_Hora'],
                         'Motivo' => $cita['Motivo'],
                         'Estado' => $cita['Estado'],
-                        'Observaciones' => $cita['Observaciones']
+                        'Observaciones' => $cita['Observaciones'],
                     ];
 
                     // Verificar si la cita tiene un ID_Usuario asociado
                     if (!is_null($cita['ID_Usuario'])) {
-                        $sqlUsuario = "SELECT Nombre, Apellidos, Telefono, Correo_Electronico 
+                        $sqlUsuario = "SELECT ID_Usuario, Nombre, Apellidos, Telefono, Correo_Electronico 
                                        FROM Usuarios 
                                        WHERE ID_Usuario = :idUsuario";
                         $stmtUsuario = $conexion->prepare($sqlUsuario);
@@ -79,7 +79,7 @@ try {
                     }
                     // Verificar si la cita tiene un ID_Cliente asociado
                     elseif (!is_null($cita['ID_Cliente'])) {
-                        $sqlCliente = "SELECT Nombre, Apellidos, Telefono, Correo_Electronico 
+                        $sqlCliente = "SELECT ID_Cliente, Nombre, Apellidos, Telefono, Correo_Electronico 
                                        FROM Clientes 
                                        WHERE ID_Cliente = :idCliente";
                         $stmtCliente = $conexion->prepare($sqlCliente);

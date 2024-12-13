@@ -77,7 +77,11 @@ const userTextSpan = document.querySelector('#user-text');
 const modalCancelarCita = document.querySelector('#modal-cancelar-cita');
 const mantenerCitaButton = document.querySelector('#cancelar-cancelar-cita');
 const cancelarCitaButton = document.querySelector('#confirmar-cancelar-cita');
-let citaElegida, modificandoAño, modificandoDia, modificandoHora, modificandoMes, chosenDate;
+
+let citaElegida, modificandoAño, modificandoDia, modificandoHora,
+ modificandoMes, modificandoCitaIDPersona,
+ IDPersonaCitaACompletar, correoPersonaCitaACompletar, chosenDate;
+
 const modificarFechaButton = document.querySelector('#modificar-fecha-button');
 const monthNames = {
   1: 'enero',
@@ -112,14 +116,59 @@ modalCompletarCitaCerrar.addEventListener('click', () => {
   modalCompletarCita.style.display = 'none';
 });
 
-// Guardar observaciones
+// Guardar observaciones y subir factura
 modalCompletarCitaGuardar.addEventListener('click', async function () {
+  let facturaSubida = false;
   const modalCompletarCitaObservaciones = modalCompletarCitaTextarea.value.trim();
+  const archivoFactura = document.getElementById('factura').files[0];
+  const montoTotal = document.getElementById('monto_total').value.trim();
+
+  // Validamos si se ha seleccionado un archivo para la factura
+  if (!archivoFactura) {
+      showAlert('Por favor, agrega una factura.', 'negative');
+      return;
+  }
+
+  if (!montoTotal || isNaN(parseFloat(montoTotal)) || parseFloat(montoTotal) <= 0) {
+      showAlert('Por favor, ingresa un monto válido.', 'negative');
+      return;
+  }
+
+  try {
+      // Subir factura
+      const formData = new FormData();
+      formData.append('id_usuario', IDPersonaCitaACompletar || 'NULL');
+      formData.append('factura', archivoFactura);
+      formData.append('correo', correoPersonaCitaACompletar); 
+      formData.append('monto_total', montoTotal); 
+      const respuesta = await fetch('subir_factura.php', {
+          method: 'POST',
+          body: formData,
+      });
+      const resultado = await respuesta.json();
+      if (respuesta.ok && resultado.status === 'success') {
+          facturaSubida = true;
+      } else {
+          showAlert(`Error al subir la factura: ${resultado.message}`, 'negative');
+      }
+  } catch (error) {
+      showAlert('Error al subir la factura.', 'negative');
+  }
+
+  if (facturaSubida) {
+      // Limpiar el campo de texto y ocultar el modal
   modalCompletarCitaTextarea.value = '';
   modalCompletarCita.style.display = 'none';
+
+  // Guardar las observaciones
   await cambiarEstadoCita(citaACompletar, modalCompletarCitaObservaciones);
   recargarCitas();
+  }
+
 });
+
+
+
 
 // Cerrar modal al hacer clic fuera de él
 modalCompletarCita.addEventListener('click', (e) => {
@@ -668,7 +717,7 @@ async function selectTime(slot, key = false) {
     modeloInput.value = datosCita.Modelo_Vehiculo;
     anioInput.value = datosCita.Ano_Matriculacion;
     problemaInput.value = datosCita.Motivo;
-
+    modificandoCitaIDPersona = datosCita.ID;
     modificandoDia = chosenDay.textContent;
     chosenHour = slot;
     const chosenMonthName = monthNames[parseInt(chosenMonth)];
@@ -1131,6 +1180,8 @@ function crearCajon(cita) {
     botonCompletada.addEventListener('click', () => {
       modalCompletarCita.style.display = 'block';
       citaACompletar = cita.ID_Cita;
+      IDPersonaCitaACompletar = cita.ID_Usuario == null ? cita.ID_Cliente : cita.ID_Usuario;
+      correoPersonaCitaACompletar = cita.Correo_Electronico;
     });
     // botonCompletada.addEventListener("click", () => marcarCitaCompletada(cita.ID_Cita));
     botonesContainer.appendChild(botonCompletada); // Añadir el botón "Cita completada"
@@ -1774,15 +1825,22 @@ function actualizarFiltro() {
 
 
 
-// Evento para el filtro
+// Evento para los filtros
 document.getElementById("filtro-valor").addEventListener("input", filtrarDatos);
 document.getElementById("filtro-valor").addEventListener("input", filtrarCitas);
 document.getElementById("filtro-valor").addEventListener("input", recargarCitas);
+
+document.getElementById("filtro-estado").addEventListener("change", filtrarDatos);
+document.getElementById("filtro-estado").addEventListener("change", filtrarCitas);
+document.getElementById("filtro-estado").addEventListener("change", recargarCitas);
+
 document.getElementById("filtro-tipo").addEventListener("change", filtrarDatos);
 document.getElementById("filtro-tipo").addEventListener("change", filtrarCitas);
 document.getElementById("filtro-tipo").addEventListener("change", recargarCitas);
-document.getElementById('filtro-mes').addEventListener('change', recargarCitas);
+
 document.getElementById('filtro-mes').addEventListener('change', filtrarCitas);
+document.getElementById('filtro-mes').addEventListener('change', filtrarDatos);
+document.getElementById('filtro-mes').addEventListener('change', recargarCitas);
 
 
 
@@ -1884,4 +1942,210 @@ modalModificarUsuario.addEventListener("click", (e) => {
     modalModificarUsuario.style.display = "none";
   }
 });
+
+//FACTURAS
+
+// Función para obtener las facturas desde la API
+async function obtenerFacturas() {
+  try {
+    const response = await fetch('/php/obtener_facturas.php');
+    const data = await response.json();
+
+    if (data.error) {
+      console.error('Error al obtener las facturas:', data.error);
+      return [];
+    }
+
+    console.log('Facturas obtenidas:', data.facturas);
+    return data.facturas;
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    return [];
+  }
+}
+
+// Elementos del DOM
+const invoicesModal = document.getElementById('invoicesModal');
+const closeInvoicesModal = document.getElementById('closeInvoicesModal');
+const invoicesContainer = document.getElementById('invoicesContainer');
+
+// Función para abrir el modal
+function abrirModal() {
+  invoicesModal.style.display = 'flex';
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+  invoicesModal.style.display = 'none';
+}
+
+// Función para renderizar las facturas en el modal
+function renderizarFacturas(facturas) {
+  invoicesContainer.innerHTML = ''; // Limpiar contenido previo
+
+  // Ordenar las facturas por ID de mayor a menor
+  const facturasOrdenadas = facturas.sort((a, b) => b.ID_Factura - a.ID_Factura);
+
+  facturasOrdenadas.forEach(factura => {
+    const facturaDiv = document.createElement('div');
+    facturaDiv.className = 'invoice-box';
+
+    // Función auxiliar para crear párrafos con strong
+    const crearParrafo = (titulo, valor) => {
+      const p = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.textContent = titulo;
+      strong.style.display = 'block'; // Display block en los <strong>
+      p.appendChild(strong);
+      p.appendChild(document.createTextNode(valor));
+      return p;
+    };
+
+    // Crear y agregar los elementos de la factura
+    facturaDiv.appendChild(crearParrafo('ID Factura:', factura.ID_Factura));
+    facturaDiv.appendChild(crearParrafo('Nombre Completo:', `${factura.Nombre} ${factura.Apellidos}`));
+    facturaDiv.appendChild(crearParrafo('Correo:', factura.Correo_Electronico));
+    facturaDiv.appendChild(crearParrafo('Teléfono:', factura.Telefono));
+    facturaDiv.appendChild(crearParrafo('Fecha de Emisión:', factura.Fecha_Emision));
+    facturaDiv.appendChild(crearParrafo('Monto Total:', factura.Monto_Total));
+
+    // Crear el botón de descarga
+    const botonDescarga = document.createElement('button');
+    botonDescarga.className = 'descargar-btn';
+    botonDescarga.textContent = 'Descargar Factura';
+
+    // Añadir el evento al botón
+    botonDescarga.addEventListener('click', () => {
+      descargarFactura(factura.ID_Factura);
+    });
+
+    facturaDiv.appendChild(botonDescarga);
+
+    // Agregar la factura al contenedor principal
+    invoicesContainer.appendChild(facturaDiv);
+  });
+}
+
+
+
+
+// Array para almacenar las facturas originales
+let facturasOriginales = [];
+
+// Función para filtrar facturas
+function filtrarFacturas() {
+  const atributo = document.getElementById("filtro-facturas-atributo").value;
+  const valorInput = document.getElementById("filtro-facturas-valor");
+  const valor = valorInput.value.toLowerCase();
+
+  // Filtrar facturas
+  const facturasFiltradas = facturasOriginales.filter((factura) => {
+    if (!atributo) return true; // Si no hay atributo, mostrar todas
+
+    const campo = factura[atributo]?.toString().toLowerCase();
+    return campo && campo.includes(valor);
+  });
+
+  // Limpiar el listado actual y mostrar las facturas filtradas
+  renderizarFacturas(facturasFiltradas);
+
+  // Actualizar el contador independiente de facturas
+  actualizarContadorFacturas(facturasFiltradas.length);
+
+}
+
+const contador = document.getElementById("contador-facturas");
+
+// Función para actualizar el contador de resultados
+function actualizarContadorFacturas(cantidad) {
+  const mensaje = document.createElement("p");
+  if (cantidad === 0) {
+    mensaje.className = "modal-facturas-no-resultados";
+    mensaje.textContent = "No se han encontrado resultados.";
+    contador.insertAdjacentElement('afterend', mensaje);
+  } else {
+    if (document.querySelector('.modal-facturas-no-resultados')) {
+      document.querySelector('.modal-facturas-no-resultados').remove();
+    }
+  }
+  contador.textContent = `Mostrando ${cantidad} resultados`;
+}
+
+// Modificar la función de renderizado para guardar las facturas originales
+async function cargarFacturas() {
+  facturasOriginales = await obtenerFacturas();
+  renderizarFacturas(facturasOriginales);
+  actualizarContadorFacturas(facturasOriginales.length);
+}
+
+comprobarSelectFacturas();
+// Evento para habilitar/deshabilitar el input según el valor del select
+document.getElementById("filtro-facturas-atributo").addEventListener("change", comprobarSelectFacturas);
+
+function comprobarSelectFacturas() {
+  const atributo = document.getElementById("filtro-facturas-atributo").value;
+  const valorInput = document.getElementById("filtro-facturas-valor");
+
+  // Deshabilitar el input si el select está en "Seleccionar..."
+  valorInput.disabled = atributo === "";
+  if (valorInput.disabled) valorInput.value = ""; 
+}
+
+// Evento para filtrar al escribir en el input
+document.getElementById("filtro-facturas-valor").addEventListener("input", filtrarFacturas);
+
+// Cargar facturas al abrir el modal
+openInvoicesButton.addEventListener('click', async () => {
+  await cargarFacturas();
+  abrirModal();
+});
+
+// Evento para cerrar el modal
+closeInvoicesModal.addEventListener('click', cerrarModal);
+
+// Cerrar el modal al hacer clic fuera de la caja de contenido
+invoicesModal.addEventListener('click', (event) => {
+  if (event.target === invoicesModal) {
+    cerrarModal();
+  }
+});
+
+
+function descargarFactura(idFactura) {
+  const formData = new FormData();
+  formData.append('id', idFactura);
+
+  fetch('/php/descargar_factura.php', {
+    method: 'POST',
+    body: formData,
+  })
+    .then(async response => {
+      if (!response.ok) {
+        return response.json().then(errorData => {
+          throw new Error(errorData.error || 'Error desconocido en el servidor');
+        });
+      }
+      return response.blob();
+    })
+    .then(blob => {
+      if (blob.size === 0) {
+        throw new Error('El archivo descargado está vacío. Verifica el contenido en el servidor.');
+      }
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Factura_${idFactura}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    })
+    .catch(error => {
+      showAlert(`No se pudo descargar la factura: ${error.message}`);
+    });
+}
+
+
+
+
+
 

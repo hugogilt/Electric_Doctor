@@ -46,16 +46,6 @@ try {
                         <img src="/images/logo.png" alt="Logo">
                         <h1>Electric Doctor</h1>
                         </div>
-                        <span id="user-text"><img id="user" src="/images/user.png" alt="User"></span>
-                        <!-- Menú desplegable -->
-                        <div id="user-menu" class="user-menu">
-                        <ul>
-                            <li>Perfil</li>
-                            <li>Citas</li>
-                            <li>Facturas</li>
-                            <li id="logout">Cerrar Sesión</li>
-                        </ul>
-                        </div>
 
 
 
@@ -230,17 +220,32 @@ try {
                         </div>
 
 
-                        <!-- Modal de completar cita -->
-                        <div id="modal-completar-cita" class="modal-completar-cita-overlay">
-                            <div class="modal-completar-cita-container">
-                                <h2 class="modal-completar-cita-header">Añadir Observaciones</h2>
-                                <textarea id="modal-completar-cita-textarea" placeholder="Añadir observaciones..."></textarea>
-                                <div class="modal-completar-cita-actions">
-                                    <button id="modal-completar-cita-guardar">Guardar</button>
-                                    <button id="modal-completar-cita-cerrar">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
+  <!-- Modal de completar cita -->
+<div id="modal-completar-cita" class="modal-completar-cita-overlay">
+    <div class="modal-completar-cita-container">
+        <h2 class="modal-completar-cita-header">Añadir Observaciones</h2>
+        <textarea id="modal-completar-cita-textarea" placeholder="Añadir observaciones..."></textarea>
+        
+        <!-- Formulario para subir factura -->
+        <h3>Subir Factura</h3>
+        <form id="form-subir-factura">
+            <input type="hidden" id="id_usuario_factura" name="id_usuario">
+            <label for="factura">Selecciona la factura (PDF):</label>
+            <input type="file" id="factura" name="factura" accept="application/pdf" required>
+
+            <!-- Nuevo campo para Monto Total -->
+            <label for="monto_total">Monto Total:</label>
+            <input type="number" id="monto_total" name="monto_total" step="0.01" min="0" placeholder="0.00" required>
+        </form>
+        <div class="modal-completar-cita-actions">
+            <button id="modal-completar-cita-guardar">Guardar</button>
+            <button id="modal-completar-cita-cerrar">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+
+
 
                         <!-- Modal Usuarios -->
 <div id="modal-obtener-clientes-y-usuarios" class="modal-obtener-clientes-y-usuarios">
@@ -319,6 +324,29 @@ try {
     </form>
   </div>
 </div>
+
+
+<!-- MODAL FACTURAS -->
+<div id="invoicesModal" class="modal">
+  <div class="modal-content">
+  <div id="modal-facturas-filter" class="filter-container">
+  <label for="filtro-facturas-atributo">Filtrar por:</label>
+  <select id="filtro-facturas-atributo">
+    <option value="">Seleccionar</option>
+    <option value="Nombre">Nombre Completo</option>
+    <option value="Correo_Electronico">Correo</option>
+    <option value="Telefono">Teléfono</option>
+    <option value="Monto_Total">Monto Total</option>
+  </select>
+  <input id="filtro-facturas-valor" type="text" placeholder="Introduce el valor" />
+</div>
+<div id="contador-facturas">Mostrando 0 resultados</div>
+    <button id="closeInvoicesModal" class="cerrar-modal-facturas">×</button>
+    <div id="invoicesContainer" class="invoices-container"></div>
+  </div>
+</div>
+
+
 
 
 

@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Si ID_Usuario no es nulo, buscar en la tabla Usuarios
                 if ($cita['ID_Usuario']) {
-                    $sqlUsuario = "SELECT Nombre, Apellidos, Telefono, Correo_Electronico 
+                    $sqlUsuario = "SELECT ID_Usuario, Nombre, Apellidos, Telefono, Correo_Electronico 
                                    FROM Usuarios 
                                    WHERE ID_Usuario = :idUsuario";
                     $stmtUsuario = $conexion->prepare($sqlUsuario);
@@ -48,11 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $response['Apellidos'] = $usuario['Apellidos'];
                         $response['Telefono'] = $usuario['Telefono'];
                         $response['Correo_Electronico'] = $usuario['Correo_Electronico'];
+                        $response['ID'] = $usuario['ID_Usuario'];
                     }
                 } 
                 // Si ID_Cliente no es nulo, buscar en la tabla Clientes
                 elseif ($cita['ID_Cliente']) {
-                    $sqlCliente = "SELECT Nombre, Apellidos, Telefono, Correo_Electronico 
+                    $sqlCliente = "SELECT ID_Cliente, Nombre, Apellidos, Telefono, Correo_Electronico 
                                    FROM Clientes 
                                    WHERE ID_Cliente = :idCliente";
                     $stmtCliente = $conexion->prepare($sqlCliente);
@@ -65,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $response['Apellidos'] = $cliente['Apellidos'];
                         $response['Telefono'] = $cliente['Telefono'];
                         $response['Correo_Electronico'] = $cliente['Correo_Electronico'];
+                        $response['ID'] = $cliente['ID_Cliente'];
                     }
                 }
             } else {
