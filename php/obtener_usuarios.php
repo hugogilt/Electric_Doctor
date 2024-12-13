@@ -14,7 +14,7 @@ try {
     // Comprobar el rol del usuario
     if ($_SESSION['rol'] === 'admin') {
         // Si es admin, obtener los datos de todos los usuarios
-        $stmt = $conexion->prepare("SELECT ID_Usuario, Nombre, Apellidos, Correo_Electronico, Telefono, Verificado FROM Usuarios");
+        $stmt = $conexion->prepare("SELECT ID_Usuario, Nombre, Apellidos, Correo_Electronico, Telefono, Verificado, Rol FROM Usuarios");
         $stmt->execute();
         $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

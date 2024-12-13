@@ -79,8 +79,8 @@ const mantenerCitaButton = document.querySelector('#cancelar-cancelar-cita');
 const cancelarCitaButton = document.querySelector('#confirmar-cancelar-cita');
 
 let citaElegida, modificandoAño, modificandoDia, modificandoHora,
- modificandoMes, modificandoCitaIDPersona,
- IDPersonaCitaACompletar, correoPersonaCitaACompletar, chosenDate;
+  modificandoMes, modificandoCitaIDPersona,
+  IDPersonaCitaACompletar, correoPersonaCitaACompletar, chosenDate;
 
 const modificarFechaButton = document.querySelector('#modificar-fecha-button');
 const monthNames = {
@@ -125,44 +125,44 @@ modalCompletarCitaGuardar.addEventListener('click', async function () {
 
   // Validamos si se ha seleccionado un archivo para la factura
   if (!archivoFactura) {
-      showAlert('Por favor, agrega una factura.', 'negative');
-      return;
+    showAlert('Por favor, agrega una factura.', 'negative');
+    return;
   }
 
   if (!montoTotal || isNaN(parseFloat(montoTotal)) || parseFloat(montoTotal) <= 0) {
-      showAlert('Por favor, ingresa un monto válido.', 'negative');
-      return;
+    showAlert('Por favor, ingresa un monto válido.', 'negative');
+    return;
   }
 
   try {
-      // Subir factura
-      const formData = new FormData();
-      formData.append('id_usuario', IDPersonaCitaACompletar || 'NULL');
-      formData.append('factura', archivoFactura);
-      formData.append('correo', correoPersonaCitaACompletar); 
-      formData.append('monto_total', montoTotal); 
-      const respuesta = await fetch('subir_factura.php', {
-          method: 'POST',
-          body: formData,
-      });
-      const resultado = await respuesta.json();
-      if (respuesta.ok && resultado.status === 'success') {
-          facturaSubida = true;
-      } else {
-          showAlert(`Error al subir la factura: ${resultado.message}`, 'negative');
-      }
+    // Subir factura
+    const formData = new FormData();
+    formData.append('id_usuario', IDPersonaCitaACompletar || 'NULL');
+    formData.append('factura', archivoFactura);
+    formData.append('correo', correoPersonaCitaACompletar);
+    formData.append('monto_total', montoTotal);
+    const respuesta = await fetch('subir_factura.php', {
+      method: 'POST',
+      body: formData,
+    });
+    const resultado = await respuesta.json();
+    if (respuesta.ok && resultado.status === 'success') {
+      facturaSubida = true;
+    } else {
+      showAlert(`Error al subir la factura: ${resultado.message}`, 'negative');
+    }
   } catch (error) {
-      showAlert('Error al subir la factura.', 'negative');
+    showAlert('Error al subir la factura.', 'negative');
   }
 
   if (facturaSubida) {
-      // Limpiar el campo de texto y ocultar el modal
-  modalCompletarCitaTextarea.value = '';
-  modalCompletarCita.style.display = 'none';
+    // Limpiar el campo de texto y ocultar el modal
+    modalCompletarCitaTextarea.value = '';
+    modalCompletarCita.style.display = 'none';
 
-  // Guardar las observaciones
-  await cambiarEstadoCita(citaACompletar, modalCompletarCitaObservaciones);
-  recargarCitas();
+    // Guardar las observaciones
+    await cambiarEstadoCita(citaACompletar, modalCompletarCitaObservaciones);
+    recargarCitas();
   }
 
 });
@@ -1692,9 +1692,30 @@ function renderUsuarios(usuariosFiltrados) {
 
     // Botón Modificar
     const modificarBoton = document.createElement("button");
-    modificarBoton.className = "boton-modificar-usuario";
+    modificarBoton.className = "boton-cajon-usuarios";
     modificarBoton.textContent = "Modificar";
     modificarBoton.onclick = () => abrirModalModificarUsuario(usuario);
+
+    // Botón Ascender/Descender
+    const modificarRangoBoton = document.createElement("button");
+    modificarRangoBoton.className = "boton-cajon-usuarios";
+    modificarRangoBoton.style.float = "right";
+    modificarRangoBoton.onclick = () => modificarRangoUsuario(usuario.ID_Usuario);
+
+    if (usuario.Rol === 'cliente') {
+      modificarRangoBoton.textContent = 'Ascender';
+      modificarRangoBoton.id = "boton-ascender-usuario";
+
+    } else if (usuario.Rol === 'admin') {
+      modificarRangoBoton.textContent = 'Descender';
+      modificarRangoBoton.id = "boton-descender-usuario";
+
+
+    } else {
+      showAlert('Ha ocurrido un error al mostrar los usuarios', 'negative')
+      modalUsuarios.style.display = 'none'
+    }
+
 
     // Añadir campos y botón al usuarioCard
     usuarioCard.appendChild(nombreCampo);
@@ -1702,6 +1723,7 @@ function renderUsuarios(usuariosFiltrados) {
     usuarioCard.appendChild(correoCampo);
     usuarioCard.appendChild(verificadoCampo);
     usuarioCard.appendChild(modificarBoton);
+    usuarioCard.appendChild(modificarRangoBoton);
 
     // Añadir la tarjeta al contenedor
     usuariosContainer.appendChild(usuarioCard);
@@ -1893,6 +1915,35 @@ function abrirModalModificarUsuario(usuario) {
   usuarioAModificar = usuario;
   aceptarModificarUsuarioBtn.addEventListener('click', modificarUsuario);
 }
+
+// Función para modificar el rol del usuario
+function modificarRangoUsuario(idUsuario) {
+  // Crear los datos que se enviarán en la solicitud
+  const data = new FormData();
+  data.append('id_usuario', idUsuario);
+
+  // Realizar la solicitud AJAX
+  fetch('modificar_rango_usuario.php', {
+    method: 'POST',
+    body: data
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        showAlert('Rol del usuario actualizado correctamente.', 'positive');
+        cargarDatosUsuariosYClientes();
+      } else {
+        showAlert('Error al modificar el rango del usuario', 'negative')
+        console.error('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      showAlert('Error al modificar el rango del usuario', 'negative')
+      console.error(error);
+    });
+}
+
+
 
 
 function modificarUsuario() {
@@ -2088,7 +2139,7 @@ function comprobarSelectFacturas() {
 
   // Deshabilitar el input si el select está en "Seleccionar..."
   valorInput.disabled = atributo === "";
-  if (valorInput.disabled) valorInput.value = ""; 
+  if (valorInput.disabled) valorInput.value = "";
 }
 
 // Evento para filtrar al escribir en el input

@@ -995,8 +995,8 @@ textarea {
   gap: 10px;
 }
 
-.boton-modificar-usuario {
-  background: #007bff;
+.boton-cajon-usuarios {
+  background-color: #007bff;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -1004,9 +1004,20 @@ textarea {
   cursor: pointer;
 }
 
-.boton-modificar-usuario:hover {
-  background: #0056b3;
+
+
+.boton-cajon-usuarios:hover{
+  background-color: #0056b3;
 }
+
+#boton-ascender-usuario {
+  background-color: #28a745;
+}
+
+#boton-descender-usuario {
+  background-color: #dc3545;
+}
+
 
 .boton-modificar-usuario-aceptar {
   background: #28a745;
