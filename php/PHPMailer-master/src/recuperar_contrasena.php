@@ -46,7 +46,10 @@ try {
     $data = json_decode(file_get_contents('php://input'), true);
 
     if (!isset($data['correo'])) {
-        throw new Exception('El correo electrónico es obligatorio.');
+        $response['status'] = 'error';
+        $response['message'] = 'El correo electrónico es obligatorio.';
+        echo json_encode($response);
+        exit();
     }
 
     $correo = $data['correo'];
@@ -61,7 +64,10 @@ try {
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$usuario) {
-        throw new Exception('El correo no está registrado.');
+        $response['status'] = 'no-registrado';
+        $response['message'] = 'El correo no está registrado.';
+        echo json_encode($response);
+        exit();
     }
 
     // Guardar el token en la base de datos
@@ -76,7 +82,7 @@ try {
     // Preparar el correo
     $reset_link = "https://electric-doctor.infinityfreeapp.com/php/reset_password.php?token=$token";
     $mail->addAddress($correo);
-    $mail->Subject = 'Recupera tu contraseña';
+    $mail->Subject = 'Recupere su contraseña';
     $mail->isHTML(true);
     $mail->Body = "
     <html>

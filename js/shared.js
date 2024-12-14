@@ -2351,7 +2351,9 @@ formRecuperar.addEventListener('submit', async function (e) {
       showAlert('Correo de recuperación enviado correctamente.', 'positive');
       cerrarModalRecuperar();
     } else if (data.status === 'timeout') {
-      showAlert(data.message, 'negative')
+      showAlert(data.message, 'negative');
+    } else if (data.status === 'no-registrado') {
+      showAlert(data.message, 'negative');
     } else {
       showAlert('Ha ocurrido un error al enviar el correo de recuperación.', 'negative')
 
