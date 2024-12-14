@@ -79,7 +79,7 @@ try {
       <body style='font-family: Arial, sans-serif; background-color: #FFEA00; background: linear-gradient(180deg, #FFEA00, #FF6C14); margin: 0; padding: 20px; text-align: center;'>
         <div style='background-color: #3B014D; background: linear-gradient(45deg, #3B014D, #A5005A); border-radius: 15px; padding: 20px; max-width: 400px; margin: auto; color: white; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);'>
           <h1 style='color: #FFEA00; font-size: 2rem; margin-bottom: 15px;'>¡Verifica tu cuenta!</h1>
-          <p style='color: #FFF; font-size: 1.1rem; margin-bottom: 20px;'>Haz click en el botón de abajo para completar el proceso de verificación de tu cuenta.</p>
+          <p style='color: #FFF; font-size: 1.1rem; margin-bottom: 20px;'>Haz clic en el botón de abajo para completar el proceso de verificación de tu cuenta.</p>
           <a href='$verification_link' target='_blank' style='display: inline-block; background-color: #FFEA00; color: #3B014D; text-decoration: none; padding: 15px 20px; border-radius: 10px; font-size: 1rem; font-weight: bold;'>Verificar mi cuenta</a>
           <p style='margin-top: 20px; font-size: 0.9rem; color: #FFC;'>Si no solicitaste este correo, ignóralo.</p>
         </div>

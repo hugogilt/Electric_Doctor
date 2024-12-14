@@ -804,14 +804,21 @@ registerForm.addEventListener("submit", async function (event) {
   const password = document.getElementById("registerPassword").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
 
+  let formatoInadecuado = false;
   // Validar que las contraseñas coincidan
   if (password !== confirmPassword) {
     confirmPasswordErrorMessageRegister.textContent = 'Las contraseñas no coinciden.';
-    if (password.length < 8) {
-      passwordErrorMessageRegister.textContent = 'La contraseña debe tener al menos 8 carácteres.';
-    }
-    return;
+    formatoInadecuado = true;
   }
+
+  // Validar que la contraseña tenga al menos 8 caracteres, una mayúscula, una minúscula y un número
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    passwordErrorMessageRegister.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.';
+    formatoInadecuado = true;
+  }
+  
+  if (formatoInadecuado) { return; }
 
   // Crear un objeto con los datos del formulario
   const formData = new FormData();
@@ -845,15 +852,14 @@ registerForm.addEventListener("submit", async function (event) {
 
       const data2 = await response2.text();
     } else {
-      //TOFIX: No estoy comprobando realmente que este sea el problema
       showAlert('Este correo ya está asociado a una cuenta, por favor, inicie sesión.', 'negative'); // Mostrar mensaje de error del registro
     }
   } catch (error) {
     // Manejar errores en cualquiera de las peticiones
-    // console.error('Error:', error);
     showAlert('Ocurrió un error en el registro o en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
   }
 });
+
 
 
 const loginForm = document.getElementById("loginForm");
@@ -2299,3 +2305,61 @@ function descargarFactura(idFactura) {
     });
 }
 
+// RECUPERAR CONTRASEÑA
+// Elementos del DOM
+const modalRecuperar = document.getElementById('modal-recuperar-contrasena');
+const cerrarRecuperar = document.getElementById('modal-recuperar-cerrar');
+const formRecuperar = document.getElementById('form-recuperar-contrasena');
+const contraseñaOlvidada = document.getElementById('contraseña-olvidada');
+
+contraseñaOlvidada.addEventListener('click', abrirModalRecuperar)
+
+// Función para abrir el modal
+function abrirModalRecuperar() {
+    modalRecuperar.style.display = 'flex';
+}
+
+// Función para cerrar el modal
+function cerrarModalRecuperar() {
+    modalRecuperar.style.display = 'none';
+}
+
+// Evento para enviar el formulario
+formRecuperar.addEventListener('submit', async function (e) {
+    e.preventDefault(); // Evitar el envío por defecto
+
+    const correo = document.getElementById('email-recuperar').value;
+
+    try {
+        const response = await fetch('/php/PHPMailer-master/src/recuperar_contrasena.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ correo }),
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            showAlert('Correo de recuperación enviado correctamente.', 'positive');
+            cerrarModalRecuperar();
+        } else if(data.status === 'timeout') {
+          showAlert(data.message, 'negative')
+        } else {
+          showAlert('Ha ocurrido un error al enviar el correo de recuperación.', 'negative')
+
+        }
+    } catch (error) {
+        alert('Hubo un problema al procesar la solicitud.');
+        console.error(error);
+    }
+});
+
+// Evento para cerrar el modal
+cerrarRecuperar.addEventListener('click', cerrarModalRecuperar);
+
+// Cerrar el modal al hacer clic fuera del contenedor
+modalRecuperar.addEventListener('click', (e) => {
+    if (e.target === modalRecuperar) cerrarModalRecuperar();
+});

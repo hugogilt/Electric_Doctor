@@ -189,6 +189,7 @@
             <p class="login-or-register-error-message" id="correo-error-message-login"></p>
             <p class="login-or-register-error-message" id="password-error-message-login"></p>
             <button type="submit" class="modal-button">Acceder</button>
+            <p id="contraseña-olvidada">¿Has olvidado tu contraseña?</p>
           </form>
           <p class="modal-text">¿No tienes cuenta? <a href="#" id="toRegister">¡Regístrate ya!</a></p>
         </div>
@@ -220,6 +221,21 @@
         </div>
       </div>
     </div>
+
+
+        <!-- MODAL RECUPERAR CONTRASEÑA -->
+<div id="modal-recuperar-contrasena" class="modal-recuperar-overlay">
+  <div class="modal-recuperar-container">
+      <h2 class="modal-recuperar-header">Recuperar Contraseña</h2>
+      <p>Introduce tu correo electrónico para restablecer tu contraseña:</p>
+      <form id="form-recuperar-contrasena">
+          <label for="email-recuperar">Correo Electrónico:</label>
+          <input type="email" id="email-recuperar" name="email" required placeholder="tuemail@ejemplo.com">
+          <button type="submit" class="modal-recuperar-enviar">Enviar</button>
+      </form>
+      <button id="modal-recuperar-cerrar">×</button>
+  </div>
+</div>
 
   </header>
   <main>
