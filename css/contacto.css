@@ -13,7 +13,7 @@ body {
     background-size: cover;
     background-attachment: fixed;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-family: 'Comfortaa', sans-serif;
 }
 
@@ -167,7 +167,6 @@ header h1 {
     flex-direction: column;
     gap: 10px;
     align-items: center;
-    font-size: 0.65em;
 }
 
 /* Estilo base de los mensajes */
@@ -217,4 +216,15 @@ header h1 {
     width: 100%;
     height: 100%;
     border: 0;
+  }
+
+
+  /* TIME OUT */
+  .form-group button.disabledButton {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+
+  #time-out-message {
+    font-size: 0.7em;
   }

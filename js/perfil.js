@@ -375,38 +375,49 @@ document.getElementById('modal-cambiar-contraseña-form').addEventListener('subm
 
   // Crear el objeto FormData con los valores de los inputs
   const formData = new FormData();
-  formData.append('contraseña_actual', document.getElementById('modal-cambiar-contraseña-actual').value);
-  formData.append('nueva_contraseña', document.getElementById('modal-cambiar-contraseña-nueva').value);
-  formData.append('confirmar_contraseña', document.getElementById('modal-cambiar-contraseña-confirmar').value);
+  const contraseñaActual = document.getElementById('modal-cambiar-contraseña-actual').value;
+  const nuevaContraseña = document.getElementById('modal-cambiar-contraseña-nueva').value;
+  const confirmarContraseña = document.getElementById('modal-cambiar-contraseña-confirmar').value;
+
+  formData.append('contraseña_actual', contraseñaActual);
+  formData.append('nueva_contraseña', nuevaContraseña);
+  formData.append('confirmar_contraseña', confirmarContraseña);
 
   // Validar que las contraseñas coinciden
-  if (formData.get('nueva_contraseña') !== formData.get('confirmar_contraseña')) {
-      showAlert('Las contraseñas no coinciden');
-      return;
+  if (nuevaContraseña !== confirmarContraseña) {
+    showAlert('Las contraseñas no coinciden');
+    return;
+  }
+
+  // Validar que la nueva contraseña tenga al menos 8 caracteres, una mayúscula, una minúscula y un número
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  if (!passwordRegex.test(nuevaContraseña)) {
+    showAlert('La nueva contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.');
+    return;
   }
 
   try {
-      const response = await fetch('/php/cambiar_contrasena.php', {
-          method: 'POST',
-          body: formData, 
-      });
+    const response = await fetch('/php/cambiar_contrasena.php', {
+      method: 'POST',
+      body: formData,
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.status === 'success') {
-          alert(data.message);
-          document.getElementById('modal-cambiar-contraseña-form').reset();
-          document.getElementById('modal-cambiar-contraseña').style.display = 'none';
-          showAlert('Contraseña modificada con éxito', 'positive');
-      } else if (data.status === 'false-password') {
-        showAlert('La contraseña actual introducida es incorrecta', 'negative')
-      } else {
-          showAlert('Ha ocurrido un error al cambiar la contraseña, inténtelo de nuevo', 'negative');
-      }
+    if (data.status === 'success') {
+      document.getElementById('modal-cambiar-contraseña-form').reset();
+      document.getElementById('modal-cambiar-contraseña').style.display = 'none';
+      showAlert('Contraseña modificada con éxito', 'positive');
+    } else if (data.status === 'false-password') {
+      showAlert('La contraseña actual introducida es incorrecta', 'negative');
+    } else {
+      showAlert('Ha ocurrido un error al cambiar la contraseña, inténtelo de nuevo', 'negative');
+    }
   } catch (error) {
-      alert('Ocurrió un error al cambiar la contraseña. Inténtalo de nuevo.');
+    alert('Ocurrió un error al cambiar la contraseña. Inténtalo de nuevo.');
   }
 });
+
 
 
 

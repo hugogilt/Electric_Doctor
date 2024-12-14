@@ -17,6 +17,8 @@ document.getElementById('form-contacto').addEventListener('submit', function(eve
     .then(data => {
         if (data.status === 'success') {
             showAlert('Mensaje enviado, le responderemos lo antes posible.', 'positive')
+        } else if (data.status === 'timeout') {
+          showAlert(data.message, 'negative')
         } else {
             showAlert('Ha ocurrido un error al enviar el mensaje, inténtelo de nuevo.', 'negative')
         }
@@ -24,6 +26,11 @@ document.getElementById('form-contacto').addEventListener('submit', function(eve
     .catch(error => {
         showAlert('Ha ocurrido un error al enviar el mensaje, inténtelo de nuevo.', 'negative')
     });
+
+    const enviarBtn = document.getElementById('enviarContacto');
+
+    añadirMensajeTimeOut(enviarBtn);
+
 });
 
 //ALERT MESSAGES
@@ -88,4 +95,33 @@ if (title) {
   title.addEventListener('click', function () {
     window.location.href = './index.html';
   });
+}
+
+function añadirMensajeTimeOut(botonTimeOut) {
+  let timer = 30; // Temporizador en segundos
+  const timeOutMessage = document.createElement('p');
+  
+  // Crear el mensaje de cuenta regresiva si no existe ya
+  if (!document.querySelector('#time-out-message')) {
+    timeOutMessage.id = 'time-out-message';
+    timeOutMessage.textContent = `Su consulta ha sido enviada, si desea hacer otra debe esperar ${timer} segundos.`;
+    botonTimeOut.insertAdjacentElement('afterend', timeOutMessage);
+  }
+  
+  // Deshabilitar el botón y añadir la clase de deshabilitado
+  botonTimeOut.disabled = true;
+  botonTimeOut.classList.add('disabledButton');
+  
+  // Actualizar el mensaje cada segundo
+  const intervalId = setInterval(() => {
+    timer--;
+    if (timer > 0) {
+      timeOutMessage.textContent = `Su consulta ha sido enviada, si desea hacer otra debe esperar ${timer} segundos.`;
+    } else {
+      clearInterval(intervalId); 
+      botonTimeOut.disabled = false; 
+      botonTimeOut.classList.remove('disabledButton'); 
+      timeOutMessage.remove(); 
+    }
+  }, 1000);
 }

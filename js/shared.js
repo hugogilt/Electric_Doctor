@@ -67,6 +67,9 @@ async function check_user_logged() {
       }
       return true;
     } else {
+      if (userTextSpan.lastChild.nodeType == Node.TEXT_NODE) {
+        userTextSpan.lastChild.remove();
+      }
       return false;
     }
   } catch (error) {
@@ -817,7 +820,7 @@ registerForm.addEventListener("submit", async function (event) {
     passwordErrorMessageRegister.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.';
     formatoInadecuado = true;
   }
-  
+
   if (formatoInadecuado) { return; }
 
   // Crear un objeto con los datos del formulario
@@ -2010,36 +2013,39 @@ sendVerificationEmailBtn.onclick = async function () {
     showAlert('Ocurrió un error en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
   }
 
+  añadirMensajeTimeOut(sendVerificationEmailBtn);
 
+  verificationModal.style.display = 'none';
+};
 
+function añadirMensajeTimeOut(botonTimeOut) {
   let timer = 30; // Temporizador en segundos
   const timeOutMessage = document.createElement('p');
-  
+
   // Crear el mensaje de cuenta regresiva si no existe ya
   if (!document.querySelector('#time-out-message')) {
     timeOutMessage.id = 'time-out-message';
     timeOutMessage.textContent = `¿No lo ha recibido? Reenvíelo en ${timer} segundos.`;
-    sendVerificationEmailBtn.insertAdjacentElement('afterend', timeOutMessage);
+    botonTimeOut.insertAdjacentElement('afterend', timeOutMessage);
   }
-  
+
   // Deshabilitar el botón y añadir la clase de deshabilitado
-  sendVerificationEmailBtn.disabled = true;
-  sendVerificationEmailBtn.classList.add('disabledButton');
-  
+  botonTimeOut.disabled = true;
+  botonTimeOut.classList.add('disabledButton');
+
   // Actualizar el mensaje cada segundo
   const intervalId = setInterval(() => {
     timer--;
     if (timer > 0) {
       timeOutMessage.textContent = `¿No lo ha recibido? Reenvíelo en ${timer} segundos.`;
     } else {
-      clearInterval(intervalId); 
-      sendVerificationEmailBtn.disabled = false; 
-      sendVerificationEmailBtn.classList.remove('disabledButton'); 
-      timeOutMessage.remove(); 
+      clearInterval(intervalId);
+      botonTimeOut.disabled = false;
+      botonTimeOut.classList.remove('disabledButton');
+      timeOutMessage.remove();
     }
   }, 1000);
-  verificationModal.style.display = 'none';
-};
+}
 
 
 
@@ -2249,7 +2255,7 @@ function comprobarSelectFacturas() {
 
   // Deshabilitar el input si el select está en "Seleccionar..."
   valorInput.disabled = atributo === "";
-  if (valorInput.disabled) valorInput.value = ""; 
+  if (valorInput.disabled) valorInput.value = "";
 }
 
 // Evento para filtrar al escribir en el input
@@ -2316,44 +2322,44 @@ contraseñaOlvidada.addEventListener('click', abrirModalRecuperar)
 
 // Función para abrir el modal
 function abrirModalRecuperar() {
-    modalRecuperar.style.display = 'flex';
+  modalRecuperar.style.display = 'flex';
 }
 
 // Función para cerrar el modal
 function cerrarModalRecuperar() {
-    modalRecuperar.style.display = 'none';
+  modalRecuperar.style.display = 'none';
 }
 
 // Evento para enviar el formulario
 formRecuperar.addEventListener('submit', async function (e) {
-    e.preventDefault(); // Evitar el envío por defecto
+  e.preventDefault(); // Evitar el envío por defecto
 
-    const correo = document.getElementById('email-recuperar').value;
+  const correo = document.getElementById('email-recuperar').value;
 
-    try {
-        const response = await fetch('/php/PHPMailer-master/src/recuperar_contrasena.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ correo }),
-        });
+  try {
+    const response = await fetch('/php/PHPMailer-master/src/recuperar_contrasena.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ correo }),
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (data.status === 'success') {
-            showAlert('Correo de recuperación enviado correctamente.', 'positive');
-            cerrarModalRecuperar();
-        } else if(data.status === 'timeout') {
-          showAlert(data.message, 'negative')
-        } else {
-          showAlert('Ha ocurrido un error al enviar el correo de recuperación.', 'negative')
+    if (data.status === 'success') {
+      showAlert('Correo de recuperación enviado correctamente.', 'positive');
+      cerrarModalRecuperar();
+    } else if (data.status === 'timeout') {
+      showAlert(data.message, 'negative')
+    } else {
+      showAlert('Ha ocurrido un error al enviar el correo de recuperación.', 'negative')
 
-        }
-    } catch (error) {
-        alert('Hubo un problema al procesar la solicitud.');
-        console.error(error);
     }
+  } catch (error) {
+    alert('Hubo un problema al procesar la solicitud.');
+    console.error(error);
+  }
 });
 
 // Evento para cerrar el modal
@@ -2361,5 +2367,5 @@ cerrarRecuperar.addEventListener('click', cerrarModalRecuperar);
 
 // Cerrar el modal al hacer clic fuera del contenedor
 modalRecuperar.addEventListener('click', (e) => {
-    if (e.target === modalRecuperar) cerrarModalRecuperar();
+  if (e.target === modalRecuperar) cerrarModalRecuperar();
 });

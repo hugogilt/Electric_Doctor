@@ -31,11 +31,15 @@ try {
 
     // Verificar si se ha enviado el formulario con la nueva contraseña
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (empty($_POST['nueva_contraseña']) || strlen($_POST['nueva_contraseña']) < 8) {
-            $response['message'] = 'La contraseña debe tener al menos 8 caracteres.';
+        $nueva_contraseña = $_POST['nueva_contraseña'];
+
+        // Validar que la contraseña tenga al menos 8 caracteres, una mayúscula, una minúscula y un número
+        $passwordRegex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/';
+        if (!preg_match($passwordRegex, $nueva_contraseña)) {
+            $response['message'] = 'La nueva contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.';
         } else {
             // Encriptar la nueva contraseña
-            $nueva_contraseña = password_hash($_POST['nueva_contraseña'], PASSWORD_DEFAULT);
+            $nueva_contraseña = password_hash($nueva_contraseña, PASSWORD_DEFAULT);
 
             // Actualizar la contraseña en la base de datos
             $query = "UPDATE Usuarios SET Contrasena = ?, Token = NULL WHERE Token = ?";
@@ -60,7 +64,8 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecer Contraseña</title>
+    <title>Restablecer Contraseña - Electric Doctor</title>
+    <link rel="icon" href="../images/logo.ico" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
