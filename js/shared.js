@@ -1913,7 +1913,7 @@ function adecuarReseñasATamaño() {
       let targetLastReview = targetReviews[9];
       // Si existe la primera reseña, la tercera y la útlima, y le ha añadido cierta clase al contenedor (es lo que hace justo antes de
       // mover las reseñas de sitio), cambia el alto del contenedor)
-      if (targetFirstReview && targetThirdReview && targetLastReview && reviewsContainer.classList.contains('eapps-widget-show-toolbar')) {
+      if (targetFirstReview && targetThirdReview && targetLastReview && reviewsContainer.classList.contains('elfsight-app-1483b5e8-e3f4-4604-bd6b-2d58fdfcf9e2')) {
         setTimeout(() => {
           // Calcula la posición superior del primer elemento y la inferior del último
           const startPosition = targetFirstReview.getBoundingClientRect().top + window.scrollY;
