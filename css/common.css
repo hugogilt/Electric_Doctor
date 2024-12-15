@@ -208,7 +208,7 @@ nav.active a {
   background-color: #f2f2f2;
   color: black;
   font-size: 0.8rem;
-  height: 3rem;
+  height: 2rem;
 }
 
 #authModal .modal-section input::placeholder {
@@ -221,7 +221,6 @@ nav.active a {
   padding: 0.8em;
   margin-top: 0;
   background: linear-gradient(45deg, #3B014D, #A5005A);
-  color: #222;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -276,6 +275,10 @@ nav.active a {
   display: grid;
 }
 
+button#registerButton.modal-button {
+  margin-top: 3rem;
+}
+
 .login-or-register-error-message {
   margin: 0;
   height: 1.2em;
@@ -296,7 +299,7 @@ nav.active a {
   border-radius: 5px;
   background-color: #f2f2f2;
   font-size: 0.8rem;
-  height: 3rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   column-gap: 0.5em;
