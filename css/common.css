@@ -1194,6 +1194,17 @@ div>.eapps-widget-toolbar {
   top: 6px;
 }
 
+#correo,
+#correo-modal {
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+}
+
+#correo-modal {
+  font-size: 0.5rem;
+}
+
 
 @media (max-width: 1000px) {
 
@@ -1297,6 +1308,14 @@ div>.eapps-widget-toolbar {
     margin-bottom: 0;
   }
 
+  #title {
+    margin-top: 0.8em;
+  }
+
+}
+
+
+@media (max-height: 700px) {
   #modal-citas {
     font-size: 1.2em;
   }
@@ -1304,11 +1323,6 @@ div>.eapps-widget-toolbar {
   #calendarModal .modal-content {
     font-size: 0.55em;
   }
-
-  #title {
-    margin-top: 0.8em;
-  }
-
 }
 
 /* ----------------------------- */
@@ -1336,6 +1350,7 @@ div>.eapps-widget-toolbar {
   max-width: 685px;
   position: relative;
   border-radius: 12px;
+  font-size: 0.8rem;
 }
 
 .close {
