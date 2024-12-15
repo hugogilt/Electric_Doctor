@@ -25,79 +25,79 @@ try {
                     <html lang="en">
 
                     <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Panel Admin - Electric Doctor</title>
-                    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-                    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-                    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
-                    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
-                    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-                    <link rel="icon" href="/images/logo.ico" type="image/x-icon">
-                    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+                      <meta charset="UTF-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <title>Panel Admin - Electric Doctor</title>
+                      <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+                      <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+                      <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+                      <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
+                      <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+                      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                      <link rel="icon" href="/images/logo.ico" type="image/x-icon">
+                      <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-                    <link rel="stylesheet" href="/css/panel-admin.css">
+                      <link rel="stylesheet" href="/css/panel-admin.css">
                     </head>
 
                     <body>
-                    <header>
+                      <header>
                         <div id="title">
-                        <img src="/images/logo.png" alt="Logo">
-                        <h1>Electric Doctor</h1>
+                          <img src="/images/logo.png" alt="Logo">
+                          <h1>Electric Doctor</h1>
                         </div>
 
 
 
-                    </header>
-                    <main>
+                      </header>
+                      <main>
                         <h2>Admin Panel</h2>
                         <div id="options">
-                        <section class="option" id="citas">
-                        <div id="titulo-citas">
-                            <h2 id="h2-citas">Calendario</h2>
-                        </div>
-                        <img width="50%" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
-                        </section>
+                          <section class="option" id="citas">
+                            <div id="titulo-citas">
+                              <h2 id="h2-citas">Calendario</h2>
+                            </div>
+                            <img width="50%" src="/images/panel-admin/calendar.png" alt="Abrir Calendario">
+                          </section>
 
-                        <section class="option" id="usuarios">
-                        <div id="titulo-citas">
-                            <h2 id="h2-citas">Usuarios</h2>
-                        </div>
-                        <img width="50%" src="/images/panel-admin/user_interface.png" alt="Abrir Calendario">
-                        </section>
+                          <section class="option" id="usuarios">
+                            <div id="titulo-citas">
+                              <h2 id="h2-citas">Usuarios</h2>
+                            </div>
+                            <img width="50%" src="/images/panel-admin/user_interface.png" alt="Abrir Calendario">
+                          </section>
 
-                        <section class="option" id="facturas">
-                        <div id="titulo-citas">
-                            <h2 id="h2-citas">Facturas</h2>
-                        </div>
-                        <img width="50%" src="/images/panel-admin/factura.png" alt="Abrir Calendario">
-                        </section>
+                          <section class="option" id="facturas">
+                            <div id="titulo-citas">
+                              <h2 id="h2-citas">Facturas</h2>
+                            </div>
+                            <img width="50%" src="/images/panel-admin/factura.png" alt="Abrir Calendario">
+                          </section>
 
-                        <section class="option" id="listado-citas">
-                        <div id="titulo-citas">
-                            <h2 id="h2-citas">Listado</h2>
-                        </div>
-                        <img width="50%" src="/images/panel-admin/listado.png" alt="Abrir Calendario">
-                        </section>
+                          <section class="option" id="listado-citas">
+                            <div id="titulo-citas">
+                              <h2 id="h2-citas">Listado</h2>
+                            </div>
+                            <img width="50%" src="/images/panel-admin/listado.png" alt="Abrir Calendario">
+                          </section>
 
 
                         </div>
 
                         <!-- CALENDAR MODAL -->
                         <div id="calendarModal" class="modal">
-                        <div class="modal-content">
+                          <div class="modal-content">
                             <div class="calendar">
-                            <span id="closeCalendarModal" class="close">&times;</span>
-                            <div class="header">
+                              <span id="closeCalendarModal" class="close">&times;</span>
+                              <div class="header">
                                 <button id="prevMonth" type="button">←</button>
                                 <div id="monthYear">
-                                <h3 id="year"></h3>
-                                <h2 id="month"></h2>
+                                  <h3 id="year"></h3>
+                                  <h2 id="month"></h2>
                                 </div>
                                 <button id="nextMonth" type="button">→</button>
-                            </div>
-                            <div class="days">
+                              </div>
+                              <div class="days">
                                 <div class="day">Lun</div>
                                 <div class="day">Mar</div>
                                 <div class="day">Mié</div>
@@ -105,48 +105,50 @@ try {
                                 <div class="day">Vie</div>
                                 <div class="day">Sáb</div>
                                 <div class="day">Dom</div>
+                              </div>
+                              <div id="dates" class="dates"></div>
+                              <div id="timeSlots" class="time-slots"></div>
                             </div>
-                            <div id="dates" class="dates"></div>
-                            <div id="timeSlots" class="time-slots"></div>
-                            </div>
-                        </div>
+                          </div>
                         </div>
 
                         <!-- Modal formulario -->
                         <div id="modal-formulario" class="modal">
-                            <div class="modal-formulario-content">
-                                <span class="close" id="cerrar-modal-formulario">&times;</span>
-                                <h2>Electric Doctor</h2>
-                                <form id="pedir-cita-form">
-                                    <div class="elementos-pedir-cita">
-                                        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-                                    </div>
-                                    <div class="elementos-pedir-cita">
-                                        <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
-                                    </div>
-                                    <div class="elementos-pedir-cita">
-                                        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Teléfono (9 dígitos)"
-                                            title="El número debe tener 9 dígitos" required>
-                                    </div>
-                                    <div class="elementos-pedir-cita">
-                                        <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
-                                    </div>
-                                    <div class="elementos-pedir-cita">
-                                        <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
-                                    </div>
-                                    <div class="elementos-pedir-cita">
-                                        <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024" required>
-                                    </div>
-                                    <div id="contenedor-problema" class="grupo-formulario">
-                                        <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5" required></textarea>
-                                    </div>
-                                    <!-- Botón para modificar la fecha -->
-                                    <div id="contenedor-fecha-button">
-                                        <button id="modificar-fecha-button" type="button">Fecha:</button>
-                                    </div>
-                                </form>
+                          <div class="modal-formulario-content">
+                            <span class="close" id="cerrar-modal-formulario">&times;</span>
+                            <h2>Electric Doctor</h2>
+                            <form id="pedir-cita-form">
+                              <div class="elementos-pedir-cita">
+                                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                              </div>
+                              <div class="elementos-pedir-cita">
+                                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+                              </div>
+                              <div class="elementos-pedir-cita">
+                                <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Teléfono (9 dígitos)"
+                                  title="El número debe tener 9 dígitos" required>
+                              </div>
+                              <div class="elementos-pedir-cita">
+                                <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
+                              </div>
+                              <div class="elementos-pedir-cita">
+                                <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
+                              </div>
+                              <div class="elementos-pedir-cita">
+                                <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024"
+                                  required>
+                              </div>
+                              <div id="contenedor-problema" class="grupo-formulario">
+                                <textarea id="problema" name="problema" placeholder="¿Qué le ocurre a tu vehículo?" rows="5"
+                                  required></textarea>
+                              </div>
+                              <!-- Botón para modificar la fecha -->
+                              <div id="contenedor-fecha-button">
+                                <button id="modificar-fecha-button" type="button">Fecha:</button>
+                              </div>
+                            </form>
 
-                            </div>
+                          </div>
                         </div>
 
                         <!-- MODAL CITAS -->
@@ -164,11 +166,7 @@ try {
                                 <option value="Ano_Matriculacion">Año de Matriculación</option>
                               </select>
 
-                              <input
-                                type="text"
-                                id="filtro-valor"
-                                placeholder="Escribe el valor..."
-                              />
+                              <input type="text" id="filtro-valor" placeholder="Escribe el valor..." />
 
                               <!-- Filtro independiente para el estado -->
                               <label for="filtro-estado">Estado:</label>
@@ -198,9 +196,9 @@ try {
 
                             </div>
                             <div id="resultado-citas">
-                                <p id="contador-citas">Mostrando 0 resultados</p>
-                                <!-- Botón de recargar -->
-                                <img width="30px" alt="Recargar" src="../images/panel-admin/recargar.png" id="recargar-citas"></img>
+                              <p id="contador-citas">Mostrando 0 resultados</p>
+                              <!-- Botón de recargar -->
+                              <img width="30px" alt="Recargar" src="../images/panel-admin/recargar.png" id="recargar-citas"></img>
                             </div>
                             <div id="modal-citas-body">
                               <!-- Los cajones dinámicos se generarán aquí -->
@@ -220,141 +218,131 @@ try {
                         </div>
 
 
-  <!-- Modal de completar cita -->
-<div id="modal-completar-cita" class="modal-completar-cita-overlay">
-    <div class="modal-completar-cita-container">
-        <h2 class="modal-completar-cita-header">Añadir Observaciones</h2>
-        <textarea id="modal-completar-cita-textarea" placeholder="Añadir observaciones..."></textarea>
-        
-        <!-- Formulario para subir factura -->
-        <h3>Subir Factura</h3>
-        <form id="form-subir-factura">
-            <input type="hidden" id="id_usuario_factura" name="id_usuario">
-            <label for="factura">Selecciona la factura (PDF):</label>
-            <input type="file" id="factura" name="factura" accept="application/pdf" required>
+                        <!-- Modal de completar cita -->
+                        <div id="modal-completar-cita" class="modal-completar-cita-overlay">
+                          <div class="modal-completar-cita-container">
+                            <h2 class="modal-completar-cita-header">Añadir Observaciones</h2>
+                            <textarea id="modal-completar-cita-textarea" placeholder="Añadir observaciones..."></textarea>
 
-            <!-- Nuevo campo para Monto Total -->
-            <label for="monto_total">Monto Total:</label>
-            <input type="number" id="monto_total" name="monto_total" step="0.01" min="0" placeholder="0.00" required>
-        </form>
-        <div class="modal-completar-cita-actions">
-            <button id="modal-completar-cita-guardar">Guardar</button>
-            <button id="modal-completar-cita-cerrar">Cerrar</button>
-        </div>
-    </div>
-</div>
+                            <!-- Formulario para subir factura -->
+                            <h3>Subir Factura</h3>
+                            <form id="form-subir-factura">
+                              <input type="hidden" id="id_usuario_factura" name="id_usuario">
+                              <label for="factura">Selecciona la factura (PDF):</label>
+                              <input type="file" id="factura" name="factura" accept="application/pdf" required>
+
+                              <!-- Nuevo campo para Monto Total -->
+                              <label for="monto_total">Monto Total:</label>
+                              <input type="number" id="monto_total" name="monto_total" step="0.01" min="0" placeholder="0.00" required>
+                            </form>
+                            <div class="modal-completar-cita-actions">
+                              <button id="modal-completar-cita-guardar">Guardar</button>
+                              <button id="modal-completar-cita-cerrar">Cerrar</button>
+                            </div>
+                          </div>
+                        </div>
 
 
 
 
                         <!-- Modal Usuarios -->
-<div id="modal-obtener-clientes-y-usuarios" class="modal-obtener-clientes-y-usuarios">
-  <div id="modal-clientes-y-usuarios-content" class="modal-clientes-y-usuarios-content">
-    <!-- Botón de cierre -->
-    <span id="cerrar-modal-usuarios" class="cerrar-modal-usuarios">×</span>
+                        <div id="modal-obtener-clientes-y-usuarios" class="modal-obtener-clientes-y-usuarios">
+                          <div id="modal-clientes-y-usuarios-content" class="modal-clientes-y-usuarios-content">
+                            <!-- Botón de cierre -->
+                            <span id="cerrar-modal-usuarios" class="cerrar-modal-usuarios">×</span>
 
-    <!-- Menú de filtros -->
-    <div id="modal-clientes-y-usuarios-filtros" class="modal-clientes-y-usuarios-filtros">
-      <label for="filtro-tipo">Filtrar por:</label>
-      <select id="filtro-tipo" class="filtro-tipo" onchange="actualizarFiltro()">
-        <option value="Nombre">Nombre Completo</option>
-        <option value="Telefono">Teléfono</option>
-        <option value="Correo_Electronico">Correo Electrónico</option>
-        <option value="Verificado">Verificado</option>
-      </select>
-      <input
-        type="text"
-        id="filtro-usuarios-valor"
-        class="filtro-usuarios-valor"
-        placeholder="Escribe para filtrar..."
-        oninput="filtrarDatos()"
-      />
-    </div>
-    <!-- Contenedor de Usuarios y Clientes -->
-    <div class="modal-clientes-y-usuarios-grid">
-      <!-- Sección Usuarios -->
-      <div class="modal-clientes-y-usuarios-seccion usuarios">
-        <h2>Usuarios</h2>
-        <p id="usuarios-resultados" class="resultados-texto"></p>
-        <div id="usuarios-container" class="usuarios-container">
-          <!-- Aquí se cargarán los usuarios -->
-        </div>
-      </div>
-      <!-- Línea divisoria -->
-      <div class="modal-clientes-y-usuarios-divider"></div>
-      <!-- Sección Clientes -->
-      <div class="modal-clientes-y-usuarios-seccion clientes">
-        <h2>Clientes</h2>
-        <p id="clientes-resultados" class="resultados-texto"></p>
-        <div id="clientes-container" class="clientes-container">
-          <!-- Aquí se cargarán los clientes -->
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+                            <!-- Menú de filtros -->
+                            <div id="modal-clientes-y-usuarios-filtros" class="modal-clientes-y-usuarios-filtros">
+                              <label for="filtro-tipo">Filtrar por:</label>
+                              <select id="filtro-tipo" class="filtro-tipo" onchange="actualizarFiltro()">
+                                <option value="Nombre">Nombre Completo</option>
+                                <option value="Telefono">Teléfono</option>
+                                <option value="Correo_Electronico">Correo Electrónico</option>
+                                <option value="Verificado">Verificado</option>
+                              </select>
+                              <input type="text" id="filtro-usuarios-valor" class="filtro-usuarios-valor"
+                                placeholder="Escribe para filtrar..." oninput="filtrarDatos()" />
+                            </div>
+                            <!-- Contenedor de Usuarios y Clientes -->
+                            <div class="modal-clientes-y-usuarios-grid">
+                              <!-- Sección Usuarios -->
+                              <div class="modal-clientes-y-usuarios-seccion usuarios">
+                                <h2>Usuarios</h2>
+                                <p id="usuarios-resultados" class="resultados-texto"></p>
+                                <div id="usuarios-container" class="usuarios-container">
+                                  <!-- Aquí se cargarán los usuarios -->
+                                </div>
+                              </div>
+                              <!-- Línea divisoria -->
+                              <div class="modal-clientes-y-usuarios-divider"></div>
+                              <!-- Sección Clientes -->
+                              <div class="modal-clientes-y-usuarios-seccion clientes">
+                                <h2>Clientes</h2>
+                                <p id="clientes-resultados" class="resultados-texto"></p>
+                                <div id="clientes-container" class="clientes-container">
+                                  <!-- Aquí se cargarán los clientes -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
 
 
-<!-- MODAL MODIFICAR USUARIOS -->
-<div id="modal-modificar-usuario" class="modal-modificar-usuario" style="display: none;">
-  <div id="modal-modificar-usuario-content" class="modal-modificar-usuario-content">
-    <h3>Modificar Usuario</h3>
-    <form id="form-modificar-usuario" class="form-modificar-usuario">
-      <label for="modificar-nombre">Nombre:</label>
-      <input type="text" id="modificar-nombre" class="modificar-nombre" />
+                        <!-- MODAL MODIFICAR USUARIOS -->
+                        <div id="modal-modificar-usuario" class="modal-modificar-usuario" style="display: none;">
+                          <div id="modal-modificar-usuario-content" class="modal-modificar-usuario-content">
+                            <h3>Modificar Usuario</h3>
+                            <form id="form-modificar-usuario" class="form-modificar-usuario">
+                              <label for="modificar-nombre">Nombre:</label>
+                              <input type="text" id="modificar-nombre" class="modificar-nombre" />
 
-      <label for="modificar-apellidos">Apellidos:</label>
-      <input type="text" id="modificar-apellidos" class="modificar-apellidos" />
+                              <label for="modificar-apellidos">Apellidos:</label>
+                              <input type="text" id="modificar-apellidos" class="modificar-apellidos" />
 
-      <label for="modificar-telefono">Teléfono:</label>
-      <input type="text" id="modificar-telefono" class="modificar-telefono" />
+                              <label for="modificar-telefono">Teléfono:</label>
+                              <input type="text" id="modificar-telefono" class="modificar-telefono" />
 
-      <label for="modificar-correo">Correo Electrónico:</label>
-      <input type="text" id="modificar-correo" class="modificar-correo" />
+                              <label for="modificar-correo">Correo Electrónico:</label>
+                              <input type="text" id="modificar-correo" class="modificar-correo" />
 
-      <div class="modal-modificar-usuario-footer">
-        <button type="button" id="boton-modificar-usuario-aceptar" class="boton-modificar-usuario-aceptar">
-          Aceptar
-        </button>
-        <button type="button" id="boton-modificar-usuario-cerrar" class="boton-modificar-usuario-cerrar">
-          Cancelar
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-<!-- MODAL FACTURAS -->
-<div id="invoicesModal" class="modal">
-  <div class="modal-content">
-  <div id="modal-facturas-filter" class="filter-container">
-  <label for="filtro-facturas-atributo">Filtrar por:</label>
-  <select id="filtro-facturas-atributo">
-    <option value="">Seleccionar</option>
-    <option value="Nombre">Nombre Completo</option>
-    <option value="Correo_Electronico">Correo</option>
-    <option value="Telefono">Teléfono</option>
-    <option value="Monto_Total">Monto Total</option>
-  </select>
-  <input id="filtro-facturas-valor" type="text" placeholder="Introduce el valor" />
-</div>
-<div id="contador-facturas">Mostrando 0 resultados</div>
-    <button id="closeInvoicesModal" class="cerrar-modal-facturas">×</button>
-    <div id="invoicesContainer" class="invoices-container"></div>
-  </div>
-</div>
+                              <div class="modal-modificar-usuario-footer">
+                                <button type="button" id="boton-modificar-usuario-aceptar" class="boton-modificar-usuario-aceptar">
+                                  Aceptar
+                                </button>
+                                <button type="button" id="boton-modificar-usuario-cerrar" class="boton-modificar-usuario-cerrar">
+                                  Cancelar
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
 
 
+                        <!-- MODAL FACTURAS -->
+                        <div id="invoicesModal" class="modal">
+                          <div class="modal-content">
+                            <div id="modal-facturas-filter" class="filter-container">
+                              <label for="filtro-facturas-atributo">Filtrar por:</label>
+                              <select id="filtro-facturas-atributo">
+                                <option value="">Seleccionar</option>
+                                <option value="Nombre">Nombre Completo</option>
+                                <option value="Correo_Electronico">Correo</option>
+                                <option value="Telefono">Teléfono</option>
+                                <option value="Monto_Total">Monto Total</option>
+                              </select>
+                              <input id="filtro-facturas-valor" type="text" placeholder="Introduce el valor" />
+                            </div>
+                            <div id="contador-facturas">Mostrando 0 resultados</div>
+                            <button id="closeInvoicesModal" class="cerrar-modal-facturas">×</button>
+                            <div id="invoicesContainer" class="invoices-container"></div>
+                          </div>
+                        </div>
 
 
 
-
-
-
-                    </main>
-                    <script src="../js/panel-admin.js"></script>
+                      </main>
+                      <script src="../js/panel-admin.js"></script>
                     </body>
 
                     </html>

@@ -20,87 +20,87 @@ function crearSliderServicios(containerId) {
 
   // Definir los servicios y sus detalles
   const servicios = [
-      {
-          id: 'reparacion-motos',
-          imgSrc: 'images/moto-dark-grey.png',
-          alt: 'Moto',
-          title: 'Reparación de Motos',
-          buttonId: 'detalles-reparacion-motos'
-      },
-      {
-          id: 'reparacion-baterias',
-          imgSrc: 'images/bateria-dark-grey.png',
-          alt: 'Bateria',
-          title: 'Reparación de Baterías',
-          buttonId: 'detalles-reparacion-baterias'
-      },
-      {
-          id: 'reparacion-patinetes',
-          imgSrc: 'images/patinete-dark-grey.png',
-          alt: 'Patinete',
-          title: 'Reparación de Patinetes',
-          buttonId: 'detalles-reparacion-patinetes'
-      },
-      {
-          id: 'envios',
-          imgSrc: 'images/camion-dark-grey.png',
-          alt: 'Camion',
-          title: 'Envío de Motos a toda la península',
-          buttonId: 'detalles-envios'
-      },
-      {
-          id: 'pre-itvs',
-          imgSrc: 'images/pre-itv-dark-grey.png',
-          alt: 'pre-itv',
-          title: 'Pre-ITVS',
-          buttonId: 'detalles-pre-itvs'
-      },
-      {
-          id: 'neumaticos',
-          imgSrc: 'images/neumatico-dark-grey.png',
-          alt: 'neumatico',
-          title: 'Neumáticos',
-          buttonId: 'detalles-neumaticos'
-      },
-      {
-          id: 'puestas-a-punto',
-          imgSrc: 'images/puesta-a-punto-dark-grey.png',
-          alt: 'Puesta a Punto',
-          title: 'Puestas a Punto',
-          buttonId: 'detalles-puestas-a-punto'
-      },
-      {
-          id: 'revisiones',
-          imgSrc: 'images/revision-dark-grey.png',
-          alt: 'Revision',
-          title: 'Revisiones',
-          buttonId: 'detalles-revisiones'
-      }
+    {
+      id: 'reparacion-motos',
+      imgSrc: 'images/moto-dark-grey.png',
+      alt: 'Moto',
+      title: 'Reparación de Motos',
+      buttonId: 'detalles-reparacion-motos'
+    },
+    {
+      id: 'reparacion-baterias',
+      imgSrc: 'images/bateria-dark-grey.png',
+      alt: 'Bateria',
+      title: 'Reparación de Baterías',
+      buttonId: 'detalles-reparacion-baterias'
+    },
+    {
+      id: 'reparacion-patinetes',
+      imgSrc: 'images/patinete-dark-grey.png',
+      alt: 'Patinete',
+      title: 'Reparación de Patinetes',
+      buttonId: 'detalles-reparacion-patinetes'
+    },
+    {
+      id: 'envios',
+      imgSrc: 'images/camion-dark-grey.png',
+      alt: 'Camion',
+      title: 'Envío de Motos a toda la península',
+      buttonId: 'detalles-envios'
+    },
+    {
+      id: 'pre-itvs',
+      imgSrc: 'images/pre-itv-dark-grey.png',
+      alt: 'pre-itv',
+      title: 'Pre-ITVS',
+      buttonId: 'detalles-pre-itvs'
+    },
+    {
+      id: 'neumaticos',
+      imgSrc: 'images/neumatico-dark-grey.png',
+      alt: 'neumatico',
+      title: 'Neumáticos',
+      buttonId: 'detalles-neumaticos'
+    },
+    {
+      id: 'puestas-a-punto',
+      imgSrc: 'images/puesta-a-punto-dark-grey.png',
+      alt: 'Puesta a Punto',
+      title: 'Puestas a Punto',
+      buttonId: 'detalles-puestas-a-punto'
+    },
+    {
+      id: 'revisiones',
+      imgSrc: 'images/revision-dark-grey.png',
+      alt: 'Revision',
+      title: 'Revisiones',
+      buttonId: 'detalles-revisiones'
+    }
   ];
 
 
   // Crear las cards y añadirlas al swiperWrapper
   servicios.forEach(servicio => {
-      const card = document.createElement('div');
-      card.className = 'card swiper-slide'; // Agregar la clase swiper-slide a cada card
-      card.id = servicio.id;
+    const card = document.createElement('div');
+    card.className = 'card swiper-slide'; // Agregar la clase swiper-slide a cada card
+    card.id = servicio.id;
 
-      const img = document.createElement('img');
-      img.src = servicio.imgSrc;
-      img.alt = servicio.alt;
+    const img = document.createElement('img');
+    img.src = servicio.imgSrc;
+    img.alt = servicio.alt;
 
-      const title = document.createElement('h3');
-      title.textContent = servicio.title;
+    const title = document.createElement('h3');
+    title.textContent = servicio.title;
 
-      const button = document.createElement('button');
-      button.id = servicio.buttonId;
-      button.textContent = 'Detalles';
+    const button = document.createElement('button');
+    button.id = servicio.buttonId;
+    button.textContent = 'Detalles';
 
-      // Estructurar la tarjeta
-      card.appendChild(img);
-      card.appendChild(title);
-      card.appendChild(button);
-      swiperWrapper.appendChild(card); // Añadir la card directamente al swiperWrapper
+    // Estructurar la tarjeta
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(button);
+    swiperWrapper.appendChild(card); // Añadir la card directamente al swiperWrapper
   });
 
   // Añadir la wrapper al contenedor principal
@@ -147,58 +147,58 @@ function crearContenidoServicios(parent) {
 
   // Servicios del primer contenedor
   const servicios1 = [
-      {
-          id: 'reparacion-motos',
-          imgSrc: 'images/moto-dark-grey.png',
-          alt: 'Moto',
-          title: 'Reparación de Motos',
-          buttonId: 'detalles-reparacion-motos'
-      },
-      {
-          id: 'reparacion-baterias',
-          imgSrc: 'images/bateria-dark-grey.png',
-          alt: 'Bateria',
-          title: 'Reparación de Baterías',
-          buttonId: 'detalles-reparacion-baterias'
-      },
-      {
-          id: 'reparacion-patinetes',
-          imgSrc: 'images/patinete-dark-grey.png',
-          alt: 'Patinete',
-          title: 'Reparación de Patinetes',
-          buttonId: 'detalles-reparacion-patinetes'
-      },
-      {
-          id: 'envios',
-          imgSrc: 'images/camion-dark-grey.png',
-          alt: 'Camion',
-          title: 'Envío de Motos a toda la península',
-          buttonId: 'detalles-envios'
-      }
+    {
+      id: 'reparacion-motos',
+      imgSrc: 'images/moto-dark-grey.png',
+      alt: 'Moto',
+      title: 'Reparación de Motos',
+      buttonId: 'detalles-reparacion-motos'
+    },
+    {
+      id: 'reparacion-baterias',
+      imgSrc: 'images/bateria-dark-grey.png',
+      alt: 'Bateria',
+      title: 'Reparación de Baterías',
+      buttonId: 'detalles-reparacion-baterias'
+    },
+    {
+      id: 'reparacion-patinetes',
+      imgSrc: 'images/patinete-dark-grey.png',
+      alt: 'Patinete',
+      title: 'Reparación de Patinetes',
+      buttonId: 'detalles-reparacion-patinetes'
+    },
+    {
+      id: 'envios',
+      imgSrc: 'images/camion-dark-grey.png',
+      alt: 'Camion',
+      title: 'Envío de Motos a toda la península',
+      buttonId: 'detalles-envios'
+    }
   ];
 
   // Crear y añadir las tarjetas al primer contenedor
   servicios1.forEach(servicio => {
-      const card = document.createElement('div');
-      card.id = servicio.id;
-      card.className = 'card';
+    const card = document.createElement('div');
+    card.id = servicio.id;
+    card.className = 'card';
 
-      const img = document.createElement('img');
-      img.src = servicio.imgSrc;
-      img.alt = servicio.alt;
+    const img = document.createElement('img');
+    img.src = servicio.imgSrc;
+    img.alt = servicio.alt;
 
-      const title = document.createElement('h3');
-      title.textContent = servicio.title;
+    const title = document.createElement('h3');
+    title.textContent = servicio.title;
 
-      const button = document.createElement('button');
-      button.id = servicio.buttonId;
-      button.textContent = 'Detalles';
+    const button = document.createElement('button');
+    button.id = servicio.buttonId;
+    button.textContent = 'Detalles';
 
-      // Estructurar la tarjeta
-      card.appendChild(img);
-      card.appendChild(title);
-      card.appendChild(button);
-      containerServicios1.appendChild(card);
+    // Estructurar la tarjeta
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(button);
+    containerServicios1.appendChild(card);
   });
 
   // Añadir el primer contenedor de servicios al contenedor de tarjetas
@@ -211,66 +211,66 @@ function crearContenidoServicios(parent) {
 
   // Servicios del segundo contenedor
   const servicios2 = [
-      {
-          id: 'pre-itvs',
-          imgSrc: 'images/pre-itv-dark-grey.png',
-          alt: 'pre-itv',
-          title: 'Pre-ITVS',
-          buttonId: 'detalles-pre-itvs'
-      },
-      {
-          id: 'neumaticos',
-          imgSrc: 'images/neumatico-dark-grey.png',
-          alt: 'neumatico',
-          title: 'Neumáticos',
-          buttonId: 'detalles-neumaticos'
-      },
-      {
-          id: 'puestas-a-punto',
-          imgSrc: 'images/puesta-a-punto-dark-grey.png',
-          alt: 'Puesta a Punto',
-          title: 'Puestas a Punto',
-          buttonId: 'detalles-puestas-a-punto'
-      },
-      {
-          id: 'revisiones',
-          imgSrc: 'images/revision-dark-grey.png',
-          alt: 'Revision',
-          title: 'Revisiones',
-          buttonId: 'detalles-revisiones'
-      }
+    {
+      id: 'pre-itvs',
+      imgSrc: 'images/pre-itv-dark-grey.png',
+      alt: 'pre-itv',
+      title: 'Pre-ITVS',
+      buttonId: 'detalles-pre-itvs'
+    },
+    {
+      id: 'neumaticos',
+      imgSrc: 'images/neumatico-dark-grey.png',
+      alt: 'neumatico',
+      title: 'Neumáticos',
+      buttonId: 'detalles-neumaticos'
+    },
+    {
+      id: 'puestas-a-punto',
+      imgSrc: 'images/puesta-a-punto-dark-grey.png',
+      alt: 'Puesta a Punto',
+      title: 'Puestas a Punto',
+      buttonId: 'detalles-puestas-a-punto'
+    },
+    {
+      id: 'revisiones',
+      imgSrc: 'images/revision-dark-grey.png',
+      alt: 'Revision',
+      title: 'Revisiones',
+      buttonId: 'detalles-revisiones'
+    }
   ];
 
   // Crear y añadir las tarjetas al segundo contenedor
   servicios2.forEach(servicio => {
-      const card = document.createElement('div');
-      card.id = servicio.id;
-      card.className = 'card';
+    const card = document.createElement('div');
+    card.id = servicio.id;
+    card.className = 'card';
 
-      const img = document.createElement('img');
-      img.src = servicio.imgSrc;
-      img.alt = servicio.alt;
+    const img = document.createElement('img');
+    img.src = servicio.imgSrc;
+    img.alt = servicio.alt;
 
-      const title = document.createElement('h3');
-      title.textContent = servicio.title;
+    const title = document.createElement('h3');
+    title.textContent = servicio.title;
 
-      const button = document.createElement('button');
-      button.id = servicio.buttonId;
-      button.textContent = 'Detalles';
+    const button = document.createElement('button');
+    button.id = servicio.buttonId;
+    button.textContent = 'Detalles';
 
-      // Estructurar la tarjeta
-      card.appendChild(img);
-      card.appendChild(title);
-      card.appendChild(button);
-      containerServicios2.appendChild(card);
+    // Estructurar la tarjeta
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(button);
+    containerServicios2.appendChild(card);
   });
 
   // Añadir el segundo contenedor de servicios al contenedor de tarjetas
   cardsContainers.appendChild(containerServicios2);
 
   // Insertar el contenido en el padre especificado
-      parent.appendChild(cardsContainers);
-  
+  parent.appendChild(cardsContainers);
+
 }
 
 function handleResize() {

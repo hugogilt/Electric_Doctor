@@ -21,12 +21,10 @@ async function logOut() {
     if (response.ok) {
       return true; // Si la sesión se cerró correctamente, retornamos true
     } else {
-      // console.log("Error al cerrar sesión - Código de estado:", response.status); CÓDIGO DE ESTADO DE ERROR
       showAlert('Error al cerrar la sesión, inténtelo de nuevo.', 'negative');
       return false;
     }
   } catch (error) {
-    // console.error("Error en la petición de cierre de sesión:", error); CÓDIGO DE ERROR
     showAlert('Error al cerrar la sesión, inténtelo de nuevo.', 'negative');
     return false;
   }
@@ -87,9 +85,7 @@ async function check_user_rol() {
     if (data.rol === 'admin') {
       cerrarSesion(true);
     } else if (data.rol === 'cliente') {
-      console.log('es cliente :)')
     } else if (data.rol === 'not-rol') {
-      console.log('no hay rol')
     }
   } catch (error) {
     return false;
@@ -264,15 +260,14 @@ async function obtenerDatosCita(fechaHora) {
     const data = await response.json();
 
     if (data.error) {
-      console.error(data.error);
-      alert(`Error: ${data.error}`);
+      showAlert('Ocurrió un error al obtener los datos.');
+
     } else {
       // Devolver los datos obtenidos
       return data;
     }
   } catch (error) {
-    console.error('Error al obtener los datos de la cita:', error);
-    alert('Ocurrió un error al obtener los datos.');
+    showAlert('Ocurrió un error al obtener los datos.');
   }
 }
 
@@ -297,8 +292,6 @@ async function obtenerCitas() {
       return data.error
     }
   } catch (error) {
-    // console.error('Error al obtener las citas:', error);
-    // alert('Ocurrió un error al obtener las citas.');
     showAlert('Ha ocurrido un error al obtener las citas', 'negative')
 
   }
@@ -319,14 +312,11 @@ async function cancelarCita(idCita) {
     const data = await response.json();
 
     if (data.success) {
-      // alert(data.message); // Mensaje de éxito
       showAlert('Cita eliminada con éxito.', 'positive');
     } else {
-      // alert(data.message); // Mensaje de error
       showAlert('Ocurrió un error al cancelar la cita.', 'negative');
     }
   } catch (error) {
-    // console.error('Error al cancelar la cita:', error);
     showAlert('Ocurrió un error al cancelar la cita.', 'negative');
   }
 }
@@ -347,14 +337,11 @@ async function cambiarEstadoCita(idCita) {
     const data = await response.json();
 
     if (data.status === 'success') {
-      // alert(data.message); // Mensaje de éxito
       showAlert(data.message, 'positive');
     } else {
-      // alert(data.message); // Mensaje de error
       showAlert(data.message, 'negative');
     }
   } catch (error) {
-    // console.error('Error al cambiar el estado de la cita:', error);
     showAlert('Ocurrió un error al cambiar el estado de la cita.', 'negative');
   }
 }
@@ -895,7 +882,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
       const userData = await getUserData();
       if (userData['Rol'] === 'admin') {
-        console.log('es admin!!');
         document.body.classList.add('admin')
         if (!document.querySelector('#panel-admin')) {
           const panelAdminLi = document.createElement("li");
@@ -1195,12 +1181,10 @@ async function obtenerFechasNoDisponibles() {
     const data = await response.json();
 
     if (data.error) {
-      // console.error(data.error);
     } else {
       reservedSlots = data; // Almacena las fechas obtenidas en el array global
     }
   } catch (error) {
-    // console.error('Error al obtener las fechas no disponibles:', error);
   }
 }
 
@@ -1790,7 +1774,6 @@ async function getUserData() {
     const data = await response.json();
     return data;
   } catch (error) {
-    // console.error("Error al obtener los datos:", error);
   }
 }
 
@@ -2079,14 +2062,11 @@ formModal.addEventListener('submit', async (e) => {
     const result = await response.json();
 
     if (result.status === 'success') {
-      console.log('Éxito:', result.message);
       showAlert(result.message, 'positive');
     } else {
-      console.log('Error:', result.message);
       showAlert(result.message, 'negative');
     }
   } catch (error) {
-    console.error('Error al enviar los datos:', error);
     showAlert('Ocurrió un error al modificar la cita.', 'negative');
   }
   closeFormModal();
@@ -2119,14 +2099,10 @@ async function obtenerFacturas() {
     const data = await response.json();
 
     if (data.error) {
-      console.error('Error al obtener las facturas:', data.error);
       return [];
     }
-
-    console.log('Facturas obtenidas:', data.facturas);
     return data.facturas;
   } catch (error) {
-    console.error('Error en la solicitud:', error);
     return [];
   }
 }
@@ -2359,8 +2335,7 @@ formRecuperar.addEventListener('submit', async function (e) {
 
     }
   } catch (error) {
-    alert('Hubo un problema al procesar la solicitud.');
-    console.error(error);
+    showAlert('Ha ocurrido un error al enviar el correo de recuperación.', 'negative')
   }
 });
 

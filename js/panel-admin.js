@@ -437,12 +437,10 @@ async function obtenerFechasNoDisponibles() {
     const data = await response.json();
 
     if (data.error) {
-      // console.error(data.error);
     } else {
       reservedSlots = data; // Almacena las fechas obtenidas en el array global
     }
   } catch (error) {
-    // console.error('Error al obtener las fechas no disponibles:', error);
   }
 }
 
@@ -806,14 +804,11 @@ formModal.addEventListener('submit', async (e) => {
       const result = await response.json();
 
       if (result.status === 'success') {
-        console.log('Éxito:', result.message);
         showAlert(result.message, 'positive');
       } else {
-        console.log('Error:', result.message);
         showAlert(result.message, 'negative');
       }
     } catch (error) {
-      console.error('Error al enviar los datos:', error);
       showAlert('Ocurrió un error al modificar la cita.', 'negative');
     }
     closeFormModal();
@@ -971,8 +966,6 @@ async function obtenerCitas() {
       return data.error
     }
   } catch (error) {
-    // console.error('Error al obtener las citas:', error);
-    // alert('Ocurrió un error al obtener las citas.');
     showAlert('Ha ocurrido un error al obtener las citas', 'negative')
 
   }
@@ -993,14 +986,11 @@ async function cancelarCita(idCita) {
     const data = await response.json();
 
     if (data.success) {
-      // alert(data.message); // Mensaje de éxito
       showAlert('Cita eliminada con éxito.', 'positive');
     } else {
-      // alert(data.message); // Mensaje de error
       showAlert('Ocurrió un error al cancelar la cita.', 'negative');
     }
   } catch (error) {
-    // console.error('Error al cancelar la cita:', error);
     showAlert('Ocurrió un error al cancelar la cita.', 'negative');
   }
 }
@@ -1021,14 +1011,11 @@ async function cambiarEstadoCita(idCita, observaciones = '') {
     const data = await response.json();
 
     if (data.status === 'success') {
-      // alert(data.message); // Mensaje de éxito
       showAlert(data.message, 'positive');
     } else {
-      // alert(data.message); // Mensaje de error
       showAlert(data.message, 'negative');
     }
   } catch (error) {
-    // console.error('Error al cambiar el estado de la cita:', error);
     showAlert('Ocurrió un error al cambiar el estado de la cita.', 'negative');
   }
 }
@@ -1058,7 +1045,6 @@ async function check_user_logged() {
       return false;
     }
   } catch (error) {
-    // console.error("Error al verificar la sesión:", error);
     return false; // Opcional, puedes decidir cómo manejar los errores aquí
   }
 }
@@ -1108,7 +1094,7 @@ function mostrarCitas(arrayDeObjetos) {
 function crearCajon(cita) {
   // Crear el contenedor principal para cada cita
   const cajon = document.createElement("div");
-  
+
   cajon.classList.add("modal-citas-cajon");
 
   // Crear el título del cajón
@@ -1576,7 +1562,6 @@ async function cargarDatosUsuariosYClientes() {
     // Mostrar el modal
     abrirModalUsuarios();
   } catch (error) {
-    console.error("Error al cargar datos:", error);
   }
 }
 
@@ -1928,13 +1913,11 @@ function modificarRangoUsuario(idUsuario) {
         showAlert('Rol del usuario actualizado correctamente.', 'positive');
         cargarDatosUsuariosYClientes();
       } else {
-        showAlert('Error al modificar el rango del usuario', 'negative')
-        console.error('Error: ' + data.message);
+        showAlert('Error al modificar el rango del usuario', 'negative');
       }
     })
     .catch(error => {
-      showAlert('Error al modificar el rango del usuario', 'negative')
-      console.error(error);
+      showAlert('Error al modificar el rango del usuario', 'negative');
     });
 }
 
@@ -1998,14 +1981,11 @@ async function obtenerFacturas() {
     const data = await response.json();
 
     if (data.error) {
-      console.error('Error al obtener las facturas:', data.error);
       return [];
     }
 
-    console.log('Facturas obtenidas:', data.facturas);
     return data.facturas;
   } catch (error) {
-    console.error('Error en la solicitud:', error);
     return [];
   }
 }

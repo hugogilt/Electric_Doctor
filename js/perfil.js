@@ -41,7 +41,6 @@ async function obtenerDatosUsuario() {
 
     if (datos.error) {
       window.location.href = '../index.html';
-      console.error('Error del servidor:', datos.error);
     } else {
       if (datos.status === 'success') {
         // Si eres admin
@@ -56,7 +55,6 @@ async function obtenerDatosUsuario() {
     }
   } catch (error) {
     window.location.href = '../index.html';
-    console.error('Error al obtener los datos del usuario:', error);
   }
 }
 
@@ -66,26 +64,22 @@ async function obtenerDatosAdmin() {
     const data = await response.json();
 
     if (data.status === 'success') {
-      userData = data.data; 
+      userData = data.data;
     } else {
       window.location.href = '../index.html';
-      console.log('Error:', data.message);
     }
   } catch (error) {
     window.location.href = '../index.html';
-    console.error('Error al realizar la solicitud:', error);
   }
 }
 
 async function asignarDatosUsuarioDOM() {
-  await obtenerDatosUsuario();  
+  await obtenerDatosUsuario();
 
   if (userData.Nombre) {
     nombreCompletoUsuario.textContent = `${userData.Nombre} ${userData.Apellidos}`;
     correoUsuario.textContent = userData.Correo_Electronico;
     telefonoUsuario.textContent = userData.Telefono;
-  } else {
-    console.error('Los datos del usuario no están disponibles.');
   }
 }
 
@@ -93,29 +87,28 @@ async function asignarDatosUsuarioDOM() {
 
 async function comprobarVerificado() {
   fetch('/php/comprobar_verificado.php', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: userData.ID_Usuario }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id: userData.ID_Usuario }),
   })
-  .then(response => response.json())
-  .then(data => {
-    if (data.status === "non-verified") {
-      correoP.insertAdjacentElement('afterend', verificarCorreoMessage);
-      editarPerfilButton.insertAdjacentElement('afterend', verificarCorreoButton);
-    } else if (data.status === "verified") {
-      if (document.getElementsByClassName('verificar-correo-message')) {
-        verificarCorreoMessage.remove();
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "non-verified") {
+        correoP.insertAdjacentElement('afterend', verificarCorreoMessage);
+        editarPerfilButton.insertAdjacentElement('afterend', verificarCorreoButton);
+      } else if (data.status === "verified") {
+        if (document.getElementsByClassName('verificar-correo-message')) {
+          verificarCorreoMessage.remove();
+        }
+        if (document.getElementById('verificar-correo-button')) {
+          verificarCorreoButton.remove();
+        }
       }
-      if (document.getElementById('verificar-correo-button')) {
-        verificarCorreoButton.remove();
-      }
-    }
-  })
-  .catch(error => {
-      console.error("Error en la solicitud:", error);
-  });
+    })
+    .catch(error => {
+    });
 }
 
 
@@ -123,7 +116,7 @@ async function comprobarVerificado() {
 
 
 
-window.onload = async function() {
+window.onload = async function () {
   await asignarDatosUsuarioDOM();
   comprobarVerificado();
 };
@@ -273,7 +266,7 @@ const btnCancelarVerificacion = document.getElementById('btn-cancelar-verificaci
 
 window.addEventListener('click', function (event) {
   if (event.target === modalVerificarCorreo) {
-      cerrarModalVerificacion();
+    cerrarModalVerificacion();
   }
 });
 
@@ -307,7 +300,6 @@ btnEnviarVerificacion.addEventListener('click', async function () {
       showAlert('Correo de verificación enviado correctamente.', 'positive');
     } else if (data.status === 'error') {
       showAlert('Ha ocurrido un error al enviar el correo, por favor, inténtelo de nuevo.');
-      console.error('Error: ' + data.message);
     }
   } catch (error) {
     showAlert('Ocurrió un error en el envío del correo de verificación. Inténtelo de nuevo.', 'negative');
@@ -317,28 +309,28 @@ btnEnviarVerificacion.addEventListener('click', async function () {
 
   let timer = 30; // Temporizador en segundos
   const timeOutMessage = document.createElement('p');
-  
+
   // Crear el mensaje de cuenta regresiva si no existe ya
   if (!document.querySelector('#time-out-message')) {
     timeOutMessage.id = 'time-out-message';
     timeOutMessage.textContent = `¿No lo ha recibido? Reenvíelo en ${timer} segundos.`;
     btnCancelarVerificacion.insertAdjacentElement('afterend', timeOutMessage);
   }
-  
+
   // Deshabilitar el botón y añadir la clase de deshabilitado
   btnEnviarVerificacion.disabled = true;
   btnEnviarVerificacion.classList.add('disabledButton');
-  
+
   // Actualizar el mensaje cada segundo
   const intervalId = setInterval(() => {
     timer--;
     if (timer > 0) {
       timeOutMessage.textContent = `¿No lo ha recibido? Reenvíelo en ${timer} segundos.`;
     } else {
-      clearInterval(intervalId); 
-      btnEnviarVerificacion.disabled = false; 
-      btnEnviarVerificacion.classList.remove('disabledButton'); 
-      timeOutMessage.remove(); 
+      clearInterval(intervalId);
+      btnEnviarVerificacion.disabled = false;
+      btnEnviarVerificacion.classList.remove('disabledButton');
+      timeOutMessage.remove();
     }
   }, 1000);
 });
@@ -414,7 +406,7 @@ document.getElementById('modal-cambiar-contraseña-form').addEventListener('subm
       showAlert('Ha ocurrido un error al cambiar la contraseña, inténtelo de nuevo', 'negative');
     }
   } catch (error) {
-    alert('Ocurrió un error al cambiar la contraseña. Inténtalo de nuevo.');
+    showAlert('Ha ocurrido un error al cambiar la contraseña, inténtelo de nuevo', 'negative');
   }
 });
 
