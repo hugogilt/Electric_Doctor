@@ -837,16 +837,6 @@ formModal.addEventListener('submit', async (e) => {
 
     const dataRespuesta = await correoResponse.json();
     let isUserLogged = await check_user_logged();
-    if (dataRespuesta.status === 'exists' && !isUserLogged) { //Si el correo existe en la tabla usuarios y no ha iniciado sesión
-      authModal.style.display = "flex";
-      loginSection.style.display = "flex";
-      registerSection.style.display = "none";
-      loginForm.reset();
-      correoErrorMessageLogin.textContent = '';
-      passwordErrorMessageLogin.textContent = '';
-      document.getElementById("loginEmail").value = correo;
-      return false; // No proceder con la inserción
-    } else {  // si el correo existe y ha iniciado sesión o no existe
       // Recoger los datos del formulario
       const nombre = document.getElementById('nombre').value;
       const apellidos = document.getElementById('apellidos').value;
@@ -885,7 +875,6 @@ formModal.addEventListener('submit', async (e) => {
       } else {
         showAlert(data.message, 'negative');
       }
-    }
   }
 
 });
