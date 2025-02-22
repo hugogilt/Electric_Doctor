@@ -1013,10 +1013,15 @@ function isDaySemiComplete(date) {
 
 
 
+// const allSlots = [
+//   "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
+//   "12:00", "12:30", "13:00", "13:30",
+//   "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"
+// ];
+
+
 const allSlots = [
-  "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
-  "12:00", "12:30", "13:00", "13:30",
-  "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"
+  "10:00", "12:00", "16:00", "17:00"
 ];
 
 function addCompleteDays(year, month) {
@@ -1331,54 +1336,36 @@ function isTimeReserved(date, hour, minute) {
 
 
 const updateTimeSlots = (selectedDate) => {
-  const morningStart = 9; // 9:00
-  const morningEnd = 14; // 14:00
-  const afternoonStart = 16; // 16:00
-  const afternoonEnd = 19; // 19:00
+  const morningSlots = [10, 12]; // Solo 10:00 y 12:00
+  const afternoonSlots = [16, 17]; // Solo 16:00 y 17:00
   let displayHours = false;
 
-  // Crear slots de la mañana (cada media hora)
-  for (let hour = morningStart; hour < morningEnd; hour++) {
-    for (let minute = 0; minute < 60; minute += 30) {
-      const slot = document.createElement('button');
-      slot.type = 'button';
-      const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
+  // Función auxiliar para crear botones de horario
+  const createSlot = (hour, minute = 0) => {
+    const slot = document.createElement('button');
+    slot.type = 'button';
+    const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
 
-      if (isTimeNotAvailable(selectedDate, hour, minute)) {
-        slot.className = 'not-available';
-      } else if (isTimeReserved(selectedDate, hour, minute)) {
-        slot.className = 'reserved';
-      } else {
-        slot.className = 'available';
-        displayHours = true;
-      }
-
-      slot.textContent = formattedHour;
-      slot.addEventListener('click', () => selectTime(slot));
-      timeSlotsElement.appendChild(slot);
+    if (isTimeNotAvailable(selectedDate, hour, minute)) {
+      slot.className = 'not-available';
+    } else if (isTimeReserved(selectedDate, hour, minute)) {
+      slot.className = 'reserved';
+    } else {
+      slot.className = 'available';
+      displayHours = true;
     }
-  }
 
-  // Crear slots de la tarde (cada media hora)
-  for (let hour = afternoonStart; hour < afternoonEnd; hour++) {
-    for (let minute = 0; minute < 60; minute += 30) {
-      const slot = document.createElement('button');
-      slot.type = 'button';
-      const formattedHour = `${hour}:${minute === 0 ? '00' : '30'}`;
-      if (isTimeNotAvailable(selectedDate, hour, minute)) {
-        slot.className = 'not-available';
-      } else if (isTimeReserved(selectedDate, hour, minute)) {
-        slot.className = 'reserved';
-      } else {
-        slot.className = 'available';
-        displayHours = true;
-      }
+    slot.textContent = formattedHour;
+    slot.addEventListener('click', () => selectTime(slot));
+    timeSlotsElement.appendChild(slot);
+  };
 
-      slot.textContent = formattedHour;
-      slot.addEventListener('click', () => selectTime(slot));
-      timeSlotsElement.appendChild(slot);
-    }
-  }
+  // Crear slots de la mañana (10:00 y 12:00)
+  morningSlots.forEach(hour => createSlot(hour));
+
+  // Crear slots de la tarde (16:00 y 17:00)
+  afternoonSlots.forEach(hour => createSlot(hour));
+
   const hoursNotDisplay = document.querySelectorAll('.time-slots button');
   let foundDate = notAvailableDays.find(day => day === selectedDate);
   if (!displayHours || foundDate) {
