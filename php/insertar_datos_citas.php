@@ -24,14 +24,14 @@ try {
 
         if (
             isset($data->nombre, $data->apellidos, $data->telefono, $data->correo, 
-                $data->marca, $data->anio, $data->problema, $data->fechaHora)
+                $data->marca, $data->matricula, $data->problema, $data->fechaHora)
         ) {
             $nombre = $data->nombre;
             $apellidos = $data->apellidos;
             $telefono = $data->telefono;
             $correo = $data->correo;
             $marca = $data->marca;
-            $anio = $data->anio;
+            $matricula = $data->matricula;
             $problema = $data->problema;
             $fechaHora = $data->fechaHora;
             $dataRespuesta = $data->dataRespuesta;
@@ -70,13 +70,13 @@ try {
                 };
                 
 
-                $insertCita = function ($id, $table, $role) use ($conexion, $marca, $anio, $problema, $fechaHora) {
-                    $sql = "INSERT INTO Citas (ID_$role, Modelo_Vehiculo, Ano_Matriculacion, Motivo, Fecha_Hora) 
-                            VALUES (:id, :marca, :anio, :problema, :fechaHora)";
+                $insertCita = function ($id, $table, $role) use ($conexion, $marca, $matricula, $problema, $fechaHora) {
+                    $sql = "INSERT INTO Citas (ID_$role, Modelo_Vehiculo, Matricula, Motivo, Fecha_Hora) 
+                            VALUES (:id, :marca, :matricula, :problema, :fechaHora)";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
                     $stmt->bindParam(':marca', $marca);
-                    $stmt->bindParam(':anio', $anio);
+                    $stmt->bindParam(':matricula', $matricula);
                     $stmt->bindParam(':problema', $problema);
                     $stmt->bindParam(':fechaHora', $fechaHora);
                     $stmt->execute();
@@ -164,7 +164,7 @@ try {
                                 <li><b>Teléfono:</b> {$telefono}</li>
                                 <li><b>Correo:</b> {$correo}</li>
                                 <li><b>Marca del vehículo:</b> {$marca}</li>
-                                <li><b>Año de matriculación:</b> {$anio}</li>
+                                <li><b>Matrícula:</b> {$matricula}</li>
                                 <li><b>Motivo:</b> {$problema}</li>
                                 <li><b>Fecha y hora:</b> {$fechaHora}</li>
                             </ul>

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($fechaHora) {
         try {
             // Buscar los datos de la cita
-            $sqlCita = "SELECT Modelo_Vehiculo, Ano_Matriculacion, Motivo, Estado, ID_Usuario, ID_Cliente 
+            $sqlCita = "SELECT Modelo_Vehiculo, Matricula, Motivo, Estado, ID_Usuario, ID_Cliente 
                         FROM Citas 
                         WHERE Fecha_Hora = :fechaHora";
             $stmtCita = $conexion->prepare($sqlCita);
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($cita) {
                 $response['Modelo_Vehiculo'] = $cita['Modelo_Vehiculo'];
-                $response['Ano_Matriculacion'] = $cita['Ano_Matriculacion'];
+                $response['Matricula'] = $cita['Matricula'];
                 $response['Motivo'] = $cita['Motivo'];
                 $response['Estado'] = $cita['Estado'];
 

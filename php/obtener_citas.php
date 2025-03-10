@@ -56,7 +56,7 @@ try {
                     $detalleCita = [
                         'ID_Cita' => $cita['ID_Cita'],
                         'Modelo_Vehiculo' => $cita['Modelo_Vehiculo'],
-                        'Ano_Matriculacion' => $cita['Ano_Matriculacion'],
+                        'Matricula' => $cita['Matricula'],
                         'Fecha_Hora' => $cita['Fecha_Hora'],
                         'Motivo' => $cita['Motivo'],
                         'Estado' => $cita['Estado'],

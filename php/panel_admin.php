@@ -142,7 +142,7 @@ try {
                                 <input type="text" id="marca" name="marca" placeholder="Marca y Modelo del Vehículo" required>
                               </div>
                               <div class="elementos-pedir-cita">
-                                <input type="number" id="anio" name="anio" placeholder="Año de Matriculación" min="1900" max="2024"
+                                <input type="number" id="matricula" name="matricula" placeholder="Matrícula" min="1900" max="2024"
                                   required>
                               </div>
                               <div id="contenedor-problema" class="grupo-formulario">
@@ -170,7 +170,7 @@ try {
                                 <option value="Telefono">Teléfono</option>
                                 <option value="Correo_Electronico">Correo Electrónico</option>
                                 <option value="Modelo_Vehiculo">Modelo del Vehículo</option>
-                                <option value="Ano_Matriculacion">Año de Matriculación</option>
+                                <option value="Matricula">Matrícula</option>
                               </select>
 
                               <input type="text" id="filtro-valor" placeholder="Escribe el valor..." />

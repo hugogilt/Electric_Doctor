@@ -62,7 +62,7 @@ const apellidosInput = document.getElementById('apellidos');
 const telefonoInput = document.getElementById('telefono');
 const correoInput = document.getElementById('correo');
 const modeloInput = document.getElementById('marca');
-const anioInput = document.getElementById('anio');
+const matriculaInput = document.getElementById('matricula');
 const problemaInput = document.getElementById('problema');
 
 const contenedorProblema = document.querySelector('#contenedor-problema');
@@ -714,7 +714,7 @@ async function selectTime(slot, key = false) {
     telefonoInput.value = datosCita.Telefono;
     correoInput.value = datosCita.Correo_Electronico;
     modeloInput.value = datosCita.Modelo_Vehiculo;
-    anioInput.value = datosCita.Ano_Matriculacion;
+    matriculaInput.value = datosCita.Matricula;
     problemaInput.value = datosCita.Motivo;
     modificandoCitaIDPersona = datosCita.ID;
     modificandoDia = chosenDay.textContent;
@@ -786,7 +786,7 @@ formModal.addEventListener('submit', async (e) => {
       telefono: telefonoInput.value,
       correo: correoInput.value,
       modelo: modeloInput.value,
-      anio: anioInput.value,
+      matricula: matriculaInput.value,
       problema: problemaInput.value,
       fecha: chosenDate
     };
@@ -843,7 +843,7 @@ formModal.addEventListener('submit', async (e) => {
       const apellidos = document.getElementById('apellidos').value;
       const telefono = document.getElementById('telefono').value;
       const marca = document.getElementById('marca').value;
-      const anio = document.getElementById('anio').value;
+      const matricula = document.getElementById('matricula').value;
       const problema = document.getElementById('problema').value;
 
       // Crear el objeto JSON con los datos
@@ -853,7 +853,7 @@ formModal.addEventListener('submit', async (e) => {
         telefono: telefono,
         correo: correo,
         marca: marca,
-        anio: anio,
+        matricula: matricula,
         problema: problema,
         fechaHora: chosenDate,
         dataRespuesta: dataRespuesta
@@ -1103,7 +1103,7 @@ function crearCajon(cita) {
   modelo.textContent = `Modelo Vehículo: ${cita.Modelo_Vehiculo}`;
 
   const anoMatriculacion = document.createElement("p");
-  anoMatriculacion.textContent = `Año de Matriculación: ${cita.Ano_Matriculacion}`;
+  anoMatriculacion.textContent = `Matrícula: ${cita.Matricula}`;
 
   const telefono = document.createElement("p");
   telefono.textContent = `Teléfono: ${cita.Telefono}`;

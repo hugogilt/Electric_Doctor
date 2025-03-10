@@ -184,7 +184,7 @@ const apellidosInput = document.getElementById('apellidos-modal');
 const telefonoInput = document.getElementById('telefono-modal');
 const correoInput = document.getElementById('correo-modal');
 const modeloInput = document.getElementById('marca-modal');
-const anioInput = document.getElementById('anio-modal');
+const matriculaInput = document.getElementById('matricula-modal');
 const problemaInput = document.getElementById('problema-modal');
 const abrirListadoCitasButton = document.getElementById('listado-citas-boton');
 const modalCancelarCita = document.querySelector('#modal-cancelar-cita');
@@ -412,7 +412,7 @@ function crearCajon(cita) {
   modelo.textContent = `Modelo Vehículo: ${cita.Modelo_Vehiculo}`;
 
   const anoMatriculacion = document.createElement("p");
-  anoMatriculacion.textContent = `Año de Matriculación: ${cita.Ano_Matriculacion}`;
+  anoMatriculacion.textContent = `Matrícula: ${cita.Matricula}`;
 
   const telefono = document.createElement("p");
   telefono.textContent = `Teléfono: ${cita.Telefono}`;
@@ -1451,7 +1451,7 @@ async function selectTime(slot, key = false) {
     telefonoInput.value = datosCita.Telefono;
     correoInput.value = datosCita.Correo_Electronico;
     modeloInput.value = datosCita.Modelo_Vehiculo;
-    anioInput.value = datosCita.Ano_Matriculacion;
+    matriculaInput.value = datosCita.Matricula;
     problemaInput.value = datosCita.Motivo;
   } else {
     slot.classList.add('selected-not-available');
@@ -1606,7 +1606,7 @@ async function aceptarPidiendoCita() {
             const apellidos = document.getElementById('apellidos').value;
             const telefono = document.getElementById('telefono').value;
             const marca = document.getElementById('marca').value;
-            const anio = document.getElementById('anio').value;
+            const matricula = document.getElementById('matricula').value;
             const problema = document.getElementById('problema').value;
 
             // Crear el objeto JSON con los datos
@@ -1616,7 +1616,7 @@ async function aceptarPidiendoCita() {
               telefono: telefono,
               correo: correo,
               marca: marca,
-              anio: anio,
+              matricula: matricula,
               problema: problema,
               fechaHora: chosenDate,
               dataRespuesta: dataRespuesta
@@ -1949,7 +1949,7 @@ function cogerCamposFormularioCita() {
   const apellidos = document.getElementById("apellidos").value;
   const telefono = document.getElementById("telefono").value;
   const marca = document.getElementById("marca").value;
-  const anio = document.getElementById("anio").value;
+  const matricula = document.getElementById("matricula").value;
   const problema = document.getElementById("problema").value;
 
 
@@ -1962,7 +1962,7 @@ function cogerCamposFormularioCita() {
   formData.append('correo', correoFormulario);
   formData.append('telefono', telefono);
   formData.append('marca', marca);
-  formData.append('anio', anio);
+  formData.append('matricula', matricula);
   formData.append('problema', problema);
   formData.append('nonVerifiedType', nonVerifiedType);
 
@@ -2051,7 +2051,7 @@ formModal.addEventListener('submit', async (e) => {
     telefono: telefonoInput.value,
     correo: correoInput.value,
     modelo: modeloInput.value,
-    anio: anioInput.value,
+    matricula: matriculaInput.value,
     problema: problemaInput.value,
     fecha: chosenDate
   };

@@ -8,7 +8,7 @@ include_once('../config/conexion.php');
 $data = json_decode(file_get_contents('php://input'), true);
 
 // Verificar si se ha recibido el id_cita y los demás datos
-if (!isset($data['id_cita']) || !isset($data['nombre']) || !isset($data['apellidos']) || !isset($data['fecha']) || !isset($data['telefono']) || !isset($data['correo']) || !isset($data['modelo']) || !isset($data['anio']) || !isset($data['problema'])) {
+if (!isset($data['id_cita']) || !isset($data['nombre']) || !isset($data['apellidos']) || !isset($data['fecha']) || !isset($data['telefono']) || !isset($data['correo']) || !isset($data['modelo']) || !isset($data['matricula']) || !isset($data['problema'])) {
     echo json_encode(['status' => 'error', 'message' => 'Datos incompletos.']);
     exit;
 }
@@ -20,7 +20,7 @@ $apellidos = $data['apellidos'];
 $telefono = $data['telefono'];
 $correo = $data['correo'];
 $modelo = $data['modelo'];
-$anio = $data['anio'];
+$matricula = $data['matricula'];
 $motivo = $data['problema'];
 $fecha = $data['fecha'];
 
@@ -74,9 +74,9 @@ try {
         }
 
         // Actualizar los campos de la cita
-        $updateCitaStmt = $conexion->prepare("UPDATE Citas SET Modelo_Vehiculo = :modelo, Ano_Matriculacion = :anio, Motivo = :motivo, Fecha_Hora = :fecha WHERE ID_Cita = :id_cita");
+        $updateCitaStmt = $conexion->prepare("UPDATE Citas SET Modelo_Vehiculo = :modelo, Matricula = :matricula, Motivo = :motivo, Fecha_Hora = :fecha WHERE ID_Cita = :id_cita");
         $updateCitaStmt->bindParam(':modelo', $modelo, PDO::PARAM_STR);
-        $updateCitaStmt->bindParam(':anio', $anio, PDO::PARAM_INT);
+        $updateCitaStmt->bindParam(':matricula', $matricula, PDO::PARAM_INT);
         $updateCitaStmt->bindParam(':motivo', $motivo, PDO::PARAM_STR);
         $updateCitaStmt->bindParam(':id_cita', $id_cita, PDO::PARAM_INT);
         $updateCitaStmt->bindParam(':fecha', $fecha, PDO::PARAM_STR);
