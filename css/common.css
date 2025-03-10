@@ -1206,6 +1206,45 @@ div>.eapps-widget-toolbar {
 }
 
 
+/* LOADING MODAL */
+
+#loadingModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#loadingModalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  color: black;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
 @media (max-width: 1000px) {
 
   #modal-citas-filter {
@@ -1321,7 +1360,7 @@ div>.eapps-widget-toolbar {
   }
 
   #calendarModal .modal-content {
-    font-size: 0.70em;
+    font-size: 0.90em;
   }
 }
 

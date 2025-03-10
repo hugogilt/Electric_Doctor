@@ -1063,7 +1063,7 @@ async function updateCalendar() {
   const year = currentDate.getFullYear();
 
   añadoDiasFestivos();
-  
+
   // Llama a addPastDaysToNotAvailable con el año y mes actuales
   addPastDaysToNotAvailable(year, month);
 
@@ -1135,18 +1135,18 @@ async function updateCalendar() {
 
 
 async function añadoDiasFestivos() {
-    try {
-        const response = await fetch('../php/obtener_festivos.php');
-        const data = await response.json();
+  try {
+    const response = await fetch('../php/obtener_festivos.php');
+    const data = await response.json();
 
-        if (data.success && Array.isArray(data.festivos)) {
-            notAvailableDays.push(...data.festivos); // Añadir sin reemplazar
-        } else {
-            // console.error('Error al obtener días festivos:', data.message);
-        }
-    } catch (error) {
-        // console.error('Error en la solicitud:', error);
+    if (data.success && Array.isArray(data.festivos)) {
+      notAvailableDays.push(...data.festivos); // Añadir sin reemplazar
+    } else {
+      // console.error('Error al obtener días festivos:', data.message);
     }
+  } catch (error) {
+    // console.error('Error en la solicitud:', error);
+  }
 }
 
 // Llamar a la función al cargar la página
@@ -1565,6 +1565,7 @@ async function aceptarPidiendoCita() {
       if (!eventListenerAñadido) {
         pedirCitaForm.addEventListener("submit", async function (event) {
           event.preventDefault();  // Detiene el envío del formulario
+          showLoadingModal();
 
           // COMPRUEBO QUE ESA CITA SIGA DISPONIBLE
           await obtenerFechasNoDisponibles();
@@ -1573,6 +1574,7 @@ async function aceptarPidiendoCita() {
           let minute = chosenHour.textContent.slice(twoPointsPos + 1) === '00' ? parseInt('0') : '30';
           if (isTimeNotAvailable(selectedDate, hour, minute) || isTimeReserved(selectedDate, hour, minute)) {
             showAlert('La hora seleccionada ya no se encuentra disponible', 'negative');
+            hideLoadingModal();
             return;
           }
 
@@ -1592,6 +1594,7 @@ async function aceptarPidiendoCita() {
           const dataRespuesta = await correoResponse.json();
           let isUserLogged = await check_user_logged();
           if (dataRespuesta.status === 'exists' && !isUserLogged) { //Si el correo existe en la tabla usuarios y no ha iniciado sesión
+            hideLoadingModal();
             authModal.style.display = "flex";
             loginSection.style.display = "flex";
             registerSection.style.display = "none";
@@ -1649,6 +1652,7 @@ async function aceptarPidiendoCita() {
             }
           }
           eventListenerAñadido = true;
+          hideLoadingModal();
         });
       }
 
@@ -1659,6 +1663,19 @@ async function aceptarPidiendoCita() {
   } else {
     showAlert('Por favor, selecciona una fecha y una hora antes de aceptar.', 'negative');
   }
+}
+
+// Obtener el modal de carga
+const loadingModal = document.getElementById('loadingModal');
+
+// Función para mostrar el modal de carga
+function showLoadingModal() {
+  loadingModal.style.display = 'flex';
+}
+
+// Función para ocultar el modal de carga
+function hideLoadingModal() {
+  loadingModal.style.display = 'none';
 }
 
 async function aceptarModificandoCita() {
