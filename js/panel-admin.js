@@ -10,6 +10,7 @@ const openCalendarButton = document.getElementById('citas');
 const openInvoicesButton = document.getElementById('facturas');
 const openUsersButton = document.getElementById('usuarios');
 const abrirListadoCitasButton = document.getElementById('listado-citas');
+const seleccionarDiasFestivos = document.getElementById('festivos');
 const calendarModal = document.getElementById('calendarModal');
 const closeCalendarModal = document.getElementById('closeCalendarModal');
 const pedirCitaButton = document.querySelector('#pedir-cita-button');
@@ -904,7 +905,7 @@ abrirListadoCitasButton.addEventListener('click', async function () {
   openListadoCitasModal();
   modificarFechaButton.addEventListener('click', openModificarFechaCalendar);
 
-})
+});
 
 
 //Obtener datos cita
@@ -2160,7 +2161,93 @@ function descargarFactura(idFactura) {
 }
 
 
+// Dias Festivos
+document.addEventListener('DOMContentLoaded', function () {
+  let selectedDates = new Set();
 
+  // Elementos del DOM
+  const calendar = document.getElementById('calendarInput');
+  const list = document.getElementById('selectedDatesList');
+  const modalFestivos = document.getElementById('festivosModal');
+  const closeModalBtn = document.getElementById('closeModal');
 
+  // Cargar días festivos desde la base de datos al iniciar
+  fetchFestiveDays();
 
+  // Abrir el modal al hacer clic en el botón
+  seleccionarDiasFestivos.addEventListener('click', function () {
+    modalFestivos.style.display = 'flex';
+    updateList(); // Actualizar la lista de días cuando se abre el modal
+  });
+
+  // Cerrar el modal
+  closeModalBtn.addEventListener('click', function () {
+    modalFestivos.style.display = 'none';
+  });
+
+  // Detectar el cambio de fecha en el calendario
+  calendar.addEventListener('change', function () {
+    let selectedDate = this.value;
+    if (selectedDate) {
+      if (selectedDates.has(selectedDate)) {
+        selectedDates.delete(selectedDate);
+        sendDateToServer(selectedDate, 'remove'); // Eliminar de la BD
+      } else {
+        selectedDates.add(selectedDate);
+        sendDateToServer(selectedDate, 'add'); // Agregar a la BD
+      }
+      updateList();
+    }
+  });
+
+  // Función para actualizar la lista de días seleccionados en el modal
+  function updateList() {
+    list.innerHTML = ''; // Limpiar lista actual
+    selectedDates.forEach(date => {
+      let li = document.createElement('li');
+      li.textContent = date;
+      
+      // Botón para eliminar el día
+      let removeButton = document.createElement('button');
+      removeButton.textContent = 'Eliminar';
+      removeButton.addEventListener('click', function () {
+        selectedDates.delete(date);
+        sendDateToServer(date, 'remove'); // Eliminar de la BD
+        updateList();
+      });
+
+      li.appendChild(removeButton);
+      list.appendChild(li);
+    });
+  }
+
+  // Función para enviar la fecha al servidor
+  function sendDateToServer(date, action) {
+    fetch('../php/guardar_festivos.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ fecha: date, action: action })
+    })
+    .then(response => response.json())
+    .then(data => {
+      showAlert(data.message, 'positive');
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  // Función para obtener los días festivos desde la base de datos
+  function fetchFestiveDays() {
+    fetch('../php/obtener_festivos.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && Array.isArray(data.festivos)) {
+          selectedDates = new Set(data.festivos);
+          updateList(); // Actualizar la lista con los días obtenidos
+        } else {
+          console.error('Error al obtener días festivos:', data.message);
+        }
+      })
+      .catch(error => console.error('Error en la solicitud:', error));
+  }
+});
 

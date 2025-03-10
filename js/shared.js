@@ -1062,6 +1062,8 @@ async function updateCalendar() {
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
 
+  añadoDiasFestivos();
+  
   // Llama a addPastDaysToNotAvailable con el año y mes actuales
   addPastDaysToNotAvailable(year, month);
 
@@ -1130,6 +1132,25 @@ async function updateCalendar() {
 
 };
 
+
+
+async function añadoDiasFestivos() {
+    try {
+        const response = await fetch('../php/obtener_festivos.php');
+        const data = await response.json();
+
+        if (data.success && Array.isArray(data.festivos)) {
+            notAvailableDays.push(...data.festivos); // Añadir sin reemplazar
+        } else {
+            // console.error('Error al obtener días festivos:', data.message);
+        }
+    } catch (error) {
+        // console.error('Error en la solicitud:', error);
+    }
+}
+
+// Llamar a la función al cargar la página
+añadoDiasFestivos();
 
 
 

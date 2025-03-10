@@ -81,6 +81,13 @@ try {
                             <img width="50%" src="/images/panel-admin/listado.png" alt="Abrir Calendario">
                           </section>
 
+                          <section class="option" id="festivos">
+                            <div id="titulo-festivos">
+                              <h2 id="h2-festivos">Festivos</h2>
+                            </div>
+                            <img width="50%" src="/images/panel-admin/festivos.png" alt="Festivos">
+                          </section>
+
 
                         </div>
 
@@ -336,6 +343,23 @@ try {
                             <div id="contador-facturas">Mostrando 0 resultados</div>
                             <button id="closeInvoicesModal" class="cerrar-modal-facturas">×</button>
                             <div id="invoicesContainer" class="invoices-container"></div>
+                          </div>
+                        </div>
+
+
+                        <!-- Modal para seleccionar días festivos -->
+                        <div id="festivosModal">
+                          <div class="modal-content">
+                            <h2>Seleccionar Días Festivos</h2>
+                            
+                            <!-- Calendario -->
+                            <input type="date" id="calendarInput">
+                            
+                            <!-- Lista de días seleccionados -->
+                            <ul id="selectedDatesList"></ul>
+                            
+                            <!-- Botón de cerrar -->
+                            <div id="closeModal">&times;</div>
                           </div>
                         </div>
 
