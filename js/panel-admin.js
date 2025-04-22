@@ -214,7 +214,7 @@ const title = document.querySelector('#title');
 if (title) {
   title.addEventListener('click', function () {
     // Redirigir a otra URL
-    window.location.href = 'https://electric-doctor.infinityfreeapp.com';
+    window.location.href = 'https://www.electricdoctor.es';
   });
 }
 

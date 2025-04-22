@@ -1,6 +1,6 @@
-// if (window.location.protocol !== "https:") {
-//   window.location.href = "https://electric-doctor.infinityfreeapp.com" + window.location.pathname + window.location.search;
-// }
+if (window.location.protocol !== "https:") {
+  window.location.href = "https://www.electricdoctor.es" + window.location.pathname + window.location.search;
+}
 
 function positionUserMenu() {
   // Obtener las coordenadas de la imagen (userTextSpan)
@@ -802,7 +802,7 @@ registerForm.addEventListener("submit", async function (event) {
   }
 
   // Validar que la contraseña tenga al menos 8 caracteres, una mayúscula, una minúscula y un número
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&#]{8,}$/;
   if (!passwordRegex.test(password)) {
     passwordErrorMessageRegister.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.';
     formatoInadecuado = true;

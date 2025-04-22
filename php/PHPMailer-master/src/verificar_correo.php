@@ -129,7 +129,7 @@ if (isset($_GET['token'])) {
                 <div class="container">
                     <h1>¡Correo Verificado!</h1>
                     <p>Tu dirección de correo electrónico ha sido verificada correctamente.<br>Gracias por confirmar tu cuenta.</p>
-                    <a href="https://electric-doctor.infinityfreeapp.com" class="btn">Volver a la web</a>
+                    <a href="https://www.electricdoctor.es" class="btn">Volver a la web</a>
                 </div>
                 </body>
                 </html>
@@ -208,7 +208,7 @@ if (isset($_GET['token'])) {
                 <div class="container">
                     <h1>¡Algo ha salido mal!</h1>
                     <p>Este enlace de verificación no es válido o ha expirado<br>Por favor, inténtalo de nuevo</p>
-                    <a href="https://electric-doctor.infinityfreeapp.com" class="btn">Volver a la web</a>
+                    <a href="https://www.electricdoctor.es" class="btn">Volver a la web</a>
                 </div>
                 </body>
                 </html>
@@ -293,7 +293,7 @@ if (isset($_GET['token'])) {
         <div class="container">
             <h1>¡Algo ha salido mal!</h1>
             <p>Este enlace de verificación no es válido o ha expirado<br>Por favor, inténtalo de nuevo</p>
-            <a href="https://electric-doctor.infinityfreeapp.com" class="btn">Volver a la web</a>
+            <a href="https://www.electricdoctor.es" class="btn">Volver a la web</a>
         </div>
         </body>
         </html>

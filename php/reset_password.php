@@ -119,7 +119,7 @@ try {
 
     <?php if ($response['status'] == 'success'): ?>
         <p class="success"><?= $response['message']; ?></p>
-        <a href="https://electric-doctor.infinityfreeapp.com">Volver a la web</a>
+        <a href="https://www.electricdoctor.es">Volver a la web</a>
     <?php else: ?>
         <p class="alert"><?= $response['message']; ?></p>
     <?php endif; ?>

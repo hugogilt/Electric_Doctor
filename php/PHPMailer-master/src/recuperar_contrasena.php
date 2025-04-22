@@ -80,7 +80,7 @@ try {
     $mail = $mailConfigurator();
 
     // Preparar el correo
-    $reset_link = "https://electric-doctor.infinityfreeapp.com/php/reset_password.php?token=$token";
+    $reset_link = "https://www.electricdoctor.es/php/reset_password.php?token=$token";
     $mail->addAddress($correo);
     $mail->Subject = 'Recupere su contraseña';
     $mail->isHTML(true);

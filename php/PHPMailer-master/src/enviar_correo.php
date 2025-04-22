@@ -73,7 +73,7 @@ try {
     // Preparar el correo
     $destinatario = $emailUsuario;
     $asunto = "Completa la verificación de tu cuenta";
-    $verification_link = "https://electric-doctor.infinityfreeapp.com/php/PHPMailer-master/src/verificar_correo.php?token=$token";
+    $verification_link = "https://www.electricdoctor.es/php/PHPMailer-master/src/verificar_correo.php?token=$token";
       $cuerpo = "
       <html>
       <body style='font-family: Arial, sans-serif; background-color: #FFEA00; background: linear-gradient(180deg, #FFEA00, #FF6C14); margin: 0; padding: 20px; text-align: center;'>
